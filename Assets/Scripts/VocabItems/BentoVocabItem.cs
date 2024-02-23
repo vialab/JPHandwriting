@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public enum VocabState {
     NotLearned, Learned 
@@ -15,15 +16,17 @@ public enum ObjectState {
 }
 
 public class BentoVocabItem : _BaseVocabItem {
-    [SerializeField] private GameObject _UIObject;
-    [SerializeField] private TextMeshProUGUI _wordText;
+    [SerializeField] private GameObject menuUIObject;
+    [SerializeField] private TextMeshProUGUI wordText;
 
     private ObjectState _objectState;
+    private VocabState _vocabState;
     void Awake()
     {
-        _UIObject.gameObject.SetActive(false);
+        menuUIObject.gameObject.SetActive(false);
         _objectState = ObjectState.Idle;
-        _wordText.text = englishName;
+        _vocabState = VocabState.NotLearned;
+        wordText.text = englishName;
     }
 
     // Update is called once per frame
@@ -32,15 +35,30 @@ public class BentoVocabItem : _BaseVocabItem {
         
     }
 
+    public void ToggleWriting() {
+        switch (_objectState) {
+            case ObjectState.Menu: {
+                menuUIObject.gameObject.SetActive(false);
+                _objectState = ObjectState.Writing;
+                break;
+            }
+            case ObjectState.Writing: {
+                menuUIObject.gameObject.SetActive(true);
+                _objectState = ObjectState.Menu;
+                break;
+            }
+        }
+    }
+
     public void ToggleUI() {
         switch (_objectState) {
             case ObjectState.Idle: {
-               _UIObject.gameObject.SetActive(true);
+               menuUIObject.gameObject.SetActive(true);
                _objectState = ObjectState.Menu;
                break;
             }
             case ObjectState.Menu: {
-                _UIObject.gameObject.SetActive(false);
+                menuUIObject.gameObject.SetActive(false);
                 _objectState = ObjectState.Idle;
                 break;
             }
