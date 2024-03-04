@@ -304,7 +304,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 092e7c0c6603f1c419441a9a23756f81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  markerObject: {fileID: 0}
+  markerObject: {fileID: 6586382511334306449, guid: a33214b77f4ae7342ae49925d95e21d3,
+    type: 3}
 --- !u!65 &5262626051055511404
 BoxCollider:
   m_ObjectHideFlags: 0
