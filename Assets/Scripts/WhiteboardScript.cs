@@ -14,7 +14,6 @@ public class WhiteboardScript: MonoBehaviour {
     }
 
     private float timeOffCanvas = 0f;
-    private bool canvasIsEmpty = true;
     private bool isTouching = false;
     private bool isFinishing = false;
     private XRGrabInteractable _xrGrabInteractable;
@@ -28,6 +27,7 @@ public class WhiteboardScript: MonoBehaviour {
 
     private void Update() {
         if (isFinishing) {
+            // Why not a coroutine? This can be cancelled at any time if someone wants to keep writing
             timeOffCanvas += Time.deltaTime;
 
             if (timeOffCanvas > timeUntilImageCreate) {

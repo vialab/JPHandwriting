@@ -45,6 +45,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   whiteboardCanvas: {fileID: 8400000, guid: d9e34414be34c7e4b9a45917f528e058, type: 2}
+  OnExport:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6652784555216557747, guid: aff6ebf9f4614784eaf59741a540f18d,
+          type: 3}
+        m_TargetAssemblyTypeName: PredictionControllerScript, Assembly-CSharp
+        m_MethodName: PredictLetter
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2733120833585512057
 GameObject:
   m_ObjectHideFlags: 0
@@ -219,6 +235,8 @@ GameObject:
   - component: {fileID: 7358977251816536669}
   - component: {fileID: 3538226995164536633}
   - component: {fileID: 5262626051055511404}
+  - component: {fileID: 7205884717673777314}
+  - component: {fileID: 2725997084552561887}
   m_Layer: 0
   m_Name: Canvas
   m_TagString: Whiteboard
@@ -306,6 +324,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   markerObject: {fileID: 6586382511334306449, guid: a33214b77f4ae7342ae49925d95e21d3,
     type: 3}
+  timeUntilImageCreate: 1.5
 --- !u!65 &5262626051055511404
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -327,3 +346,52 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 10, y: 0.4, z: 10}
   m_Center: {x: 0, y: 0.2, z: 0}
+--- !u!64 &7205884717673777314
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8384523598306834684}
+  m_Material: {fileID: 13400000, guid: d3aa2369c5935a34297f60c95ec0649e, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 192
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!54 &2725997084552561887
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8384523598306834684}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 0
+  m_ImplicitTensor: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 1
