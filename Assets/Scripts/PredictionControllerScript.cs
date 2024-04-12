@@ -10,7 +10,11 @@ public class PredictionResult {
 }
 
 public class PredictionControllerScript : MonoBehaviour {
+    [SerializeField] private bool debug = true;
+    
     public static PredictionControllerScript instance;
+
+    private bool _isPredicting = false;
     
     // Singleton should totally know what word is being guessed at any time
     // This is not bad architecture 
@@ -25,16 +29,25 @@ public class PredictionControllerScript : MonoBehaviour {
 
     private void Awake() {
         instance ??= this;
+        
     }
 
     public void PredictLetter(byte[] img) {
         // Read image
         Debug.Log("Time to predict!");
         
+        // Lock so it doesn't happen multiple times ; w; 
+        if (_isPredicting) {
+            Debug.Log("Request already being made");
+            return;
+        }
+        
         // I hope nothing breaks
         _img = img;
-
-        StartCoroutine(MakeAPIRequest());
+        _isPredicting = true;
+        if (!debug) {
+            StartCoroutine(MakeAPIRequest());
+        } 
     }
 
     private IEnumerator MakeAPIRequest() {
@@ -54,8 +67,9 @@ public class PredictionControllerScript : MonoBehaviour {
                 
                 Debug.Log($"YEAH LOOK AT THAT COOL {result.prediction} LETTER RIGHT THERE");
 
-                // TODO: send back to current item
+                // send back to current item
                 _focusedVocabItem.WritingStateGameObject.AddLetter(result.prediction);
+                _isPredicting = false;
                 break;
             }
             case UnityWebRequest.Result.ConnectionError:

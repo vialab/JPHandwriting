@@ -6,6 +6,7 @@
     - https://thenounproject.com/icon/pencil-6534759/
     - https://thenounproject.com/icon/undo-3557666/
     - https://thenounproject.com/icon/back-1245545/
+    - https://thenounproject.com/icon/check-1788422/
 
 ## Models
 - https://poly.pizza/m/tc4jUrXVs3

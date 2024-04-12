@@ -8,6 +8,7 @@ TagManager:
   - Right Hand
   - Marker
   - Whiteboard
+  - Vocab
   layers:
   - Default
   - TransparentFX
@@ -40,7 +41,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - Teleport
   m_SortingLayers:
   - name: Default
     uniqueID: 0

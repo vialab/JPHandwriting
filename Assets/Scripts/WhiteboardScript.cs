@@ -27,7 +27,7 @@ public class WhiteboardScript: MonoBehaviour {
 
     private void Update() {
         if (isFinishing) {
-            // Why not a coroutine? This can be cancelled at any time if someone wants to keep writing
+            // Why not a coroutine? Those are confusing
             timeOffCanvas += Time.deltaTime;
 
             if (timeOffCanvas > timeUntilImageCreate) {

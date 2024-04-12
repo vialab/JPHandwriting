@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-// shut up Rider this will be used eventually
 public enum VocabState {
     NotLearned, Learned 
 }
@@ -27,17 +26,24 @@ public class _BaseVocabItem : MonoBehaviour {
 
    private ObjectState _objectState;
    private VocabState _vocabState;
+   private Outline _outline;
    
    void Awake() {
        menuStateGameObject.gameObject.SetActive(false);
        writingStateGameObject.gameObject.SetActive(false);
        wordText.SetText(englishName);
+       _outline = gameObject.AddComponent<Outline>();
    }
 
    private void Start() {
-       // TODO: find a way to set vocab state from another object
+       // Set states
        _objectState = ObjectState.Idle;
        _vocabState = VocabState.NotLearned;
+       
+       // Set outline stuff 
+       _outline.enabled = false;
+       _outline.OutlineWidth = 5f;
+       _outline.OutlineMode = Outline.Mode.OutlineVisible;
    }
 
    public void ToggleWritingUI() {
@@ -45,6 +51,7 @@ public class _BaseVocabItem : MonoBehaviour {
            case ObjectState.Menu: {
                DisableMenuStateObject();
                EnableWritingStateObject();
+               _outline.enabled = false;
                
                SetObjectState(ObjectState.Writing);
                break;
@@ -52,6 +59,7 @@ public class _BaseVocabItem : MonoBehaviour {
            case ObjectState.Writing: {
                EnableMenuStateObject();
                DisableWritingStateObject();
+               EnableSelectedOutline();
                
                SetObjectState(ObjectState.Menu);
                break;
@@ -67,6 +75,7 @@ public class _BaseVocabItem : MonoBehaviour {
        switch (_objectState) {
            case ObjectState.Idle: {
               EnableMenuStateObject();
+              EnableSelectedOutline();
               SetObjectState(ObjectState.Menu);
 
               if (PredictionControllerScript.instance.FocusedVocabItem is not null) {
@@ -79,6 +88,7 @@ public class _BaseVocabItem : MonoBehaviour {
            }
            case ObjectState.Menu: {
                DisableMenuStateObject();
+               DisableOutline();
                SetObjectState(ObjectState.Idle);
 
                PredictionControllerScript.instance.FocusedVocabItem = null;
@@ -89,6 +99,27 @@ public class _BaseVocabItem : MonoBehaviour {
                break;
            }
        }
+   }
+
+   public void EnableHoverOutline() {
+       if (_objectState == ObjectState.Menu) {
+           return;
+       }
+       
+       _outline.OutlineColor = Color.white;
+       _outline.enabled = true;
+   }
+   public void EnableSelectedOutline() {
+       _outline.OutlineColor = _vocabState == VocabState.Learned ? Color.green : Color.red;
+       _outline.enabled = true;
+   }
+
+   public void DisableOutline() {
+       if (_objectState == ObjectState.Menu) {
+           return;
+       }
+       
+       _outline.enabled = false;
    }
    
    // a lot of helper functions
@@ -114,6 +145,11 @@ public class _BaseVocabItem : MonoBehaviour {
    }
 
    public void ToggleLearned(string compareTo) {
-       _vocabState = compareTo == japaneseName ? VocabState.Learned : VocabState.NotLearned;
+       _vocabState = (compareTo == japaneseName) ? VocabState.Learned : VocabState.NotLearned;
+       Debug.Log($"Vocabulary is {_vocabState}");
+
+       if (_objectState == ObjectState.Writing) {
+           ToggleWritingUI();
+       }
    }
 }

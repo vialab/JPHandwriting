@@ -1,10 +1,7 @@
 ﻿using System;
 using Unity.Collections;
-using UnityEditor.PackageManager.Requests;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.Rendering;
-using UnityEngine.Networking;
 
 // https://gist.github.com/asus4/a19118e04a0682d65cffe5c08911a498
 public static class NativeArrayExtension {
@@ -39,6 +36,7 @@ public class ImageExporterScript : MonoBehaviour {
 
     // I can get away with hardcoding things
     // will be as big as the canvas, only limited to B/W
+    // canvas can probably be 1024x1024
     // for best results, will only need to be PNG
     private void ExportRenderTextureToImage() {
         int imageWidth = whiteboardCanvas.width, imageHeight = whiteboardCanvas.height;
@@ -57,8 +55,10 @@ public class ImageExporterScript : MonoBehaviour {
                     encoded = ImageConversion.EncodeNativeArrayToPNG(imgBuffer, resizedRenderTexture.graphicsFormat,
                         (uint)imageWidth, (uint)imageHeight);
                     System.IO.File.WriteAllBytes("test.png", encoded.ToArray());
+
+                    byte[] encoded_bytes = encoded.ToRawBytes();
                     
-                    PredictionControllerScript.instance.PredictLetter(encoded.ToRawBytes());
+                    PredictionControllerScript.instance.PredictLetter(encoded_bytes);
                     
                     encoded.Dispose();
                 }
