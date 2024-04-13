@@ -16,7 +16,7 @@ public class TeacherDeskScript : MonoBehaviour {
 
     public void DisplayHint() {
         IXRSelectInteractable objectInSocket = _socketInteractor.GetOldestInteractableSelected();
-        Debug.Log($"This is a(n) {objectInSocket.transform.name} in the {transform.name}");
+        Debug.Log($"There is a(n) {objectInSocket.transform.name} in the {transform.name}");
         _hintText.SetText(objectInSocket.transform.GetComponent<_BaseVocabItem>().japaneseRomaji);
         
         _uiObject.SetActive(true);
