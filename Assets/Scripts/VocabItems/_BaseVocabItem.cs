@@ -24,6 +24,9 @@ public class _BaseVocabItem : MonoBehaviour {
    
    [SerializeField] private TextMeshProUGUI wordText;
 
+   [SerializeField] private GameObject toastGUI;
+   [SerializeField] private TextMeshProUGUI toastText;
+
    private ObjectState _objectState;
    private VocabState _vocabState;
    private Outline _outline;
@@ -31,6 +34,7 @@ public class _BaseVocabItem : MonoBehaviour {
    void Awake() {
        menuStateGameObject.gameObject.SetActive(false);
        writingStateGameObject.gameObject.SetActive(false);
+       toastGUI.SetActive(false);
        wordText.SetText(englishName);
        _outline = gameObject.AddComponent<Outline>();
    }
@@ -147,9 +151,22 @@ public class _BaseVocabItem : MonoBehaviour {
    public void ToggleLearned(string compareTo) {
        _vocabState = (compareTo == japaneseName) ? VocabState.Learned : VocabState.NotLearned;
        Debug.Log($"Vocabulary is {_vocabState}");
+       
+       // have toast pop up I think
+       string messageToSend = (_vocabState == VocabState.Learned) ? "Correct!" : "Try again...";
+       StartCoroutine(SummonToast(messageToSend));
 
        if (_objectState == ObjectState.Writing) {
            ToggleWritingUI();
        }
+   }
+
+   IEnumerator SummonToast(string message) {
+       toastText.SetText(message);
+       toastGUI.SetActive(true);
+
+       yield return new WaitForSeconds(3);
+       
+       toastGUI.SetActive(false);
    }
 }
