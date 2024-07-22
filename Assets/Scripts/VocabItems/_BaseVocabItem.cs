@@ -128,6 +128,7 @@ public class _BaseVocabItem : MonoBehaviour {
    
    // a lot of helper functions
    private void EnableMenuStateObject() {
+       ActivityLogger.Instance.LogEvent("In menu for item", this);
        menuStateGameObject.gameObject.SetActive(true);
    }
    
@@ -136,6 +137,7 @@ public class _BaseVocabItem : MonoBehaviour {
    }
 
    private void EnableWritingStateObject() {
+       ActivityLogger.Instance.LogEvent("Attempting to write item", this);
        writingStateGameObject.gameObject.SetActive(true);
    }
 
@@ -150,7 +152,7 @@ public class _BaseVocabItem : MonoBehaviour {
 
    public void ToggleLearned(string compareTo) {
        _vocabState = (compareTo == japaneseName) ? VocabState.Learned : VocabState.NotLearned;
-       Debug.Log($"Vocabulary is {_vocabState}");
+       ActivityLogger.Instance.LogEvent($"New state for word is {_vocabState}", this);
        
        // have toast pop up I think
        string messageToSend = (_vocabState == VocabState.Learned) ? "Correct!" : "Try again...";

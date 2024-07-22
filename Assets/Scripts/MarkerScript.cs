@@ -34,15 +34,15 @@ public class MarkerScript : MonoBehaviour {
 
     private void StartInk() {
         if (_isOnWhiteboard) {
+            ActivityLogger.Instance.LogEvent("Ink started", this);
             markerParticleSystem.Play();
             
         } 
     }
 
     private void StopInk() {
-        if (_isOnWhiteboard) {
-            markerParticleSystem.Stop();
-        }
+        ActivityLogger.Instance.LogEvent("Ink stopped", this);
+        markerParticleSystem.Stop();
     }   
     
     private void Whiteboard_OnMarkerInteraction (object sender, WhiteboardScript.MarkerInteractionArgs markerInteraction) {
@@ -51,7 +51,7 @@ public class MarkerScript : MonoBehaviour {
         
         // stop the ink entirely if not on whiteboard
         if (!_isOnWhiteboard) {
-            markerParticleSystem.Stop();
+            StopInk();
         }
     }
 }

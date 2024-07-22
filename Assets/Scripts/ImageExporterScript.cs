@@ -54,10 +54,12 @@ public class ImageExporterScript : MonoBehaviour {
 
                     encoded = ImageConversion.EncodeNativeArrayToPNG(imgBuffer, resizedRenderTexture.graphicsFormat,
                         (uint)imageWidth, (uint)imageHeight);
+                    // Writes to root of project folder
                     System.IO.File.WriteAllBytes("test.png", encoded.ToArray());
 
                     byte[] encoded_bytes = encoded.ToRawBytes();
                     
+                    ActivityLogger.Instance.LogEvent("Predicting letter", this);
                     PredictionControllerScript.instance.PredictLetter(encoded_bytes);
                     
                     encoded.Dispose();
@@ -65,7 +67,7 @@ public class ImageExporterScript : MonoBehaviour {
 
                 imgBuffer.Dispose();
                 
-                Debug.Log(!readbackRequest.hasError);
+                ActivityLogger.Instance.LogEvent($"Error in exporting image? {!readbackRequest.hasError}", this);
             });
     }
 }

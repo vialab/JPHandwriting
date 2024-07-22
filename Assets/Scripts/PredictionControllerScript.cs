@@ -34,11 +34,11 @@ public class PredictionControllerScript : MonoBehaviour {
 
     public void PredictLetter(byte[] img) {
         // Read image
-        Debug.Log("Time to predict!");
+        ActivityLogger.Instance.LogEvent("Sending prediction API request", this);
         
         // Lock so it doesn't happen multiple times ; w; 
         if (_isPredicting) {
-            Debug.Log("Request already being made");
+            ActivityLogger.Instance.LogEvent("Request cannot be made as another request is already in progress", this);
             return;
         }
         
@@ -65,7 +65,7 @@ public class PredictionControllerScript : MonoBehaviour {
 
                 PredictionResult result = JsonUtility.FromJson<PredictionResult>(resultText);
                 
-                Debug.Log($"YEAH LOOK AT THAT COOL {result.prediction} LETTER RIGHT THERE");
+                ActivityLogger.Instance.LogEvent($"Prediction received: {result.prediction} ({result.romaji})", this);
 
                 // send back to current item
                 _focusedVocabItem.WritingStateGameObject.AddLetter(result.prediction);

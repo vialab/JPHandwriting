@@ -22,7 +22,7 @@ public class ItemDrawStateScript : MonoBehaviour {
     private static readonly List<string> CHIISAI_SMALL = new List<string> { "ゃ", "ゅ", "ょ"};
 
     private void OnEnable() {
-        Debug.Log("OnEnable called from DrawStateScript");
+        ActivityLogger.Instance.LogEvent("OnEnable called from DrawStateScript", this);
         _submitButton.onClick.AddListener(OnSubmit);
         CreateWhiteboard();
     }
@@ -66,7 +66,7 @@ public class ItemDrawStateScript : MonoBehaviour {
 
     private void CreateWhiteboard() {
         _currentWhiteboard = Instantiate(_whiteboardPrefab, _whiteboardTransform.position, _whiteboardTransform.rotation, transform);
-        Debug.Log("Whiteboard created");
+        ActivityLogger.Instance.LogEvent("Whiteboard created", this);
     }
 
     private void ResetWord() {
@@ -76,11 +76,11 @@ public class ItemDrawStateScript : MonoBehaviour {
     private void DestroyWhiteboard() {
         Destroy(_currentWhiteboard);
         _currentWhiteboard = null;
-        Debug.Log("Whiteboard destroyed");
+        ActivityLogger.Instance.LogEvent("Whiteboard destroyed", this);
     }
 
     private void OnSubmit() {
-        Debug.Log($"Word written was {string.Join("", _writtenText)}");
+        ActivityLogger.Instance.LogEvent($"Word written was {string.Join("", _writtenText)}", this);
         
         _vocabObject.ToggleLearned(string.Join("", _writtenText));
     }

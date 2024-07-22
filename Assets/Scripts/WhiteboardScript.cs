@@ -22,7 +22,6 @@ public class WhiteboardScript: MonoBehaviour {
     }
 
     private void Start() {
-        
     }
 
     private void Update() {
@@ -37,7 +36,7 @@ public class WhiteboardScript: MonoBehaviour {
                 isFinishing = false;
                 
                 // hit up the image exporter
-                Debug.Log("Exporting image?");
+                ActivityLogger.Instance.LogEvent("Exporting canvas as image", this);
                 OnHandwritingFinish?.Invoke(this, EventArgs.Empty);
             }
         }
@@ -58,7 +57,7 @@ public class WhiteboardScript: MonoBehaviour {
             OnMarkerInteraction?.Invoke(this, new MarkerInteractionArgs {
                 isTouching = isTouching
             });
-            Debug.Log("Ink on");
+            ActivityLogger.Instance.LogEvent("Pen collided with whiteboard", this);
         }
     }
 
@@ -71,7 +70,7 @@ public class WhiteboardScript: MonoBehaviour {
             OnMarkerInteraction?.Invoke(this, new MarkerInteractionArgs {
                 isTouching = isTouching
             });
-            Debug.Log("Ink off");
+            ActivityLogger.Instance.LogEvent("Pen no longer on whiteboard", this);
 
         }
     }
