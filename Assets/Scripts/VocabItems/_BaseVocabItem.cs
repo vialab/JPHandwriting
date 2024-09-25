@@ -171,4 +171,6 @@ public class _BaseVocabItem : MonoBehaviour {
        
        toastGUI.SetActive(false);
    }
+   
+   // TODO: add PlaySoundAndLog()
 }

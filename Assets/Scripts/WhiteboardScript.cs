@@ -57,6 +57,8 @@ public class WhiteboardScript: MonoBehaviour {
             OnMarkerInteraction?.Invoke(this, new MarkerInteractionArgs {
                 isTouching = isTouching
             });
+            
+            // TODO: pen coordinates
             ActivityLogger.Instance.LogEvent("Pen collided with whiteboard", this);
         }
     }

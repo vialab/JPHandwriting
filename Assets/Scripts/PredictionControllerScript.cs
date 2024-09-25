@@ -24,7 +24,7 @@ public class PredictionControllerScript : MonoBehaviour {
         set => _focusedVocabItem = value;
     }
     
-    private string url = "https://fenreese.science.ontariotechu.ca/predict";
+    private string url = "http://localhost:5000";
     private byte[] _img;
 
     private void Awake() {

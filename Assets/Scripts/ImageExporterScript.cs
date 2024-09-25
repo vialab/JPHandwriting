@@ -55,6 +55,9 @@ public class ImageExporterScript : MonoBehaviour {
                     encoded = ImageConversion.EncodeNativeArrayToPNG(imgBuffer, resizedRenderTexture.graphicsFormat,
                         (uint)imageWidth, (uint)imageHeight);
                     // Writes to root of project folder
+                    
+                    // TODO: save with "session ID_datetime" format.
+                    // Possibly move exporting to after API call if we want the character guess?
                     System.IO.File.WriteAllBytes("test.png", encoded.ToArray());
 
                     byte[] encoded_bytes = encoded.ToRawBytes();
