@@ -16,7 +16,9 @@ public enum ObjectState {
 public class _BaseVocabItem : MonoBehaviour {
    [SerializeField] private Transform markerSpawnPoint, drawBoardSpawnPoint;
    public string englishName, japaneseName, japaneseRomaji;
+   
    public AudioClip pronunciationClip;
+   private AudioSource _audioSource;
    
    [SerializeField] private GameObject menuStateGameObject;
    [SerializeField] private ItemDrawStateScript writingStateGameObject;
@@ -31,12 +33,14 @@ public class _BaseVocabItem : MonoBehaviour {
    private VocabState _vocabState;
    private Outline _outline;
    
-   void Awake() {
+   private void Awake() {
        menuStateGameObject.gameObject.SetActive(false);
        writingStateGameObject.gameObject.SetActive(false);
        toastGUI.SetActive(false);
        wordText.SetText(englishName);
        _outline = gameObject.AddComponent<Outline>();
+       
+       _audioSource = GetComponent<AudioSource>();
    }
 
    private void Start() {
@@ -172,5 +176,9 @@ public class _BaseVocabItem : MonoBehaviour {
        toastGUI.SetActive(false);
    }
    
-   // TODO: add PlaySoundAndLog()
+   public void PlaySoundAndLog() {
+       _audioSource.clip = pronunciationClip;
+       _audioSource.Play();
+       ActivityLogger.Instance.LogEvent("Played pronunciation of vocab item", this);
+   }
 }

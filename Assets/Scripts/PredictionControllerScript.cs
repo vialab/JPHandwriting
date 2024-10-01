@@ -24,7 +24,7 @@ public class PredictionControllerScript : MonoBehaviour {
         set => _focusedVocabItem = value;
     }
     
-    private string url = "http://localhost:5000";
+    private string url = "http://localhost:5000/predict";
     private byte[] _img;
 
     private void Awake() {

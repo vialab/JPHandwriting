@@ -60,3 +60,7 @@ crashlytics-build.properties
 
 # JetBrains Rider
 .idea/
+
+# root folder log files
+*.txt
+*.png

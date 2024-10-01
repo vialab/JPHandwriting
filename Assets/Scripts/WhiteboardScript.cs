@@ -18,6 +18,9 @@ public class WhiteboardScript: MonoBehaviour {
     private bool isFinishing = false;
     private XRGrabInteractable _xrGrabInteractable;
 
+    private Vector3 lastPosition = Vector3.zero; 
+    private Quaternion lastRotation = Quaternion.identity;
+
     private void Awake() {
     }
 
@@ -41,25 +44,44 @@ public class WhiteboardScript: MonoBehaviour {
             }
         }
     }
-    
+
+    private void OnTriggerEnter(Collider other) {
+        if (other.name == markerObject.name) {
+            ActivityLogger.Instance.LogEvent("Pen collided with whiteboard", this);
+        }
+    }
+
     private void OnTriggerStay(Collider other) {
         // Debug.Log(other.name);
-        
+
         // if the object colliding is a marker object 
-        if (other.name == markerObject.name) {
-            isTouching = true;
-            
-            // sanity check
-            isFinishing = false;
-            timeOffCanvas = 0f;
-            
-            // enable ink
-            OnMarkerInteraction?.Invoke(this, new MarkerInteractionArgs {
-                isTouching = isTouching
-            });
-            
-            // TODO: pen coordinates
-            ActivityLogger.Instance.LogEvent("Pen collided with whiteboard", this);
+        if (other.name != markerObject.name) {
+            return;
+        }
+
+        isTouching = true;
+
+        // sanity check
+        isFinishing = false;
+        timeOffCanvas = 0f;
+
+        // enable ink
+        OnMarkerInteraction?.Invoke(this, new MarkerInteractionArgs {
+            isTouching = isTouching
+        });
+
+        // TODO: pen coordinates
+        if (!isTouching) {
+            return;
+        }
+        
+        // TODO: have this lag... less
+        Vector3 penPosition = other.transform.position;
+        Quaternion penRotation = other.transform.rotation;
+
+        if (penRotation != lastRotation && penPosition != lastPosition) {
+            ActivityLogger.Instance.LogEvent($"Pen position: {other.transform.position}", this);
+            ActivityLogger.Instance.LogEvent($"Pen rotation: {other.transform.rotation}", this);
         }
     }
 

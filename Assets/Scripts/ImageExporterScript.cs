@@ -58,7 +58,7 @@ public class ImageExporterScript : MonoBehaviour {
                     
                     // TODO: save with "session ID_datetime" format.
                     // Possibly move exporting to after API call if we want the character guess?
-                    System.IO.File.WriteAllBytes("test.png", encoded.ToArray());
+                    System.IO.File.WriteAllBytes(ActivityLogger.Instance.imageFilename, encoded.ToArray());
 
                     byte[] encoded_bytes = encoded.ToRawBytes();
                     
