@@ -3,7 +3,7 @@ using Unity.Collections;
 using UnityEngine;
 
 // https://forum.unity.com/threads/save-rendertexture-or-texture2d-as-image-file-utility.1325130/
-public class SaveTextureToFileUtility
+public class TextureFileExporter
 {
    public enum SaveTextureFileFormat
    {
