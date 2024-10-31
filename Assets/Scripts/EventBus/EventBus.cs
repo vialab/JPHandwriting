@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,11 +6,25 @@ public class EventBus : MonoBehaviour
     public static EventBus Instance { get; private set; }
     
     // TODO: add events here
+    public OnLoggableEvent.Event OnLoggableEvent = new();
+    public OnVocabItemWriteState.Event OnVocabItemWriteState = new();
+    public OnVocabItemMenuState.Event OnVocabItemMenuState = new();
+    public OnLetterPredicted.Event OnLetterPredicted = new();
+    public OnLetterWritten.Event OnLetterWritten = new();
+    public OnVocabItemFinishGuess.Event OnVocabItemFinishGuess = new();
 
     private List<IEventWrapper> events;
 
     private void Awake() {
         EnsureSingleton();
+        events = new() {
+            OnLoggableEvent.Wrap(),
+            OnVocabItemWriteState.Wrap(),
+            OnVocabItemMenuState.Wrap(),
+            OnLetterPredicted.Wrap(),
+            OnLetterWritten.Wrap(),
+            OnVocabItemFinishGuess.Wrap()
+        };
     }
 
     private void EnsureSingleton() {

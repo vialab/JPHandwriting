@@ -1,18 +1,15 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Toast : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+public class Toast : VocabUI {
+    [SerializeField] private float toastDisplayTime = 3f;
+    
+    public IEnumerator ShowToast(string message) {
+        SetUIText(message);
+        Show();
 
-    // Update is called once per frame
-    void Update()
-    {
+        yield return new WaitForSeconds(toastDisplayTime);
         
+        Hide();
     }
 }

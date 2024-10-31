@@ -6,10 +6,21 @@ public abstract class VocabUI : MonoBehaviour {
     [FormerlySerializedAs("textUI")] 
     [SerializeField] protected TextMeshProUGUI UIText;
     
-    protected abstract void Enable();
-    protected abstract void Disable();
+    public virtual void Show() {
+        gameObject.SetActive(true);
+    }
 
-    protected void SetUIText(string text) {
+    public virtual void Hide() {
+        gameObject.SetActive(false);
+    }
+
+    public void SetUIText(string text) {
         UIText.SetText(text);
+    }
+
+    protected void LogEvent(string message) {
+        // May or may not show the name of the vocabulary object
+        // TODO: check this
+        EventBus.Instance.OnLoggableEvent.Invoke(transform.parent, message);
     }
 }

@@ -1,13 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Menu : VocabUI {
-    protected override void Enable() {
-        throw new System.NotImplementedException();
+    private AudioSource _audioSource;
+
+    private void Awake() {
+        _audioSource = GetComponent<AudioSource>();
     }
 
-    protected override void Disable() {
-        throw new System.NotImplementedException();
+    public override void Show() {
+        base.Show();
+        LogEvent("Vocabulary selected");
+    }
+
+    public void SetClip(AudioClip clip) {
+        _audioSource.clip = clip;
+    }
+
+    public void PlayPronunciationClip() {
+        _audioSource.Play();
+        LogEvent("Pronunciation clip played");
     }
 }

@@ -11,6 +11,7 @@
 ## Models
 - https://poly.pizza/m/tc4jUrXVs3
 - https://poly.pizza/bundle/Modular-Sushi-Restaurant-Kit-LJZrZsNPM7
+- Small Stack of Paper by Jarlan Perez [CC-BY] (https://creativecommons.org/licenses/by/3.0/) via Poly Pizza (https://poly.pizza/m/aiBozYlPe--)
 - Em wanted me to give credit to her so here we go
 
 ## Audio
