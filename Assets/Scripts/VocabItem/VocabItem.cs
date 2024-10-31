@@ -58,7 +58,7 @@ public class VocabItem : MonoBehaviour {
     /// <summary>
     /// The object that controls the UI in Writing state.
     /// </summary>
-    [SerializeField] private Write writeStateObject;
+    [SerializeField] private VocabItemWrite writeStateObject;
     
     // ==========
     // UI objects
