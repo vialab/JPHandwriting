@@ -4,10 +4,7 @@ using Unity.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class PredictionResult {
-    public string prediction;
-    public string romaji;
-}
+
 
 public class PredictionControllerScript : MonoBehaviour {
     [SerializeField] private bool debug = true;
@@ -65,10 +62,10 @@ public class PredictionControllerScript : MonoBehaviour {
 
                 PredictionResult result = JsonUtility.FromJson<PredictionResult>(resultText);
                 
-                ActivityLogger.Instance.LogEvent($"Prediction received: {result.prediction} ({result.romaji})", this);
+                ActivityLogger.Instance.LogEvent($"Prediction received: {result.Prediction} ({result.Romaji})", this);
 
                 // send back to current item
-                _focusedVocabItem.WritingStateGameObject.AddLetter(result.prediction);
+                _focusedVocabItem.WritingStateGameObject.AddLetter(result.Prediction);
                 _isPredicting = false;
                 break;
             }

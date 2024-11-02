@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Logger : EventSubscriber, OnLoggableEvent.IHandler {
     /// <summary>
@@ -18,12 +19,12 @@ public class Logger : EventSubscriber, OnLoggableEvent.IHandler {
     private List<string> eventLog;
     private DateTime _startTime;
 
-    private readonly string _logFolder = "SessionLogs";
-    private string _filenameBase => $"KikuKaku_{userID}";
-    private string _logFileName => $"{_filenameBase}_{_startTime:yyyy-MM-dd_HH-mm-ss}.txt";
+    [SerializeField] private string logFolder = "SessionLogs";
+    private string filenameBase => $"KikuKaku_{userID}";
+    private string logFileName => $"{filenameBase}_{_startTime:yyyy-MM-dd_HH-mm-ss}.txt";
     
     // TODO: https://youtu.be/DfcWOPpmw14
-    private string _imageFileName => $"{_filenameBase}_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.png";
+    private string imageFileName => $"{filenameBase}_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.png";
 
     private void Awake() {
         _startTime = DateTime.Now;
@@ -37,7 +38,7 @@ public class Logger : EventSubscriber, OnLoggableEvent.IHandler {
     }
     
     // OnApplicationQuit makes the most sense if you're reading it and have no idea what everything does
-    // but OnDisable executes after that and OnDestroy does way after so
+    // but! OnDisable executes after that and OnDestroy does way after so
     private void OnDestroy() {
         WriteToFile();
     }
@@ -45,7 +46,7 @@ public class Logger : EventSubscriber, OnLoggableEvent.IHandler {
     private void WriteToFile() {
         if (eventLog.Count == 0) return;
         
-        using var outFile = new StreamWriter(Path.Join(_logFolder, _logFileName), append: true);
+        using var outFile = new StreamWriter(Path.Join(logFolder, logFileName), append: true);
         outFile.Write(string.Join("\n", eventLog));
         eventLog.Clear();
     }

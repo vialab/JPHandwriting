@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public abstract class VocabUI : LoggableObject {
+public abstract class VocabUI : MonoBehaviour, ILoggable {
     [FormerlySerializedAs("textUI")] 
     [SerializeField] protected TextMeshProUGUI UIText;
     
@@ -18,8 +18,7 @@ public abstract class VocabUI : LoggableObject {
         UIText.SetText(text);
     }
 
-    protected void LogEvent(string message) {
-        // Surely this works
-        LogEvent(transform.parent, message);
+    public void LogEvent(string message) {
+        EventBus.Instance.OnLoggableEvent.Invoke(transform.parent, message);
     }
 }
