@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public class Pen : EventSubscriber, ILoggable, OnPenEnterCanvas.IHandler, OnPenExitCanvas.IHandler {
+public class Pen : EventSubscriber, ILoggable, OnPenEnterCanvas.IHandler, OnPenExitCanvas.IHandler, OnLetterPredicted.IHandler {
     /// <summary>
     /// The "ink" particle system.
     /// </summary>
@@ -20,6 +20,7 @@ public class Pen : EventSubscriber, ILoggable, OnPenEnterCanvas.IHandler, OnPenE
     [SerializeField] private float errorBounds = 0.1f;
     
     private bool _onCanvas = false;
+    private bool _wroteSomething = false;
     private XRGrabInteractable _grabInteractable;
 
     private Coroutine logCoroutine;
@@ -41,7 +42,12 @@ public class Pen : EventSubscriber, ILoggable, OnPenEnterCanvas.IHandler, OnPenE
     private void StartInk() {
         if (!_onCanvas) return;
         penInkParticle.Play();
-        
+
+        if (!_wroteSomething) {
+            _wroteSomething = true;
+            EventBus.Instance.OnPenWrittenSomething.Invoke(this);
+        }
+
         LogPenPosition(); // position when button is pressed
         logCoroutine = StartCoroutine(IntervalLogPenPosition());
     }
@@ -68,7 +74,7 @@ public class Pen : EventSubscriber, ILoggable, OnPenEnterCanvas.IHandler, OnPenE
             || penLastRotation == penRotation) 
             return;
 
-        LogEvent($"Pen pos/rot: {penPosition}; {penRotation}");
+        LogEvent($"Pen: {penPosition}; {penRotation}");
 
         penLastPosition = penPosition;
         penLastRotation = penRotation;
@@ -85,8 +91,13 @@ public class Pen : EventSubscriber, ILoggable, OnPenEnterCanvas.IHandler, OnPenE
     void OnPenExitCanvas.IHandler.OnEvent(LetterCanvas canvas) {
         _onCanvas = false;
     }
+
+    void OnLetterPredicted.IHandler.OnEvent(VocabItem vocabItem, string character) {
+        _wroteSomething = false;
+    }
     
     public void LogEvent(string message) {
         EventBus.Instance.OnLoggableEvent.Invoke(this, message);
     }
+
 }

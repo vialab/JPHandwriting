@@ -1,7 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public class VocabItemWrite : EventSubscriber, OnLetterPredicted.IHandler {
+    /// <summary>
+    /// Whether to show the character to trace over or not.
+    /// </summary>
+    [Rename("Toggle Tracing")]
+    [SerializeField] private bool enableTracing;
+
     /// <summary>
     /// Assume VocabItemWrite and VocabUI are attached to the same object.
     /// </summary>
@@ -78,5 +85,7 @@ public class VocabItemWrite : EventSubscriber, OnLetterPredicted.IHandler {
 
     void OnLetterPredicted.IHandler.OnEvent(VocabItem vocabItem, string character) {
         AddCharacter(character);
+        
+        // Destroy canvas, remake it
     }
 }

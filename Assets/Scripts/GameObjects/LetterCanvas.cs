@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -7,21 +8,21 @@ using Object = UnityEngine.Object;
 /// <summary>
 /// The canvas the user writes a character on.
 /// </summary>
-public class LetterCanvas : MonoBehaviour, ILoggable {
+public class LetterCanvas : EventSubscriber, ILoggable, OnPenWrittenSomething.IHandler {
     /// <summary>
     /// How long after the user's last writing event should the canvas wait until export?
     /// </summary>
     [Tooltip("How long after the user's last writing event should the canvas wait until exporting to image?")]
     [SerializeField] private float timeUntilImageExport = 1.5f;
+    
+    [SerializeField] private Object canvasObject;
 
     /// <summary>
-    /// Whether the pen is touching the canvas or not.
+    /// Whether there is something on canvas or not.
     /// </summary>
-    private bool isPenTouchingCanvas = false;
+    private bool somethingOnCanvas = false;
+    private Coroutine submitCoroutine;
 
-    private bool ObjectIsPen(Object other) {
-        return other.name.Equals("Pen");
-    }
 
     private void OnTriggerEnter(Collider other) {
         if (!ObjectIsPen(other)) return;
@@ -29,7 +30,10 @@ public class LetterCanvas : MonoBehaviour, ILoggable {
         LogEvent("Pen collided with canvas");
             
         EventBus.Instance.OnPenEnterCanvas.Invoke(this);
-        isPenTouchingCanvas = true;
+
+        if (somethingOnCanvas) {
+            StopCoroutine(submitCoroutine);
+        }
     }
 
     private void OnTriggerExit(Collider other) {
@@ -38,7 +42,25 @@ public class LetterCanvas : MonoBehaviour, ILoggable {
         LogEvent("Pen left canvas");
             
         EventBus.Instance.OnPenExitCanvas.Invoke(this);
-        isPenTouchingCanvas = false;
+
+        if (somethingOnCanvas) {
+            submitCoroutine = StartCoroutine(WaitUntilSubmission());
+        }
+    }
+
+    IEnumerator WaitUntilSubmission() {
+        yield return new WaitForSeconds(timeUntilImageExport);
+        
+        EventBus.Instance.OnLetterWritten.Invoke(transform.parent, canvasObject);
+        somethingOnCanvas = false;
+    }
+
+    private bool ObjectIsPen(Object other) {
+        return other.name.Equals("Pen");
+    }
+    
+    void OnPenWrittenSomething.IHandler.OnEvent(Object obj) {
+        somethingOnCanvas = true;
     }
 
     public void LogEvent(string message) {

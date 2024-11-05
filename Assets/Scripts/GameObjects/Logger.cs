@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class Logger : EventSubscriber, OnLoggableEvent.IHandler {
+public class Logger : EventSubscriber, OnLoggableEvent.IHandler, OnLetterExported.IHandler {
     /// <summary>
     /// The ID of the user. 
     /// Used to organize logs and related files made during a session.
@@ -19,7 +19,7 @@ public class Logger : EventSubscriber, OnLoggableEvent.IHandler {
     [Tooltip("The time interval between the last time the logger wrote to the log file and the next.")]
     [SerializeField] private float logIntervalTime = 3f;
 
-    private List<string> eventLog;
+    private List<string> eventLog = new List<string>();
     private DateTime _startTime;
 
     [SerializeField] private string logFolder = "SessionLogs";
@@ -60,5 +60,10 @@ public class Logger : EventSubscriber, OnLoggableEvent.IHandler {
 
     void OnLoggableEvent.IHandler.OnEvent(UnityEngine.Object obj, string text) {
         LogEvent($"[{obj.name}] ({DateTime.Now:yyyy-MM-dd HH:mm:ss}) {text}");
+    }
+
+    void OnLetterExported.IHandler.OnEvent(VocabItem vocabItem, byte[] image) {
+        // save image
+        File.WriteAllBytes(Path.Join(logFolder, imageFileName), image);
     }
 }

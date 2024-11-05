@@ -23,11 +23,6 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
     /// A clip of how the vocabulary is pronounced in Japanese.
     /// </summary>
     [SerializeField] private AudioClip pronunciationClip;
-
-    /// <summary>
-    /// Whether to show the character to trace over or not.
-    /// </summary>
-    [SerializeField] private bool enableCheating;
     
     // Getters for vocab properties
     public string ENName => englishName;
@@ -36,11 +31,6 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
     // =============================================
     // Spawn points for pen and canvas on WriteState
     // =============================================
-    
-    /// <summary>
-    /// Where the pen should spawn when the item is in Write state. 
-    /// </summary>
-    [SerializeField] private Transform penSpawnPoint;
     
     /// <summary>
     /// Where the canvas should spawn when the item is in Write state.
@@ -88,15 +78,15 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
     // Unity MonoBehaviour methods
     // ===========================
     private void Awake() {
-        menuStateObject.Hide();
-        writeStateObject.Hide();
-        toastObject.Hide();
-        
         _outline = gameObject.AddComponent<Outline>();
     }
 
     protected override void Start() {
         base.Start();
+       
+        menuStateObject.Hide();
+        writeStateObject.Hide();
+        toastObject.Hide();
         
         SetOutline();
         menuStateObject.SetUIText(englishName);

@@ -9,7 +9,6 @@ public class SenseiDesk : MonoBehaviour {
     [SerializeField] private Hint _hintUI;
 
     private void Start() {
-        throw new NotImplementedException();
     }
 
     public void ShowHint() {

@@ -10,9 +10,11 @@ public class EventBus : MonoBehaviour
     public OnVocabItemIdleState.Event OnVocabItemIdleState = new();
     public OnVocabItemWriteState.Event OnVocabItemWriteState = new();
     public OnPenEnterCanvas.Event OnPenEnterCanvas = new();
+    public OnPenWrittenSomething.Event OnPenWrittenSomething = new();
     public OnPenExitCanvas.Event OnPenExitCanvas = new();
     public OnVocabItemMenuState.Event OnVocabItemMenuState = new();
     public OnLetterPredicted.Event OnLetterPredicted = new();
+    public OnLetterExported.Event OnLetterExported = new();
     public OnLetterWritten.Event OnLetterWritten = new();
     public OnVocabItemFinishGuess.Event OnVocabItemFinishGuess = new();
 
@@ -25,9 +27,11 @@ public class EventBus : MonoBehaviour
             OnVocabItemIdleState.Wrap(),
             OnVocabItemWriteState.Wrap(),
             OnPenEnterCanvas.Wrap(),
+            OnPenWrittenSomething.Wrap(),
             OnPenExitCanvas.Wrap(),
             OnVocabItemMenuState.Wrap(),
             OnLetterPredicted.Wrap(),
+            OnLetterExported.Wrap(),
             OnLetterWritten.Wrap(),
             OnVocabItemFinishGuess.Wrap()
         };
