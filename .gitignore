@@ -60,10 +60,3 @@ crashlytics-build.properties
 
 # JetBrains Rider
 .idea/
-
-# root folder log files
-*.txt
-*.png
-
-# secret notes
-REFACTORING.md
