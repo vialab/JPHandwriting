@@ -23,6 +23,13 @@ public class LetterCanvas : EventSubscriber, ILoggable, OnPenWrittenSomething.IH
     private bool somethingOnCanvas = false;
     private Coroutine submitCoroutine;
 
+    public void Show() {
+        gameObject.SetActive(true);
+    }
+
+    public void Hide() {
+        gameObject.SetActive(false);
+    }
 
     private void OnTriggerEnter(Collider other) {
         if (!ObjectIsPen(other)) return;

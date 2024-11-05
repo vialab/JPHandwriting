@@ -85,7 +85,5 @@ public class VocabItemWrite : EventSubscriber, OnLetterPredicted.IHandler {
 
     void OnLetterPredicted.IHandler.OnEvent(VocabItem vocabItem, string character) {
         AddCharacter(character);
-        
-        // Destroy canvas, remake it
     }
 }

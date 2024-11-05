@@ -301,7 +301,6 @@ MonoBehaviour:
   englishName: Lunchbox
   japaneseName: "\u3079\u3093\u3068\u3046"
   pronunciationClip: {fileID: 8300000, guid: 1a8dfd73ceebb844b842e19540e5fd5a, type: 3}
-  penSpawnPoint: {fileID: 0}
   canvasSpawnPoint: {fileID: 4419110087449592339}
   menuStateObject: {fileID: 7690606302319330012}
   writeStateObject: {fileID: 7976844917139954337}
@@ -1425,6 +1424,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2716079616390243262, guid: fabc61ef4ad7ccf418c7c53eaab2f8d8,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.004999995
+      objectReference: {fileID: 0}
+    - target: {fileID: 2716079616390243262, guid: fabc61ef4ad7ccf418c7c53eaab2f8d8,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.06407755
+      objectReference: {fileID: 0}
+    - target: {fileID: 2716079616390243262, guid: fabc61ef4ad7ccf418c7c53eaab2f8d8,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.22780204
       objectReference: {fileID: 0}
     - target: {fileID: 2884704030570871646, guid: fabc61ef4ad7ccf418c7c53eaab2f8d8,
         type: 3}

@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using ExtensionMethods;
 
-public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHandler {
+public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHandler, OnLetterPredicted.IHandler {
     // ==========================================
     // Vocab item properties (probably from JSON)
     // ==========================================
@@ -70,6 +71,9 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
     // Other item properties
     // =====================
     // TODO: load from user config
+
+    [SerializeField] private LetterCanvas _canvas;
+    [SerializeField] private GameObject _canvasObject;
     
     private VocabularyState _vocabularyState = VocabularyState.NotLearned;
     private ObjectUIState _objectUIState = ObjectUIState.Idle;
@@ -86,6 +90,7 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
        
         menuStateObject.Hide();
         writeStateObject.Hide();
+        _canvas.Hide();
         toastObject.Hide();
         
         SetOutline();
@@ -123,6 +128,7 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
         EventBus.Instance.OnVocabItemWriteState.Invoke(this);
         
         writeStateObject.Show();
+        _canvas.Show();
     }
 
     public void HideUI() {
@@ -154,6 +160,10 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
 
     void OnVocabItemFinishGuess.IHandler.OnEvent(VocabItem vocabItem, string guess) {
         Wordle(guess);
+    }
+
+    void OnLetterPredicted.IHandler.OnEvent(VocabItem vocabItem, string character) {
+        StartCoroutine(DelayedCreate());
     }
     
     // ================
@@ -210,6 +220,28 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
         
         LogEvent("User was close");
         DisplayToast($"Try again! Here was your guess:<br>{guessUIText}");
+    }
+
+    private IEnumerator DelayedCreate() {
+        DestroyCanvas();
+        
+        yield return new WaitForSecondsRealtime(0.02f);
+        
+        CreateCanvas();
+    }
+
+    private void DestroyCanvas() {
+        Destroy(_canvas);
+        _canvas = null;
+        
+        LogEvent("Canvas destroyed");
+    }
+
+    private void CreateCanvas() {
+        _canvas = Instantiate(_canvasObject, canvasSpawnPoint.position, canvasSpawnPoint.rotation, transform)
+            .GetComponent<LetterCanvas>();
+        
+        LogEvent("New canvas created");
     }
 
     public void LogEvent(string message) {
