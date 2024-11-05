@@ -11,6 +11,8 @@ public class Pen : EventSubscriber, ILoggable, OnPenEnterCanvas.IHandler, OnPenE
     /// <summary>
     /// How long should the pen wait to log its position again?
     /// </summary>
+    [Rename("Log Interval (secs)")]
+    [Tooltip("How long should the pen wait to log its position again?")]
     [SerializeField] private float logTime = 0.5f;
 
     /// <summary>
