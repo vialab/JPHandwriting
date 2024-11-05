@@ -7,6 +7,10 @@ namespace OnVocabItemFinishGuess {
         public EventWrapper<IHandler, Event> Wrap() => new(this);
     }
 
+    /// <summary>
+    /// The event to invoke when the user finishes guessing the spelling of the
+    /// vocab item.
+    /// </summary>
     public interface IHandler : IEventHandler<Event> {
         void OnEvent(VocabItem vocabItem, string guess);
 

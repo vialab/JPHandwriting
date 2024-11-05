@@ -36,13 +36,11 @@ public class PredictionAPI : EventSubscriber, ILoggable, OnLetterExported.IHandl
 
     private IEnumerator MakeAPIRequest(VocabItem vocabItem, byte[] image) {
         WWWForm form = new WWWForm();
-        
         form.AddBinaryData("img", image, "image.png");
         
         using UnityWebRequest webRequest = UnityWebRequest.Post(endpointURL, form);
 
         yield return webRequest.SendWebRequest();
-
         switch (webRequest.result) {
             case UnityWebRequest.Result.Success: {
                 var resultText = webRequest.downloadHandler.text;

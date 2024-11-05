@@ -7,6 +7,9 @@ namespace OnVocabItemMenuState {
         public EventWrapper<IHandler, Event> Wrap() => new(this);
     }
 
+    /// <summary>
+    /// The event to invoke when a vocab item enters Menu state.
+    /// </summary>
     public interface IHandler : IEventHandler<Event> {
         void OnEvent(VocabItem vocabItem);
 

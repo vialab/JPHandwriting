@@ -21,7 +21,7 @@ public class VocabItemWrite : EventSubscriber, OnLetterPredicted.IHandler {
         _vocabUI.Show();
     }
 
-    private void Hide() {
+    public void Hide() {
         gameObject.SetActive(false);
         _writtenText.Clear(); // no saving progress for user, they have to retry
         _vocabUI.Hide();
@@ -58,7 +58,11 @@ public class VocabItemWrite : EventSubscriber, OnLetterPredicted.IHandler {
         _writtenText.Pop();
         UpdateUI();
     }
-
+    
+    /// <summary>
+    /// Triggers the Vocab item to check whether the user's written guess matches
+    /// its Japanese name.
+    /// </summary>
     public void SubmitGuess() {
         EventBus.Instance.OnVocabItemFinishGuess.Invoke(
             transform.parent.GetComponent<VocabItem>(),

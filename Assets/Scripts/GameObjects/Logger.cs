@@ -9,11 +9,14 @@ public class Logger : EventSubscriber, OnLoggableEvent.IHandler {
     /// The ID of the user. 
     /// Used to organize logs and related files made during a session.
     /// </summary>
+    [Tooltip("The ID of the user. Used to organize logs and related files made during a session.")]
     [SerializeField] private string userID = "test";
 
     /// <summary>
-    /// The time interval, in seconds(?), between the last time the logger wrote to the log file and the next.
+    /// The time interval, in seconds, between the last time the logger wrote to the log file and the next.
     /// </summary>
+    [Rename("Log Interval (seconds)")]
+    [Tooltip("The time interval between the last time the logger wrote to the log file and the next.")]
     [SerializeField] private float logIntervalTime = 3f;
 
     private List<string> eventLog;

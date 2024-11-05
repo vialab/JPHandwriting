@@ -1,14 +1,14 @@
 ﻿using System;
 using UnityEngine.Events;
 
-namespace OnVocabItemWriteState {
+namespace OnVocabItemIdleState {
     [Serializable]
     public class Event : UnityEvent<VocabItem> {
         public EventWrapper<IHandler, Event> Wrap() => new(this);
     }
 
     /// <summary>
-    /// The event to invoke when a vocab item enters Write state.
+    /// The event to invoke when a vocab item enters Idle state.
     /// </summary>
     public interface IHandler : IEventHandler<Event> {
         void OnEvent(VocabItem vocabItem);

@@ -7,7 +7,10 @@ public class EventBus : MonoBehaviour
     
     // TODO: add events here
     public OnLoggableEvent.Event OnLoggableEvent = new();
+    public OnVocabItemIdleState.Event OnVocabItemIdleState = new();
     public OnVocabItemWriteState.Event OnVocabItemWriteState = new();
+    public OnPenEnterCanvas.Event OnPenEnterCanvas = new();
+    public OnPenExitCanvas.Event OnPenExitCanvas = new();
     public OnVocabItemMenuState.Event OnVocabItemMenuState = new();
     public OnLetterPredicted.Event OnLetterPredicted = new();
     public OnLetterWritten.Event OnLetterWritten = new();
@@ -19,7 +22,10 @@ public class EventBus : MonoBehaviour
         EnsureSingleton();
         events = new() {
             OnLoggableEvent.Wrap(),
+            OnVocabItemIdleState.Wrap(),
             OnVocabItemWriteState.Wrap(),
+            OnPenEnterCanvas.Wrap(),
+            OnPenExitCanvas.Wrap(),
             OnVocabItemMenuState.Wrap(),
             OnLetterPredicted.Wrap(),
             OnLetterWritten.Wrap(),

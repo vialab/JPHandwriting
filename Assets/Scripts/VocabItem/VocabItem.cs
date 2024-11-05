@@ -1,8 +1,9 @@
 ﻿using System;
 using TMPro;
 using UnityEngine;
+using ExtensionMethods;
 
-public class VocabItem : MonoBehaviour {
+public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHandler {
     // ==========================================
     // Vocab item properties (probably from JSON)
     // ==========================================
@@ -68,33 +69,160 @@ public class VocabItem : MonoBehaviour {
     /// The object that controls the "toast" notification.
     /// </summary>
     [SerializeField] private Toast toastObject;
-    private Outline _outline;
     
-    // ===============
-    // UI text objects
-    // ===============
-    [SerializeField] private TextMeshProUGUI toastText;
-    [SerializeField] private TextMeshProUGUI wordText;
+    /// <summary>
+    /// The coloured outline of the object.
+    /// Green if the user has learned it, red otherwise.
+    /// </summary>
+    private Outline _outline;
     
     // =====================
     // Other item properties
     // =====================
-    private VocabularyState _vocabularyState;
-    private ObjectUIState _objectUIState;
+    // TODO: load from user config
+    
+    private VocabularyState _vocabularyState = VocabularyState.NotLearned;
+    private ObjectUIState _objectUIState = ObjectUIState.Idle;
 
     // ===========================
     // Unity MonoBehaviour methods
     // ===========================
     private void Awake() {
-        throw new NotImplementedException();
+        menuStateObject.Hide();
+        writeStateObject.Hide();
+        toastObject.Hide();
+        
+        _outline = gameObject.AddComponent<Outline>();
     }
 
-    private void Start() {
-        throw new NotImplementedException();
+    protected override void Start() {
+        base.Start();
+        
+        SetOutline();
+        menuStateObject.SetUIText(englishName);
+    }
+
+    private void SetOutline() {
+        _outline.enabled = false;
+        _outline.OutlineWidth = 5f;
+        _outline.OutlineMode = Outline.Mode.OutlineVisible;
     }
     
-    // ==================
-    // UI display methods
-    // ==================
+    // ==========================
+    // UI/outline display methods
+    // ==========================
+
     
+    private void DisplayToast(string message) {
+        StartCoroutine(toastObject.ShowToast(message));
+    }
+
+    public void ShowMenuState() {
+        if (_objectUIState == ObjectUIState.Writing) writeStateObject.Hide();
+        
+        _objectUIState = ObjectUIState.Menu;
+        EventBus.Instance.OnVocabItemMenuState.Invoke(this);
+        
+        menuStateObject.Show();
+    }
+
+    public void ShowWriteState() {
+        if (_objectUIState == ObjectUIState.Menu) menuStateObject.Hide(); // probably redundant check
+        
+        _objectUIState = ObjectUIState.Writing;
+        EventBus.Instance.OnVocabItemWriteState.Invoke(this);
+        
+        writeStateObject.Show();
+    }
+
+    public void HideUI() {
+        _objectUIState = ObjectUIState.Idle;
+        EventBus.Instance.OnVocabItemIdleState.Invoke(this);
+        
+        menuStateObject.Hide();
+        writeStateObject.Hide(); // In case another VocabItem wants to be focused
+    }
+
+    public void DisableOutline() {
+        if (_objectUIState == ObjectUIState.Menu) return;
+
+        _outline.enabled = false;
+    }
+
+    public void EnableSelectedOutline() {
+        _outline.OutlineColor = _vocabularyState == VocabularyState.Learned ? Color.green : Color.red;
+        _outline.enabled = true;
+    }
+
+    public void EnableHoverOutline() {
+        _outline.OutlineColor = Color.white;
+    }
+    
+    // ======================
+    // Event listener methods
+    // ======================
+
+    void OnVocabItemFinishGuess.IHandler.OnEvent(VocabItem vocabItem, string guess) {
+        Wordle(guess);
+    }
+    
+    // ================
+    // Helper functions
+    // ================
+    
+    /// <summary>
+    /// Checks if the user's guess matches the japaneseName field.
+    /// If not, just like Wordle, shows characters:
+    /// - the user guessed correctly, in the right position
+    /// - the user guessed correctly, but in the wrong position
+    /// - the user made up completely
+    /// </summary>
+    /// <param name="guess">The user's written guess.</param>
+    private void Wordle(string guess) {
+        // Word is correct; return early
+        if (guess == japaneseName) {
+            LogEvent("Word is correct");
+            DisplayToast("you did! it");
+            _vocabularyState = VocabularyState.Learned;
+            return;
+        }
+        
+        // Word is incorrect
+        var guessUIText = "";
+        
+        // Check if lengths are the same
+        
+        // This works if japaneseName is longer/same length as guess
+        string shorterWord = guess, longerWord = japaneseName;
+        var isGuessShorter = true;
+        
+        // In case that isn't, here's a failsafe
+        if (guess.Length > japaneseName.Length) {
+            shorterWord = japaneseName;
+            longerWord = guess;
+            isGuessShorter = false;
+        }
+        
+        // Loop through shorter word
+        // TODO: see if the fact that JP Unicode is often larger than sizeof(char) affects this
+        for (var pos = 0; pos < shorterWord.Length; pos++) {
+            var currentChar = isGuessShorter ? shorterWord[pos].ToString() : longerWord[pos].ToString();
+            
+            
+            if (currentChar == japaneseName[pos].ToString()) {
+                guessUIText += currentChar.WithColor("green");
+            } else if (japaneseName.Contains(currentChar)) {
+                guessUIText += currentChar.WithColor("yellow");
+            } else {
+                guessUIText += currentChar;
+            }
+        }
+        
+        LogEvent("User was close");
+        DisplayToast($"Try again! Here was your guess:<br>{guessUIText}");
+    }
+
+    public void LogEvent(string message) {
+        EventBus.Instance.OnLoggableEvent.Invoke(this, message);
+    }
 }
