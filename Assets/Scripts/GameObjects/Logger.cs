@@ -50,6 +50,7 @@ public class Logger : EventSubscriber, OnLoggableEvent.IHandler, OnLetterExporte
         
         using var outFile = new StreamWriter(Path.Join(logFolder, logFileName), append: true);
         outFile.Write(string.Join("\n", eventLog));
+        outFile.Write("\n"); // newline isn't added after last element of eventLog array 
         eventLog.Clear();
     }
 

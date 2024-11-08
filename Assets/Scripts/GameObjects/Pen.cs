@@ -17,9 +17,10 @@ public class Pen : EventSubscriber, ILoggable, OnPenEnterCanvas.IHandler, OnPenE
 
     /// <summary>
     /// Humans will more or less have shaky hands.
-    /// How much 
+    /// How far away from the last recorded position can the pen be until it's counted as being in a new position?
     /// </summary>
-    [SerializeField] private float errorBounds = 0.1f;
+    [Tooltip("How far away from the last recorded position can the pen be until it's counted as being in a new position?")]
+    [SerializeField] private float errorBounds = 0.002f;
     
     private bool _onCanvas = false;
     private bool _wroteSomething = false;
@@ -69,8 +70,10 @@ public class Pen : EventSubscriber, ILoggable, OnPenEnterCanvas.IHandler, OnPenE
     }
 
     private void LogPenPosition() {
-        Vector3 penPosition = transform.position;
-        Quaternion penRotation = transform.rotation;
+        var penTransform = transform;
+        
+        Vector3 penPosition = penTransform.position;
+        Quaternion penRotation = penTransform.rotation;
 
         if (IsInSamePosition(penPosition, penLastPosition) 
             || penLastRotation == penRotation) 
