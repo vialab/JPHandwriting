@@ -62,10 +62,10 @@ public class PredictionControllerScript : MonoBehaviour {
 
                 PredictionResult result = JsonUtility.FromJson<PredictionResult>(resultText);
                 
-                ActivityLogger.Instance.LogEvent($"Prediction received: {result.Prediction} ({result.Romaji})", this);
+                ActivityLogger.Instance.LogEvent($"Prediction received: {result.prediction} ({result.romaji})", this);
 
                 // send back to current item
-                _focusedVocabItem.WritingStateGameObject.AddLetter(result.Prediction);
+                _focusedVocabItem.WritingStateGameObject.AddLetter(result.prediction);
                 _isPredicting = false;
                 break;
             }

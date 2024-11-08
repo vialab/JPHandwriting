@@ -9,6 +9,7 @@ public class SenseiDesk : MonoBehaviour {
     [SerializeField] private Hint _hintUI;
 
     private void Start() {
+        _hintUI.Hide();
     }
 
     public void ShowHint() {

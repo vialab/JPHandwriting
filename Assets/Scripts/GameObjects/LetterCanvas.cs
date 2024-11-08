@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -39,6 +40,7 @@ public class LetterCanvas : EventSubscriber, ILoggable, OnPenWrittenSomething.IH
         EventBus.Instance.OnPenEnterCanvas.Invoke(this);
 
         if (somethingOnCanvas) {
+            LogEvent("No longer waiting to submit");
             StopCoroutine(submitCoroutine);
         }
     }
@@ -51,6 +53,7 @@ public class LetterCanvas : EventSubscriber, ILoggable, OnPenWrittenSomething.IH
         EventBus.Instance.OnPenExitCanvas.Invoke(this);
 
         if (somethingOnCanvas) {
+            LogEvent("Waiting to submit...");
             submitCoroutine = StartCoroutine(WaitUntilSubmission());
         }
     }
@@ -62,8 +65,8 @@ public class LetterCanvas : EventSubscriber, ILoggable, OnPenWrittenSomething.IH
         somethingOnCanvas = false;
     }
 
-    private bool ObjectIsPen(Object other) {
-        return other.name.Equals("Pen");
+    private static bool ObjectIsPen(Object other) {
+        return other.name.Contains("Pen");
     }
     
     void OnPenWrittenSomething.IHandler.OnEvent(Object obj) {

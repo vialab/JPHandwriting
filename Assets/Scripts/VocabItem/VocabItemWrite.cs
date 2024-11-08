@@ -18,9 +18,17 @@ public class VocabItemWrite : EventSubscriber, OnLetterPredicted.IHandler {
     /// A Stack representing the characters a user has written.
     /// </summary>
     private readonly Stack<string> _writtenText = new();
+    public Stack<string> WrittenText => _writtenText;
+
+    /// <summary>
+    /// How many characters the user has written, minus 1.
+    /// </summary>
+    private int charPosition = 0;
+    public int CharPosition => charPosition;
 
     private void Awake() {
         _vocabUI = GetComponent<VocabUI>();
+        charPosition = 0;
     }
 
     public void Show() {
@@ -31,6 +39,7 @@ public class VocabItemWrite : EventSubscriber, OnLetterPredicted.IHandler {
     public void Hide() {
         gameObject.SetActive(false);
         _writtenText.Clear(); // no saving progress for user, they have to retry
+        charPosition = 0;
         _vocabUI.Hide();
     }
     public void ToggleChiisai() {
@@ -51,6 +60,7 @@ public class VocabItemWrite : EventSubscriber, OnLetterPredicted.IHandler {
 
     private void AddCharacter(string character) {
         _writtenText.Push(character);
+        charPosition++;
         UpdateUI();
     }
     
@@ -63,6 +73,7 @@ public class VocabItemWrite : EventSubscriber, OnLetterPredicted.IHandler {
     /// </summary>
     public void RemoveCharacter() {
         _writtenText.Pop();
+        charPosition--;
         UpdateUI();
     }
     

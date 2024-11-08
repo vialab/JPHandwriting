@@ -51,6 +51,8 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
     /// The object that controls the UI in Writing state.
     /// </summary>
     [SerializeField] private VocabItemWrite writeStateObject;
+
+    public string LetterAtCurrentPosition => writeStateObject.WrittenText.ToArray()[writeStateObject.CharPosition];
     
     // ==========
     // UI objects
@@ -74,6 +76,7 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
 
     [SerializeField] private LetterCanvas _canvas;
     [SerializeField] private GameObject _canvasObject;
+    [SerializeField] private GameObject _canvasEraserCube;
     
     private VocabularyState _vocabularyState = VocabularyState.NotLearned;
     private ObjectUIState _objectUIState = ObjectUIState.Idle;
@@ -87,12 +90,14 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
 
     protected override void Start() {
         base.Start();
-       
+        
+        menuStateObject.SetClip(pronunciationClip);
         menuStateObject.Hide();
         writeStateObject.Hide();
         _canvas.Hide();
         toastObject.Hide();
         
+        SetUpEraserCube();
         SetOutline();
         menuStateObject.SetUIText(englishName);
     }
@@ -106,15 +111,19 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
     // ==========================
     // UI/outline display methods
     // ==========================
-
     
     private void DisplayToast(string message) {
         StartCoroutine(toastObject.ShowToast(message));
     }
 
     public void ShowMenuState() {
-        if (_objectUIState == ObjectUIState.Writing) writeStateObject.Hide();
+        if (_objectUIState == ObjectUIState.Writing) {
+            writeStateObject.Hide();
+            StartCoroutine(ClearCanvas());
+            DestroyCanvas();
+        }
         
+        EnableSelectedOutline();
         _objectUIState = ObjectUIState.Menu;
         EventBus.Instance.OnVocabItemMenuState.Invoke(this);
         
@@ -122,12 +131,16 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
     }
 
     public void ShowWriteState() {
-        if (_objectUIState == ObjectUIState.Menu) menuStateObject.Hide(); // probably redundant check
+        if (_objectUIState == ObjectUIState.Menu) {
+            menuStateObject.Hide(); // probably redundant check
+            DisableOutline();
+        }
         
         _objectUIState = ObjectUIState.Writing;
         EventBus.Instance.OnVocabItemWriteState.Invoke(this);
         
         writeStateObject.Show();
+        if (_canvas == null) CreateCanvas();
         _canvas.Show();
     }
 
@@ -142,16 +155,17 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
     public void DisableOutline() {
         if (_objectUIState == ObjectUIState.Menu) return;
 
-        _outline.enabled = false;
+        _outline.OutlineMode = Outline.Mode.OutlineHidden;
     }
 
     public void EnableSelectedOutline() {
         _outline.OutlineColor = _vocabularyState == VocabularyState.Learned ? Color.green : Color.red;
-        _outline.enabled = true;
+        _outline.OutlineMode = Outline.Mode.OutlineVisible;
     }
 
     public void EnableHoverOutline() {
         _outline.OutlineColor = Color.white;
+        _outline.OutlineMode = Outline.Mode.OutlineVisible;
     }
     
     // ======================
@@ -225,16 +239,47 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
     private IEnumerator DelayedCreate() {
         DestroyCanvas();
         
+        StartCoroutine(ClearCanvas());
         yield return new WaitForSecondsRealtime(0.02f);
         
         CreateCanvas();
     }
 
     private void DestroyCanvas() {
-        Destroy(_canvas);
+        Destroy(_canvas.gameObject);
         _canvas = null;
         
         LogEvent("Canvas destroyed");
+    }
+
+    private void SetUpEraserCube() {
+        Vector3 canvasSpawnPos = canvasSpawnPoint.position;
+        _canvasEraserCube.transform.SetLocalPositionAndRotation(canvasSpawnPos + (Vector3.down * 10f), canvasSpawnPoint.rotation);
+        _canvasEraserCube.SetActive(false);
+    }
+
+    private IEnumerator ClearCanvas() {
+        var cubePosition = canvasSpawnPoint.localPosition;
+        _canvasEraserCube.SetActive(true);
+
+        yield return new WaitForSecondsRealtime(0.015f);
+        LogEvent("Canvas clearing object appeared");
+        
+        // Move it up a bit
+        _canvasEraserCube.transform.localPosition = new Vector3(
+            cubePosition.x,
+            cubePosition.y + 0.5f,
+            cubePosition.z - 0.5f
+            ); 
+        
+        // wait for it
+        yield return new WaitForSecondsRealtime(0.015f);
+
+        // and move it out of the way
+        // the pen ink won't show if it's just disabled
+        _canvasEraserCube.transform.Translate((Vector3.down * 10f), transform.parent);
+        _canvasEraserCube.SetActive(false);
+        LogEvent("Canvas clearing object disappeared");
     }
 
     private void CreateCanvas() {

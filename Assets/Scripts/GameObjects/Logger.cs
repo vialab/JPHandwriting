@@ -19,14 +19,13 @@ public class Logger : EventSubscriber, OnLoggableEvent.IHandler, OnLetterExporte
     [Tooltip("The time interval between the last time the logger wrote to the log file and the next.")]
     [SerializeField] private float logIntervalTime = 3f;
 
-    private List<string> eventLog = new List<string>();
+    private readonly List<string> eventLog = new(); // oops sorry used to C++
     private DateTime _startTime;
 
     [SerializeField] private string logFolder = "SessionLogs";
     private string filenameBase => $"KikuKaku_{userID}";
     private string logFileName => $"{filenameBase}_{_startTime:yyyy-MM-dd_HH-mm-ss}.txt";
     
-    // TODO: https://youtu.be/DfcWOPpmw14
     private string imageFileName => $"{filenameBase}_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.png";
 
     private void Awake() {
@@ -55,6 +54,7 @@ public class Logger : EventSubscriber, OnLoggableEvent.IHandler, OnLetterExporte
     }
 
     private void LogEvent(string text) {
+        Debug.Log(text);
         eventLog.Add(text);
     }
 
@@ -65,5 +65,6 @@ public class Logger : EventSubscriber, OnLoggableEvent.IHandler, OnLetterExporte
     void OnLetterExported.IHandler.OnEvent(VocabItem vocabItem, byte[] image) {
         // save image
         File.WriteAllBytes(Path.Join(logFolder, imageFileName), image);
+        LogEvent($"Image {imageFileName} written");
     }
 }

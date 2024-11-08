@@ -13,7 +13,7 @@ public class Pen : EventSubscriber, ILoggable, OnPenEnterCanvas.IHandler, OnPenE
     /// </summary>
     [Rename("Log Interval (secs)")]
     [Tooltip("How long should the pen wait to log its position again?")]
-    [SerializeField] private float logTime = 0.5f;
+    [SerializeField] private float logTime = 0.25f;
 
     /// <summary>
     /// Humans will more or less have shaky hands.
@@ -38,7 +38,7 @@ public class Pen : EventSubscriber, ILoggable, OnPenEnterCanvas.IHandler, OnPenE
         penInkParticle.Stop();
         
         _grabInteractable.activated.AddListener(x => StartInk());
-        _grabInteractable.activated.AddListener(x => StopInk());
+        _grabInteractable.deactivated.AddListener(x => StopInk());
     }
 
     private void StartInk() {
