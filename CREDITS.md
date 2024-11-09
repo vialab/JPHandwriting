@@ -9,18 +9,26 @@
     - https://thenounproject.com/icon/check-1788422/
 
 ## Models
-- https://poly.pizza/m/tc4jUrXVs3
-- https://poly.pizza/bundle/Modular-Sushi-Restaurant-Kit-LJZrZsNPM7
-- Small Stack of Paper by Jarlan Perez [CC-BY] (https://creativecommons.org/licenses/by/3.0/) via Poly Pizza (https://poly.pizza/m/aiBozYlPe--)
-- Em wanted me to give credit to her so here we go
+- [Marker](https://poly.pizza/m/tc4jUrXVs3) by [SGARRO](https://poly.pizza/u/SGARRO) [[CC-BY]](https://creativecommons.org/licenses/by/3.0/) via Poly Pizza 
+- Lunchbox:
+    - [Modular Sushi Restaurant Kit](https://poly.pizza/bundle/Modular-Sushi-Restaurant-Kit-LJZrZsNPM7) by [Quaternius](https://poly.pizza/u/Quaternius) via Poly Pizza (for the food)
+    - [Emily](https://github.com/EmilyGoose) (for the box itself)
+- [Small Stack of Paper](https://poly.pizza/m/aiBozYlPe--) by [Jarlan Perez](https://poly.pizza/u/Jarlan%20Perez) [[CC-BY]](https://creativecommons.org/licenses/by/3.0/) via Poly Pizza 
 
 ## Audio
-- VoiceVOX:玄野武宏 (Takehiro Kurono): https://github.com/VOICEVOX/voicevox_engine/tree/master / https://voicevox.hiroshiba.jp/product/kurono_takehiro/
+- VoiceVOX:玄野武宏 (Takehiro Kurono): [VOICEVOX GitHub](https://github.com/VOICEVOX/voicevox_engine/tree/master) / [Voice page](https://voicevox.hiroshiba.jp/product/kurono_takehiro/)
     - "Audio generated using Takehiro Kurono's voice library may be used for commercial and non-commercial purposes as long as the credit is given as「VOICEVOX:玄野武宏」."
 
 ## Fonts 
-- https://fonts.google.com/noto/specimen/Noto+Sans
+- UI Font: [Noto Sans JP](https://fonts.google.com/noto/specimen/Noto+Sans)
     - Licensed under the Open Font license
+
+## Libraries
+- [Kawazu](https://github.com/Cutano/Kawazu) by [Cutano](https://github.com/Cutano/)
+    - Licensed under the MIT license
+- [OpenXR SDK](https://github.com/KhronosGroup/OpenXR-SDK-Source) by [Khronos](https://github.com/KhronosGroup/)
+    - Licensed under the Apache 2.0 license
 
 # References
 - Valem Tutorials' [Let's Make a VR Game](https://www.youtube.com/playlist?list=PLpEoiloH-4eM-fykn_3_QcJ-A_MIJF5B9) series
+- [Recreating the Drawing Mechanic from Half-Life: Alyx in Unity](https://80.lv/articles/recreating-the-drawing-mechanic-from-half-life-alyx-in-unity/) by Daniel Santalla
