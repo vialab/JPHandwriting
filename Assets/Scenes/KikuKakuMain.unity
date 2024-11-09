@@ -4634,6 +4634,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 43766943092558317, guid: c61a5aea3f3f9d346ad59920bbbc7628,
+        type: 3}
+      propertyPath: logTime
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 43766943092558317, guid: c61a5aea3f3f9d346ad59920bbbc7628,
+        type: 3}
+      propertyPath: errorBounds
+      value: 0.0005
+      objectReference: {fileID: 0}
     - target: {fileID: 2252061606450886628, guid: c61a5aea3f3f9d346ad59920bbbc7628,
         type: 3}
       propertyPath: m_Name
@@ -4856,6 +4866,43 @@ PrefabInstance:
     - target: {fileID: 3524671695179324147, guid: adfb0bd119dd4ab41b36627c83f6e002,
         type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3818404701913976502, guid: adfb0bd119dd4ab41b36627c83f6e002,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 162.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3818404701913976502, guid: adfb0bd119dd4ab41b36627c83f6e002,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 56d5ca63eb952af479fdfd68b85f781e,
+        type: 2}
+    - target: {fileID: 3818404701913976502, guid: adfb0bd119dd4ab41b36627c83f6e002,
+        type: 3}
+      propertyPath: m_fontSizeMax
+      value: 163
+      objectReference: {fileID: 0}
+    - target: {fileID: 3818404701913976502, guid: adfb0bd119dd4ab41b36627c83f6e002,
+        type: 3}
+      propertyPath: m_fontSizeMin
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3818404701913976502, guid: adfb0bd119dd4ab41b36627c83f6e002,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 8942137079729685438, guid: 56d5ca63eb952af479fdfd68b85f781e,
+        type: 2}
+    - target: {fileID: 3818404701913976502, guid: adfb0bd119dd4ab41b36627c83f6e002,
+        type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3818404701913976502, guid: adfb0bd119dd4ab41b36627c83f6e002,
+        type: 3}
+      propertyPath: m_hasFontAssetChanged
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3964424684753111883, guid: adfb0bd119dd4ab41b36627c83f6e002,

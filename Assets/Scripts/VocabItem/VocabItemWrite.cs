@@ -17,8 +17,8 @@ public class VocabItemWrite : EventSubscriber, OnLetterPredicted.IHandler {
     /// <summary>
     /// A Stack representing the characters a user has written.
     /// </summary>
-    private readonly Stack<string> _writtenText = new();
-    public Stack<string> WrittenText => _writtenText;
+    private readonly List<string> _writtenText = new();
+    public List<string> WrittenText => _writtenText;
 
     /// <summary>
     /// How many characters the user has written, minus 1.
@@ -43,7 +43,9 @@ public class VocabItemWrite : EventSubscriber, OnLetterPredicted.IHandler {
         _vocabUI.Hide();
     }
     public void ToggleChiisai() {
-        string lastChar = _writtenText.Pop();
+        string lastChar = _writtenText[^1];
+        
+        RemoveCharacter();
 
         if (Hiragana.CHIISAI.TryGetValue(lastChar, out var value)) {
             lastChar = value;
@@ -59,7 +61,7 @@ public class VocabItemWrite : EventSubscriber, OnLetterPredicted.IHandler {
     }
 
     private void AddCharacter(string character) {
-        _writtenText.Push(character);
+        _writtenText.Add(character);
         charPosition++;
         UpdateUI();
     }
@@ -72,7 +74,7 @@ public class VocabItemWrite : EventSubscriber, OnLetterPredicted.IHandler {
     /// Undoes the last written character.
     /// </summary>
     public void RemoveCharacter() {
-        _writtenText.Pop();
+        _writtenText.RemoveAt(_writtenText.Count - 1);
         charPosition--;
         UpdateUI();
     }

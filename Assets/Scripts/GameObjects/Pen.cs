@@ -57,7 +57,7 @@ public class Pen : EventSubscriber, ILoggable, OnPenEnterCanvas.IHandler, OnPenE
 
     private void StopInk() {
         penInkParticle.Stop();
-        StopCoroutine(logCoroutine);
+        if (logCoroutine != null) StopCoroutine(logCoroutine);
         
         LogPenPosition(); // position when button is let go
     }

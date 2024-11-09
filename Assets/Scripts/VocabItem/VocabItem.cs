@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using TMPro;
+﻿using System.Collections;
 using UnityEngine;
 using ExtensionMethods;
 
@@ -173,6 +171,7 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
     // ======================
 
     void OnVocabItemFinishGuess.IHandler.OnEvent(VocabItem vocabItem, string guess) {
+        StartCoroutine(DelayedHide());
         Wordle(guess);
     }
 
@@ -196,7 +195,7 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
         // Word is correct; return early
         if (guess == japaneseName) {
             LogEvent("Word is correct");
-            DisplayToast("you did! it");
+            DisplayToast("Correct!<br>Good job!");
             _vocabularyState = VocabularyState.Learned;
             return;
         }
@@ -218,7 +217,6 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
         }
         
         // Loop through shorter word
-        // TODO: see if the fact that JP Unicode is often larger than sizeof(char) affects this
         for (var pos = 0; pos < shorterWord.Length; pos++) {
             var currentChar = isGuessShorter ? shorterWord[pos].ToString() : longerWord[pos].ToString();
             
@@ -232,17 +230,24 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
             }
         }
         
-        LogEvent("User was close");
-        DisplayToast($"Try again! Here was your guess:<br>{guessUIText}");
+        LogEvent($"User was close, their guess: {guess}");
+        DisplayToast($"Try again!<br>Your guess: {guessUIText}");
     }
-
+    
+    // TODO: remove anything related to *clearing* the canvas, you may not need it
     private IEnumerator DelayedCreate() {
         DestroyCanvas();
         
         StartCoroutine(ClearCanvas());
-        yield return new WaitForSecondsRealtime(0.02f);
+        yield return new WaitForSecondsRealtime(0.1f);
         
         CreateCanvas();
+    }
+
+    private IEnumerator DelayedHide() {
+        StartCoroutine(ClearCanvas());
+        yield return new WaitForSecondsRealtime(0.3f);
+        DestroyCanvas();
     }
 
     private void DestroyCanvas() {
@@ -262,7 +267,7 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
         var cubePosition = canvasSpawnPoint.localPosition;
         _canvasEraserCube.SetActive(true);
 
-        yield return new WaitForSecondsRealtime(0.015f);
+        yield return new WaitForSecondsRealtime(0.15f);
         LogEvent("Canvas clearing object appeared");
         
         // Move it up a bit
@@ -273,7 +278,7 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
             ); 
         
         // wait for it
-        yield return new WaitForSecondsRealtime(0.015f);
+        yield return new WaitForSecondsRealtime(0.15f);
 
         // and move it out of the way
         // the pen ink won't show if it's just disabled
@@ -288,6 +293,8 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
         
         LogEvent("New canvas created");
     }
+    
+    // TODO ends here
 
     public void LogEvent(string message) {
         EventBus.Instance.OnLoggableEvent.Invoke(this, message);
