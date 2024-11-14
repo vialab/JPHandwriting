@@ -68,7 +68,7 @@ public class PredictionAPI : EventSubscriber, ILoggable, OnLetterExported.IHandl
         if (debugMode) {
             string nextChar = vocabItem.LetterAtCurrentPosition;
             
-            EventBus.Instance.OnLetterPredicted.Invoke(vocabItem, nextChar);
+            InvokeLetterPredicted(vocabItem, nextChar);
             yield break;
         }
         
@@ -86,12 +86,9 @@ public class PredictionAPI : EventSubscriber, ILoggable, OnLetterExported.IHandl
                 PredictionResult result = JsonUtility.FromJson<PredictionResult>(resultText);
                 
                 LogEvent($"Prediction received: {result.prediction} ({result.romaji})");
-
-                // send back to current item
-                EventBus.Instance.OnLetterPredicted.Invoke(vocabItem, result.prediction);
                 
-                // remove prediction lock
-                _predictionLock = false;
+                InvokeLetterPredicted(vocabItem, result.prediction);
+                
                 break;
             }
             case UnityWebRequest.Result.ConnectionError:
@@ -101,6 +98,14 @@ public class PredictionAPI : EventSubscriber, ILoggable, OnLetterExported.IHandl
             break;
             }
         }
+    }
+
+    private void InvokeLetterPredicted(VocabItem vocabItem, string letterPredicted) {
+        // send predicted letter
+        EventBus.Instance.OnLetterPredicted.Invoke(vocabItem, letterPredicted);
+        
+        // remove prediction lock
+        _predictionLock = false;
     }
 
     public void LogEvent(string message) {

@@ -22,6 +22,9 @@
 ## Fonts 
 - UI Font: [Noto Sans JP](https://fonts.google.com/noto/specimen/Noto+Sans)
     - Licensed under the Open Font license
+- Handwriting/Tracing Font: [Honyaji ver.Re](https://honya-ji.booth.pm/items/6193040)
+    - Font provided by ほにゃ. https://honya-ji.booth.pm/
+    - Free for personal and commercial use.
 
 ## Libraries
 - [Kawazu](https://github.com/Cutano/Kawazu) by [Cutano](https://github.com/Cutano/)
@@ -31,4 +34,6 @@
 
 # References
 - Valem Tutorials' [Let's Make a VR Game](https://www.youtube.com/playlist?list=PLpEoiloH-4eM-fykn_3_QcJ-A_MIJF5B9) series
-- [Recreating the Drawing Mechanic from Half-Life: Alyx in Unity](https://80.lv/articles/recreating-the-drawing-mechanic-from-half-life-alyx-in-unity/) by Daniel Santalla
+- Canvas:
+    - [Recreating the Drawing Mechanic from Half-Life: Alyx in Unity](https://80.lv/articles/recreating-the-drawing-mechanic-from-half-life-alyx-in-unity/) by Daniel Santalla
+    - [How to Draw in VR - Unity Tutorial](https://youtu.be/VAnBM18Q5Ow) (video) by Valem Tutorials

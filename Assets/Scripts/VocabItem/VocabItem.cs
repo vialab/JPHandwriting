@@ -1,6 +1,8 @@
 ﻿using System.Collections;
+using System.Linq;
 using UnityEngine;
 using ExtensionMethods;
+using JetBrains.Annotations;
 
 public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHandler, OnLetterPredicted.IHandler {
     // ==========================================
@@ -22,6 +24,12 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
     /// A clip of how the vocabulary is pronounced in Japanese.
     /// </summary>
     [SerializeField] private AudioClip pronunciationClip;
+    
+    /// <summary>
+    /// Whether to show the character to trace over or not.
+    /// </summary>
+    [Rename("Toggle Tracing")]
+    [SerializeField] private bool enableTracing;
     
     // Getters for vocab properties
     public string ENName => englishName;
@@ -50,7 +58,7 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
     /// </summary>
     [SerializeField] private VocabItemWrite writeStateObject;
 
-    public string LetterAtCurrentPosition => writeStateObject.WrittenText.ToArray()[writeStateObject.CharPosition];
+    public string LetterAtCurrentPosition => JPName.ToArray()[writeStateObject.CharPosition].ToString();
     
     // ==========
     // UI objects
@@ -60,6 +68,11 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
     /// The object that controls the "toast" notification.
     /// </summary>
     [SerializeField] private Toast toastObject;
+
+    /// <summary>
+    /// The object that shows the letter to be traced.
+    /// </summary>
+    [SerializeField] private Tracing tracingUIObject;
     
     /// <summary>
     /// The coloured outline of the object.
@@ -92,6 +105,7 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
         menuStateObject.SetClip(pronunciationClip);
         menuStateObject.Hide();
         writeStateObject.Hide();
+        tracingUIObject.Hide();
         _canvas.Hide();
         toastObject.Hide();
         
@@ -115,29 +129,48 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
     }
 
     public void ShowMenuState() {
+        // disable everything from write state
         if (_objectUIState == ObjectUIState.Writing) {
             writeStateObject.Hide();
+
+            if (enableTracing) {
+                tracingUIObject.Hide();
+            }
+            
             StartCoroutine(ClearCanvas());
             DestroyCanvas();
         }
         
-        EnableSelectedOutline();
+        // change state
         _objectUIState = ObjectUIState.Menu;
         EventBus.Instance.OnVocabItemMenuState.Invoke(this);
         
+        // show menu
+        EnableSelectedOutline();
         menuStateObject.Show();
     }
 
     public void ShowWriteState() {
+        // disable everything from menu state
         if (_objectUIState == ObjectUIState.Menu) {
             menuStateObject.Hide(); // probably redundant check
             DisableOutline();
         }
         
+        // change state
         _objectUIState = ObjectUIState.Writing;
         EventBus.Instance.OnVocabItemWriteState.Invoke(this);
         
+        // show write state UI
         writeStateObject.Show();
+        
+        // if tracing is on, show the character to trace
+        if (enableTracing) {
+            tracingUIObject.SetCharacter(JPName[writeStateObject.CharPosition].ToString());
+            tracingUIObject.Show();
+        }
+        
+        // show canvas
         if (_canvas == null) CreateCanvas();
         _canvas.Show();
     }
@@ -177,6 +210,7 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
 
     void OnLetterPredicted.IHandler.OnEvent(VocabItem vocabItem, string character) {
         StartCoroutine(DelayedCreate());
+        StartCoroutine(DelayedUpdateTracing());
     }
     
     // ================
@@ -293,8 +327,20 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
         
         LogEvent("New canvas created");
     }
-    
     // TODO ends here
+
+    private IEnumerator DelayedUpdateTracing() {
+        yield return new WaitForSecondsRealtime(0.2f);
+        
+        // TODO: handle case where the traced letter is incorrect
+        // TODO: maybe user wants to re-write a character to get practice with it?
+        if (enableTracing) { 
+            if (writeStateObject.CharPosition < JPName.Length)
+                tracingUIObject.SetCharacter(JPName[writeStateObject.CharPosition].ToString());
+            else 
+                tracingUIObject.SetCharacter("");
+        }
+    }
 
     public void LogEvent(string message) {
         EventBus.Instance.OnLoggableEvent.Invoke(this, message);

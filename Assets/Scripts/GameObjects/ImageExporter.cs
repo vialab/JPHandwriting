@@ -39,7 +39,7 @@ public class ImageExporter : EventSubscriber, ILoggable, OnLetterWritten.IHandle
 
         imgBuffer.Dispose();
 
-        LogEvent($"Error in exporting image? {!readbackRequest.hasError}"); 
+        LogEvent($"No error in image export process? {!readbackRequest.hasError}"); 
         });
     }
 

@@ -3,11 +3,6 @@ using System.Linq;
 using UnityEngine;
 
 public class VocabItemWrite : EventSubscriber, OnLetterPredicted.IHandler {
-    /// <summary>
-    /// Whether to show the character to trace over or not.
-    /// </summary>
-    [Rename("Toggle Tracing")]
-    [SerializeField] private bool enableTracing;
 
     /// <summary>
     /// Assume VocabItemWrite and VocabUI are attached to the same object.
@@ -38,8 +33,11 @@ public class VocabItemWrite : EventSubscriber, OnLetterPredicted.IHandler {
 
     public void Hide() {
         gameObject.SetActive(false);
-        _writtenText.Clear(); // no saving progress for user, they have to retry
+        
+        // no saving progress for user, they have to retry
+        _writtenText.Clear(); 
         charPosition = 0;
+       
         _vocabUI.Hide();
     }
     public void ToggleChiisai() {
