@@ -45,11 +45,7 @@ public class VocabItemWrite : EventSubscriber, OnLetterPredicted.IHandler {
         
         RemoveCharacter();
 
-        if (Hiragana.CHIISAI.TryGetValue(lastChar, out var value)) {
-            lastChar = value;
-        } else if (Hiragana.CHIISAI.ContainsValue(lastChar)) {
-            lastChar = Hiragana.CHIISAI.FirstOrDefault(x => x.Value.Equals(lastChar)).Key;
-        }
+        Hiragana.TryToggleSmall(lastChar);
         
         AddCharacter(lastChar);
     }

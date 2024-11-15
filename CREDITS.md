@@ -13,7 +13,8 @@
 - Lunchbox:
     - [Modular Sushi Restaurant Kit](https://poly.pizza/bundle/Modular-Sushi-Restaurant-Kit-LJZrZsNPM7) by [Quaternius](https://poly.pizza/u/Quaternius) via Poly Pizza (for the food)
     - [Emily](https://github.com/EmilyGoose) (for the box itself)
-- [Small Stack of Paper](https://poly.pizza/m/aiBozYlPe--) by [Jarlan Perez](https://poly.pizza/u/Jarlan%20Perez) [[CC-BY]](https://creativecommons.org/licenses/by/3.0/) via Poly Pizza 
+- Homework: [Small Stack of Paper](https://poly.pizza/m/aiBozYlPe--) by [Jarlan Perez](https://poly.pizza/u/Jarlan%20Perez) [[CC-BY]](https://creativecommons.org/licenses/by/3.0/) via Poly Pizza 
+- Textbook: [Book](https://poly.pizza/m/4S1nr7WmUxm) from [Poly by Google](https://poly.pizza/u/Poly%20by%20Google) [[CC-BY]](https://creativecommons.org/licenses/by/3.0/) via Poly Pizza
 
 ## Audio
 - VoiceVOX:玄野武宏 (Takehiro Kurono): [VOICEVOX GitHub](https://github.com/VOICEVOX/voicevox_engine/tree/master) / [Voice page](https://voicevox.hiroshiba.jp/product/kurono_takehiro/)

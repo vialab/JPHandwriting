@@ -19,7 +19,7 @@ public class Logger : EventSubscriber, OnLoggableEvent.IHandler, OnLetterExporte
     [Tooltip("The time interval between the last time the logger wrote to the log file and the next.")]
     [SerializeField] private float logIntervalTime = 3f;
 
-    private readonly List<string> eventLog = new(); // oops sorry used to C++
+    private readonly List<string> eventLog = new(); 
     private DateTime _startTime;
 
     [SerializeField] private string logFolder = "SessionLogs";
