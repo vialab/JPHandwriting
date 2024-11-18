@@ -38,7 +38,7 @@ public class SenseiDesk : MonoBehaviour {
     }
 
     private async Task<string> GetRomaji(string word) {
-        var result = await _converter.Convert(word, To.Romaji, Mode.Spaced);
+        var result = await _converter.Convert(word, To.Romaji);
         return result;
     }
 }

@@ -9,7 +9,7 @@ public class Menu : VocabUI {
 
     public override void Show() {
         base.Show();
-        LogEvent("Vocabulary selected");
+        LogEvent("Vocabulary entered Menu state");
     }
 
     public void SetClip(AudioClip clip) {

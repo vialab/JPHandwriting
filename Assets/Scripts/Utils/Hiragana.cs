@@ -5,7 +5,7 @@ public struct Hiragana {
     /// <summary>
     /// A dictionary that contains the three possible small characters: ゃ, ゅ, and ょ.
     /// </summary>
-    public static readonly Dictionary<string, string> CHIISAI = new() { {"や","ゃ"}, {"ゆ","ゅ"}, {"よ","ょ"}};
+    public static readonly Dictionary<string, string> CHIISAI = new() { {"や","ゃ"}, {"ゆ","ゅ"}, {"よ","ょ"}, {"つ", "っ"}};
 
     /// <summary>
     /// Whether the Hiragana character is small or not.

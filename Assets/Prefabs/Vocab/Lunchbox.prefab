@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1556218969382863516}
   m_Layer: 0
-  m_Name: Grab Transform
+  m_Name: Lunchbox Grab Transform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 5887112785622072657}
   - component: {fileID: 400142278689722126}
   - component: {fileID: 314930168801132030}
-  - component: {fileID: 121316192125545899}
+  - component: {fileID: 4688304576719002009}
   m_Layer: 0
   m_Name: Lunchbox
   m_TagString: Vocab
@@ -65,7 +65,6 @@ Transform:
   m_Children:
   - {fileID: 8502781348757733815}
   - {fileID: 1556218969382863516}
-  - {fileID: 4903694487965853268}
   - {fileID: 1160295034863622086}
   - {fileID: 4620085764431930427}
   - {fileID: 3034630436141287216}
@@ -141,7 +140,7 @@ MonoBehaviour:
   m_HoverEntered:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 121316192125545899}
+      - m_Target: {fileID: 4688304576719002009}
         m_TargetAssemblyTypeName: VocabItem, Assembly-CSharp
         m_MethodName: EnableHoverOutline
         m_Mode: 1
@@ -156,9 +155,9 @@ MonoBehaviour:
   m_HoverExited:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 121316192125545899}
+      - m_Target: {fileID: 4688304576719002009}
         m_TargetAssemblyTypeName: VocabItem, Assembly-CSharp
-        m_MethodName: DisableOutline
+        m_MethodName: DisableOutlineChanges
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -195,9 +194,9 @@ MonoBehaviour:
   m_Activated:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 121316192125545899}
+      - m_Target: {fileID: 4688304576719002009}
         m_TargetAssemblyTypeName: VocabItem, Assembly-CSharp
-        m_MethodName: ShowMenuState
+        m_MethodName: ToggleUI
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -290,7 +289,7 @@ MonoBehaviour:
   m_StartingSingleGrabTransformers: []
   m_StartingMultipleGrabTransformers: []
   m_AddDefaultGrabTransformers: 1
---- !u!114 &121316192125545899
+--- !u!114 &4688304576719002009
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -299,7 +298,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1289978378473713233}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d63683731ce4f96afbf93751acc060a, type: 3}
+  m_Script: {fileID: 11500000, guid: 501db4a637cbf7441bce84f4dc421cba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   englishName: Lunchbox
@@ -309,42 +308,10 @@ MonoBehaviour:
   writeStateObject: {fileID: 7976844917139954337}
   toastObject: {fileID: 5082230608611222565}
   tracingUIObject: {fileID: 7607797124654128199}
-  canvasSpawnPoint: {fileID: 4903694487965853268}
   enableTracing: 1
   waitTimeSeconds: 0.15
   _canvas: {fileID: 8302520395262668287}
   _canvasEraserCube: {fileID: 6197246908972334526}
---- !u!1 &6282456111239575769
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4903694487965853268}
-  m_Layer: 0
-  m_Name: Canvas Spawn Point
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4903694487965853268
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6282456111239575769}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.92387956, z: -0.38268343, w: 0}
-  m_LocalPosition: {x: -0.004999995, y: 0.15799999, z: -0.22799993}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5887112785622072657}
-  m_LocalEulerAnglesHint: {x: 45, y: 180, z: 0}
 --- !u!1001 &628800657000797091
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -486,7 +453,7 @@ PrefabInstance:
     - target: {fileID: 7533006723465015968, guid: 068069fc98e336247b83f9e5af1cee91,
         type: 3}
       propertyPath: m_Name
-      value: Canvas
+      value: Lunchbox Canvas
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -522,7 +489,7 @@ PrefabInstance:
     - target: {fileID: 3519966991597796960, guid: 68b8c70681a765b4da30743f8e64ff27,
         type: 3}
       propertyPath: m_Name
-      value: ToastBar
+      value: Lunchbox ToastBar
       objectReference: {fileID: 0}
     - target: {fileID: 4070562720300049274, guid: 68b8c70681a765b4da30743f8e64ff27,
         type: 3}
@@ -573,6 +540,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4236988518836743703, guid: 68b8c70681a765b4da30743f8e64ff27,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 163
       objectReference: {fileID: 0}
     - target: {fileID: 4236988518836743703, guid: 68b8c70681a765b4da30743f8e64ff27,
         type: 3}
@@ -816,7 +788,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 121316192125545899}
+      objectReference: {fileID: 4688304576719002009}
     - target: {fileID: 4879771080433391944, guid: fabc61ef4ad7ccf418c7c53eaab2f8d8,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -860,7 +832,7 @@ PrefabInstance:
     - target: {fileID: 6140891770815747391, guid: fabc61ef4ad7ccf418c7c53eaab2f8d8,
         type: 3}
       propertyPath: m_Name
-      value: WriteState
+      value: Lunchbox WriteState
       objectReference: {fileID: 0}
     - target: {fileID: 6508451878574953362, guid: fabc61ef4ad7ccf418c7c53eaab2f8d8,
         type: 3}
@@ -1051,7 +1023,7 @@ PrefabInstance:
     - target: {fileID: 5862170536856636833, guid: a8266c0d651f3fb4fa8cab175c6c87e1,
         type: 3}
       propertyPath: m_Name
-      value: MenuState
+      value: Lunchbox MenuState
       objectReference: {fileID: 0}
     - target: {fileID: 6135417615448147370, guid: a8266c0d651f3fb4fa8cab175c6c87e1,
         type: 3}
@@ -1082,7 +1054,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 121316192125545899}
+      objectReference: {fileID: 4688304576719002009}
     - target: {fileID: 7780023351342913473, guid: a8266c0d651f3fb4fa8cab175c6c87e1,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -1147,12 +1119,12 @@ PrefabInstance:
     - target: {fileID: 598525988208496325, guid: bcf98b2548be8644a89b2af63eaad1ea,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.112
+      value: 0.1146
       objectReference: {fileID: 0}
     - target: {fileID: 598525988208496325, guid: bcf98b2548be8644a89b2af63eaad1ea,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.228
+      value: -0.2296
       objectReference: {fileID: 0}
     - target: {fileID: 598525988208496325, guid: bcf98b2548be8644a89b2af63eaad1ea,
         type: 3}
@@ -1192,7 +1164,7 @@ PrefabInstance:
     - target: {fileID: 3881722070819369701, guid: bcf98b2548be8644a89b2af63eaad1ea,
         type: 3}
       propertyPath: m_Name
-      value: Tracing UI
+      value: Lunchbox Tracing UI
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1298,7 +1270,7 @@ PrefabInstance:
     - target: {fileID: 3954542243432102052, guid: fb704c6a1346dca4cad2cf3a172d85be,
         type: 3}
       propertyPath: m_Name
-      value: Canvas Eraser Cube
+      value: Lunchbox Canvas Eraser Cube
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8869202193794615373, guid: fb704c6a1346dca4cad2cf3a172d85be, type: 3}

@@ -97,7 +97,7 @@ public class Pen : EventSubscriber, ILoggable, OnPenEnterCanvas.IHandler, OnPenE
         _onCanvas = false;
     }
 
-    void OnLetterPredicted.IHandler.OnEvent(VocabItem vocabItem, string character) {
+    void OnLetterPredicted.IHandler.OnEvent(VocabItem vocabItem, string character, int position) {
         _wroteSomething = false;
     }
     

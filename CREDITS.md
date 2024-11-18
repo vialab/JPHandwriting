@@ -17,8 +17,9 @@
 - Textbook: [Book](https://poly.pizza/m/4S1nr7WmUxm) from [Poly by Google](https://poly.pizza/u/Poly%20by%20Google) [[CC-BY]](https://creativecommons.org/licenses/by/3.0/) via Poly Pizza
 
 ## Audio
-- VoiceVOX:玄野武宏 (Takehiro Kurono): [VOICEVOX GitHub](https://github.com/VOICEVOX/voicevox_engine/tree/master) / [Voice page](https://voicevox.hiroshiba.jp/product/kurono_takehiro/)
-    - "Audio generated using Takehiro Kurono's voice library may be used for commercial and non-commercial purposes as long as the credit is given as「VOICEVOX:玄野武宏」."
+- VOICEVOX [(GitHub)](https://github.com/VOICEVOX/voicevox_engine/tree/master)
+  - VOICEVOX:玄野武宏 (Takehiro Kurono) ([Voice page](https://voicevox.hiroshiba.jp/product/kurono_takehiro/))
+  - VOICEVOX:琴詠ニア (Kotoyomi Nia) ([Voice page](https://voicevox.hiroshiba.jp/product/kotoyomi_nia/))
 
 ## Fonts 
 - UI Font: [Noto Sans JP](https://fonts.google.com/noto/specimen/Noto+Sans)

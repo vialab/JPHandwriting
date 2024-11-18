@@ -20,7 +20,6 @@ public class PredictionAPI : EventSubscriber, ILoggable, OnLetterExported.IHandl
     private string endpointURL => $"{url}/{endpoint}";
     private string healthCheckURL => $"{url}/{healthEndpoint}";
 
-    private bool _online = debugMode;
     private bool _predictionLock = false;
     
     protected override void Start() {
@@ -102,7 +101,7 @@ public class PredictionAPI : EventSubscriber, ILoggable, OnLetterExported.IHandl
 
     private void InvokeLetterPredicted(VocabItem vocabItem, string letterPredicted) {
         // send predicted letter
-        EventBus.Instance.OnLetterPredicted.Invoke(vocabItem, letterPredicted);
+        EventBus.Instance.OnLetterPredicted.Invoke(vocabItem, letterPredicted, vocabItem.CurrentPosition);
         
         // remove prediction lock
         _predictionLock = false;

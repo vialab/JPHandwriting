@@ -13,18 +13,18 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
     /// <summary>
     /// The vocabulary word as it's known in English.
     /// </summary>
-    [SerializeField] private string englishName;
+    [SerializeField] protected string englishName;
     
     /// <summary>
     /// The vocabulary as it's known in Japanese.
     /// The writing is in Hiragana only.
     /// </summary>
-    [SerializeField] private string japaneseName;
+    [SerializeField] protected string japaneseName;
     
     /// <summary>
     /// A clip of how the vocabulary is pronounced in Japanese.
     /// </summary>
-    [SerializeField] private AudioClip pronunciationClip;
+    [SerializeField] protected AudioClip pronunciationClip;
     
     // Getters for vocab properties
     public string ENName => englishName;
@@ -38,12 +38,12 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
     /// <summary>
     /// The object that controls the UI in Menu state. 
     /// </summary>
-    [SerializeField] private Menu menuStateObject;
+    [SerializeField] protected Menu menuStateObject;
     
     /// <summary>
     /// The object that controls the UI in Writing state.
     /// </summary>
-    [SerializeField] private VocabItemWrite writeStateObject;
+    [SerializeField] protected VocabItemWrite writeStateObject;
     
 
     // ==========
@@ -53,18 +53,18 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
     /// <summary>
     /// The object that controls the "toast" notification.
     /// </summary>
-    [SerializeField] private Toast toastObject;
+    [SerializeField] protected Toast toastObject;
 
     /// <summary>
     /// The object that shows the letter to be traced.
     /// </summary>
-    [SerializeField] private Tracing tracingUIObject;
+    [SerializeField] protected Tracing tracingUIObject;
     
     /// <summary>
     /// The coloured outline of the object.
     /// Green if the user has learned it, red otherwise.
     /// </summary>
-    private Outline _outline;
+    protected Outline _outline;
     
 
     // ==========================
@@ -72,26 +72,22 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
     // ==========================
     
     /// <summary>
-    /// Where the canvas should spawn when the item is in Write state.
-    /// </summary>
-    [SerializeField] private Transform canvasSpawnPoint;
-
-    /// <summary>
     /// Whether to show the character to trace over or not.
     /// </summary>
     [Rename("Toggle Tracing")]
-    [SerializeField] private bool enableTracing;
+    [SerializeField] protected bool enableTracing = false;
 
     /// <summary>
     /// How long to wait for the canvas clearing cube to clear the canvas.
     /// </summary>
     [Rename("Eraser Cube Wait Time")]
-    [SerializeField] private float waitTimeSeconds = 0.15f;
+    [SerializeField] protected float waitTimeSeconds = 0.15f;
  
-    [SerializeField] private LetterCanvas _canvas;
-    [SerializeField] private GameObject _canvasEraserCube;
+    [SerializeField] protected LetterCanvas _canvas;
+    [SerializeField] protected GameObject _canvasEraserCube;
 
     public string LetterAtCurrentPosition => JPName.ToArray()[writeStateObject.CharPosition].ToString();
+    public int CurrentPosition => writeStateObject.CharPosition;
 
 
     // =====================
@@ -99,15 +95,15 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
     // =====================
     // TODO: load from user config
    
-    private VocabularyState _vocabularyState = VocabularyState.NotLearned;
-    private ObjectUIState _objectUIState = ObjectUIState.Idle;
+    protected VocabularyState _vocabularyState = VocabularyState.NotLearned;
+    protected ObjectUIState _objectUIState = ObjectUIState.Idle;
 
 
     // ===========================
     // Unity MonoBehaviour methods
     // ===========================
 
-    private void Awake() {
+    protected void Awake() {
         _outline = gameObject.AddComponent<Outline>();
     }
 
@@ -134,7 +130,7 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
     // ==================
     // UI display methods
     // ==================
-    
+
     private void DisplayToast(string message) {
         StartCoroutine(toastObject.ShowToast(message));
     }
@@ -148,7 +144,7 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
                 tracingUIObject.Hide();
             }
             
-            StartCoroutine(ClearCanvas());
+            StartCoroutine(ClearAndHideCanvas());
         }
         
         // change state
@@ -164,7 +160,6 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
         // disable everything from menu state
         if (_objectUIState == ObjectUIState.Menu) {
             menuStateObject.Hide(); // probably redundant check
-            DisableOutline();
         }
         
         // change state
@@ -184,7 +179,7 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
         _canvas.Show();
     }
 
-    public void HideUI() {
+    private void HideUI() {
         _objectUIState = ObjectUIState.Idle;
         EventBus.Instance.OnVocabItemIdleState.Invoke(this);
         
@@ -192,31 +187,47 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
         writeStateObject.Hide(); // In case another VocabItem wants to be focused
     }
 
+    public void ToggleUI() {
+        if (_objectUIState == ObjectUIState.Idle) ShowMenuState();
+        else HideUI();
+    }
+
 
     // =======================
     // Outline display methods 
     // =======================
 
+    /// <summary>
+    /// Outline setup on game start.
+    /// </summary>
     private void SetOutline() {
-        _outline.enabled = false;
+        _outline.enabled = true;
         _outline.OutlineWidth = 5f;
         _outline.OutlineMode = Outline.Mode.OutlineVisible;
+        _outline.OutlineColor = Color.white;
     } 
-
-    public void DisableOutline() {
+    
+    /// <summary>
+    /// Disable any changes to the outline.
+    /// </summary>
+    public void DisableOutlineChanges() {
         if (_objectUIState == ObjectUIState.Menu) return;
 
-        _outline.OutlineMode = Outline.Mode.OutlineHidden;
-    }
-
-    public void EnableSelectedOutline() {
-        _outline.OutlineColor = _vocabularyState == VocabularyState.Learned ? Color.green : Color.red;
-        _outline.OutlineMode = Outline.Mode.OutlineVisible;
-    }
-
-    public void EnableHoverOutline() {
         _outline.OutlineColor = Color.white;
-        _outline.OutlineMode = Outline.Mode.OutlineVisible;
+    }
+    
+    /// <summary>
+    /// Change the outline colour when the item is in menu state.
+    /// </summary>
+    private void EnableSelectedOutline() {
+        _outline.OutlineColor = _vocabularyState == VocabularyState.Learned ? Color.green : Color.red;
+    }
+
+    /// <summary>
+    /// Change the outline colour when the outline is being hovered over.
+    /// </summary>
+    public void EnableHoverOutline() {
+        _outline.OutlineColor = Color.yellow;
     }
 
     
@@ -225,13 +236,12 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
     // ======================
 
     void OnVocabItemFinishGuess.IHandler.OnEvent(VocabItem vocabItem, string guess) {
-        StartCoroutine(ClearCanvasAndDoSomething(_canvas.Hide));
+        StartCoroutine(ClearAndHideCanvas());
         Wordle(guess);
     }
 
-    void OnLetterPredicted.IHandler.OnEvent(VocabItem vocabItem, string character) {
-        StartCoroutine(ClearCanvas());
-        StartCoroutine(DelayedUpdateTracing());
+    void OnLetterPredicted.IHandler.OnEvent(VocabItem vocabItem, string character, int position) {
+        StartCoroutine(DelayedUpdateCanvas(character, position));
     }
     
 
@@ -240,19 +250,28 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
     // ==================
 
     private void SetUpEraserCube() {
-        Vector3 canvasSpawnPos = canvasSpawnPoint.position;
-        _canvasEraserCube.transform.SetLocalPositionAndRotation(
-            canvasSpawnPos + (Vector3.down * 10f), 
-            canvasSpawnPoint.rotation
+        var canvasTransform = _canvas.transform;
+        
+        _canvasEraserCube.transform.SetPositionAndRotation(
+            canvasTransform.position + (Vector3.down * 10f), 
+            canvasTransform.rotation
         );
+        
         _canvasEraserCube.SetActive(false);
     }
 
     private void SetUpTracingUI() {
-        tracingUIObject.transform.SetLocalPositionAndRotation(
-            canvasSpawnPoint.position + (Vector3.up * 0.001f), 
-            canvasSpawnPoint.rotation
+        Transform tracingTransform;
+        Transform canvasTransform = _canvas.transform;
+        (tracingTransform = tracingUIObject.transform).SetPositionAndRotation(
+            canvasTransform.position + (Vector3.up * 0.0001f), 
+            canvasTransform.rotation
         );
+
+        var angles = tracingTransform.localEulerAngles;
+        angles.y = 0f;
+        tracingTransform.localEulerAngles = angles;
+        
         tracingUIObject.Hide();
     }
     
@@ -269,7 +288,10 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
         if (guess == japaneseName) {
             LogEvent("Word is correct");
             DisplayToast("Correct!<br>Good job!");
+            
             _vocabularyState = VocabularyState.Learned;
+            EventBus.Instance.OnVocabItemLearned.Invoke(this);
+            
             return;
         }
         
@@ -315,18 +337,20 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
     /// and then despawns and moves the cube out of the way.
     /// </summary>
     private IEnumerator ClearCanvas() {
-        var cubePosition = canvasSpawnPoint.localPosition;
+        var cubePosition = _canvas.transform.position;
         _canvasEraserCube.SetActive(true);
 
-        yield return new WaitForSecondsRealtime(waitTimeSeconds);
         LogEvent("Canvas clearing object appeared");
         
         // Move the cube up a bit
-        _canvasEraserCube.transform.localPosition = new Vector3(
+        _canvasEraserCube.transform.position = new Vector3(
             cubePosition.x,
-            cubePosition.y + 0.5f,
-            cubePosition.z - 0.5f
+            cubePosition.y + 0.005f,
+            cubePosition.z - 0.005f
             ); 
+        
+        Debug.Log($"Eraser is {_canvasEraserCube.transform.position}", _canvasEraserCube);
+        Debug.Log($"Canvas is {cubePosition}", _canvas);
         
         // wait for it
         yield return new WaitForSecondsRealtime(waitTimeSeconds);
@@ -339,24 +363,42 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
     }
 
     /// <summary>
-    /// Clears the canvas, and then allows another action to happen after that.
+    /// Clears the canvas, and then hides it after.
     /// </summary>
-    /// <param name="DoSomething">The action to execute after ClearCanvas().</param>
-    private IEnumerator ClearCanvasAndDoSomething(Action DoSomething) {
+    private IEnumerator ClearAndHideCanvas() {
         yield return StartCoroutine(ClearCanvas());
-        DoSomething();
+        _canvas.Hide();
     }
-
-    private IEnumerator DelayedUpdateTracing() {
-        yield return new WaitForSecondsRealtime(0.2f);
+    
+    /// <summary>
+    /// Clears the canvas, and optionally gives the user the next character to trace.
+    /// </summary>
+    private IEnumerator DelayedUpdateCanvas(string writtenChar, int position) {
+        yield return StartCoroutine(ClearCanvas());
         
-        // TODO: handle case where the traced letter is incorrect
-        // TODO: maybe user wants to re-write a character to get practice with it?
-        if (enableTracing) { 
-            if (writeStateObject.CharPosition < JPName.Length)
-                tracingUIObject.SetCharacter(JPName[writeStateObject.CharPosition].ToString());
-            else 
-                tracingUIObject.SetCharacter("");
+        // if this works i'll cry
+        
+        if (enableTracing) {
+            Debug.Log("Tracing is enabled");
+            if (writtenChar == JPName[position].ToString()) {
+                EventBus.Instance.OnLetterCompared.Invoke(this, writtenChar, true);
+
+                if (writeStateObject.CharPosition < JPName.Length) {
+                    var nextChar = JPName[writeStateObject.CharPosition].ToString();
+
+                    if (Hiragana.IsSmall(nextChar))
+                        nextChar = Hiragana.TryToggleSmall(nextChar);
+                    
+                    LogEvent($"Setting next character to trace to {nextChar}");
+                    tracingUIObject.SetCharacter(nextChar);
+                } else {
+                    tracingUIObject.SetCharacter("");
+                }
+            } else {
+                EventBus.Instance.OnLetterCompared.Invoke(this, writtenChar, false);
+            }
+        } else {
+            EventBus.Instance.OnLetterCompared.Invoke(this, writtenChar, true);
         }
     }
 
