@@ -1,0 +1,7 @@
+﻿{
+  "UserID": "test",
+  "VocabItems": [
+    {"Type": "Lunchbox", "Data": "{\"EnableTracing\": false}"},
+    {"Type": "Textbook", "Data": "{\"EnableTracing\": true}"}
+  ]
+}

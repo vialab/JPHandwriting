@@ -4,7 +4,7 @@ using UnityEngine;
 using ExtensionMethods;
 using System;
 
-public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHandler, OnLetterPredicted.IHandler {
+public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVocabItemFinishGuess.IHandler, OnLetterPredicted.IHandler {
     // =====================
     // Vocab item properties
     // =====================
@@ -64,7 +64,7 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
     /// The coloured outline of the object.
     /// Green if the user has learned it, red otherwise.
     /// </summary>
-    protected Outline _outline;
+    private Outline _outline;
     
 
     // ==========================
@@ -75,7 +75,7 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
     /// Whether to show the character to trace over or not.
     /// </summary>
     [Rename("Toggle Tracing")]
-    [SerializeField] protected bool enableTracing = false;
+    public bool enableTracing = false;
 
     public bool TracingEnabled => enableTracing;
 
@@ -96,9 +96,13 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
     // Other item properties
     // =====================
     // TODO: load from user config
-   
-    protected VocabularyState _vocabularyState = VocabularyState.NotLearned;
-    protected ObjectUIState _objectUIState = ObjectUIState.Idle;
+
+    private VocabularyState _vocabularyState = VocabularyState.NotLearned;
+    private ObjectUIState _objectUIState = ObjectUIState.Idle;
+    
+    private bool IsActiveVocabItem(VocabItem vocabItem) {
+        return (vocabItem == this && Game.Instance.CurrentVocabItem == this);
+    }
 
 
     // ===========================
@@ -126,6 +130,8 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
         SetUpEraserCube();
         SetUpTracingUI();
         SetOutline();
+        
+        LogEvent($"{Type} instantiated");
     }
     
 
@@ -239,16 +245,16 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
     // ======================
 
     void OnVocabItemFinishGuess.IHandler.OnEvent(VocabItem vocabItem, string guess) {
-        // if this item isn't the current item, do nothing
-        if (vocabItem != this) return;
+        // if this item isn't the active item, do nothing
+        if (!IsActiveVocabItem(vocabItem)) return;
         
         StartCoroutine(vocabItem.ClearAndHideCanvas());
         Wordle(guess);
     }
 
     void OnLetterPredicted.IHandler.OnEvent(VocabItem vocabItem, string writtenChar, int position) {
-        // If another item that isn't the current item is active, do nothing
-        if (!(vocabItem == this && Game.Instance.CurrentVocabItem == this)) return;
+        // if this item isn't the active item, do nothing
+        if (!IsActiveVocabItem(vocabItem)) return;
         
         // check if tracing is enabled
         var tracingEnabled = Game.Instance.currentVocabItemTracing;
@@ -263,6 +269,9 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
     // WriteState methods 
     // ==================
 
+    /// <summary>
+    /// Sets up the almighty eraser cube object to be 10 units directly below the canvas.
+    /// </summary>
     private void SetUpEraserCube() {
         var canvasTransform = _canvas.transform;
         
@@ -274,6 +283,9 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
         _canvasEraserCube.SetActive(false);
     }
 
+    /// <summary>
+    /// Sets up the tracing UI to be slightly above the canvas.
+    /// </summary>
     private void SetUpTracingUI() {
         Transform tracingTransform;
         Transform canvasTransform = _canvas.transform;
@@ -380,44 +392,64 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
         yield return StartCoroutine(ClearCanvas());
         _canvas.Hide();
     }
-
-    protected IEnumerator ClearCanvasTracing(string writtenChar, int pos) {
+    
+    /// <summary>
+    /// The coroutine started if tracing is enabled. Clears the canvas and then compares the character written.
+    /// </summary>
+    /// <param name="writtenChar">The character written by the user.</param>
+    /// <param name="pos">The position of the character the user wrote in the context of the word.</param>
+    private IEnumerator ClearCanvasTracing(string writtenChar, int pos) {
         yield return StartCoroutine(ClearCanvas());
         yield return StartCoroutine(DelayedCheck(writtenChar, pos));
     }
-
-    protected IEnumerator ClearCanvasNoTracing(string writtenChar) {
+    
+    /// <summary>
+    /// The coroutine started if tracing is not enabled. Clears the canvas.
+    /// </summary>
+    /// <param name="writtenChar">The character written by the user.</param>
+    private IEnumerator ClearCanvasNoTracing(string writtenChar) {
         yield return StartCoroutine(ClearCanvas());
         EventBus.Instance.OnLetterCompared.Invoke(this, writtenChar, true);
     }
 
-    protected IEnumerator DelayedCheck(string writtenChar, int position) {
+    /// <summary>
+    /// Compares the character written with the character to be traced,
+    /// and only continues if the two are a match in some way.
+    /// </summary>
+    /// <param name="writtenChar">The character written by the user.</param>
+    /// <param name="position">The position of the character the user wrote in the context of the word.</param>
+    private IEnumerator DelayedCheck(string writtenChar, int position) {
         yield return new WaitForSecondsRealtime(waitTimeSeconds);
 
-        string currentJPName = Game.Instance.currentVocabItemJPName;
+        var currentJapaneseWord = Game.Instance.currentVocabItemJPName;
         
         // have we written more than enough letters?
-        if (position < currentJPName.Length) {
-            if (writtenChar == currentJPName[position].ToString()) {
-                // is the current letter a match?
-                AddCorrectLetter(writtenChar, currentJPName);
-            } else if (Hiragana.TryToggleSmall(writtenChar) == currentJPName[position].ToString()) {
-                // does the current letter have a smaller version, and is that a match?
-                AddCorrectLetter(Hiragana.TryToggleSmall(writtenChar), currentJPName);
-            } else {
-                EventBus.Instance.OnLetterCompared.Invoke(this, writtenChar, false);
-            }
-        } 
+        if (position >= currentJapaneseWord.Length) yield break;
+        
+        if (writtenChar == currentJapaneseWord[position].ToString()) {
+            // is the current letter a match?
+            AddCorrectLetter(writtenChar, currentJapaneseWord);
+        } else if (Hiragana.TryToggleSmall(writtenChar) == currentJapaneseWord[position].ToString()) {
+            // does the current letter have a smaller version, and is that a match?
+            AddCorrectLetter(Hiragana.TryToggleSmall(writtenChar), currentJapaneseWord);
+        } else {
+            EventBus.Instance.OnLetterCompared.Invoke(this, writtenChar, false);
+        }
     }
-
-    private void AddCorrectLetter(string writtenChar, string currentJPName) {
+    
+    /// <summary>
+    /// Sets up the next character to be traced over, if the characters are a match.
+    /// </summary>
+    /// <param name="writtenChar">The character the user wrote.</param>
+    /// <param name="currentJapaneseWord">The word the character is trying to write.</param>
+    private void AddCorrectLetter(string writtenChar, string currentJapaneseWord) {
         // increment # of characters written by 1
         EventBus.Instance.OnLetterCompared.Invoke(this, writtenChar, true);
         var nextChar = "";
         
-        if (writeStateObject.CharPosition < currentJPName.Length) {
+        if (writeStateObject.CharPosition < currentJapaneseWord.Length) {
             // get the next character to trace
-            nextChar = currentJPName[writeStateObject.CharPosition].ToString();
+            nextChar = currentJapaneseWord[writeStateObject.CharPosition].ToString();
 
             // API only knows full-size, so just show user full-size
             if (Hiragana.IsSmall(nextChar))
@@ -427,7 +459,7 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
         LogEvent($"Setting next character to trace to {nextChar}");
         tracingUIObject.SetCharacter(nextChar);
     }
-
+    
 
     // ==========
     // Log method 

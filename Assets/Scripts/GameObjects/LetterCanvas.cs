@@ -1,10 +1,6 @@
-using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using Object = UnityEngine.Object;
-
-// TODO: handle timer for pen contact and letter prediction trigger
 
 /// <summary>
 /// The canvas the user writes a character on.
@@ -23,6 +19,12 @@ public class LetterCanvas : EventSubscriber, ILoggable, OnPenWrittenSomething.IH
     /// </summary>
     private bool somethingOnCanvas = false;
     private Coroutine submitCoroutine;
+    private VocabItem parentVocabItem;
+
+    protected override void Start() {
+        base.Start();
+        parentVocabItem = transform.parent.GetComponent<VocabItem>();
+    }
 
     public void Show() {
         gameObject.SetActive(true);
@@ -38,11 +40,12 @@ public class LetterCanvas : EventSubscriber, ILoggable, OnPenWrittenSomething.IH
         LogEvent("Pen collided with canvas");
             
         EventBus.Instance.OnPenEnterCanvas.Invoke(this);
-
-        if (somethingOnCanvas) {
-            LogEvent("No longer waiting to submit");
-            StopCoroutine(submitCoroutine);
-        }
+        
+        // if there isn't something on canvas, don't worry about it
+        if (!somethingOnCanvas) return;
+        
+        LogEvent("No longer waiting to submit");
+        StopCoroutine(submitCoroutine);
     }
 
     private void OnTriggerExit(Collider other) {
@@ -61,7 +64,7 @@ public class LetterCanvas : EventSubscriber, ILoggable, OnPenWrittenSomething.IH
     IEnumerator WaitUntilSubmission() {
         yield return new WaitForSeconds(timeUntilImageExport);
         
-        EventBus.Instance.OnLetterWritten.Invoke(transform.parent, canvasObject);
+        EventBus.Instance.OnLetterWritten.Invoke(parentVocabItem, canvasObject);
         somethingOnCanvas = false;
     }
 

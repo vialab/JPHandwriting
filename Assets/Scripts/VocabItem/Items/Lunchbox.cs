@@ -1,1 +1,3 @@
-public class Lunchbox : VocabItem { }
+public class Lunchbox : VocabItem {
+    
+}
