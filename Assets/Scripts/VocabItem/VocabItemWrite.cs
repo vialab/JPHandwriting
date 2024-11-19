@@ -1,13 +1,7 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
-public class VocabItemWrite : EventSubscriber, OnLetterPredicted.IHandler {
-    /// <summary>
-    /// Whether to show the character to trace over or not.
-    /// </summary>
-    [Rename("Toggle Tracing")]
-    [SerializeField] private bool enableTracing;
+public class VocabItemWrite : EventSubscriber, OnLetterCompared.IHandler {
 
     /// <summary>
     /// Assume VocabItemWrite and VocabUI are attached to the same object.
@@ -38,21 +32,18 @@ public class VocabItemWrite : EventSubscriber, OnLetterPredicted.IHandler {
 
     public void Hide() {
         gameObject.SetActive(false);
-        _writtenText.Clear(); // no saving progress for user, they have to retry
+        
+        // no saving progress for user, they have to retry
+        _writtenText.Clear(); 
         charPosition = 0;
+       
         _vocabUI.Hide();
     }
     public void ToggleChiisai() {
         string lastChar = _writtenText[^1];
         
         RemoveCharacter();
-
-        if (Hiragana.CHIISAI.TryGetValue(lastChar, out var value)) {
-            lastChar = value;
-        } else if (Hiragana.CHIISAI.ContainsValue(lastChar)) {
-            lastChar = Hiragana.CHIISAI.FirstOrDefault(x => x.Value.Equals(lastChar)).Key;
-        }
-        
+        lastChar = Hiragana.TryToggleSmall(lastChar);
         AddCharacter(lastChar);
     }
     
@@ -64,6 +55,18 @@ public class VocabItemWrite : EventSubscriber, OnLetterPredicted.IHandler {
         _writtenText.Add(character);
         charPosition++;
         UpdateUI();
+    }
+
+    private void CheckAddCharacter(string character, bool isMatch) {
+        if (!isMatch) return;
+        
+        _writtenText.Add(character);
+        charPosition++;
+        UpdateUI();
+    }
+
+    public void ResetPosition() {
+        charPosition--;
     }
     
     // ================
@@ -96,7 +99,7 @@ public class VocabItemWrite : EventSubscriber, OnLetterPredicted.IHandler {
     // Event listeners
     // ===============
 
-    void OnLetterPredicted.IHandler.OnEvent(VocabItem vocabItem, string character) {
-        AddCharacter(character);
+    void OnLetterCompared.IHandler.OnEvent(VocabItem vocabItem, string character, bool isMatch) {
+        CheckAddCharacter(character, isMatch);
     }
 }

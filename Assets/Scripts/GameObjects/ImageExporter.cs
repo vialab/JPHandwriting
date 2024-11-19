@@ -14,7 +14,6 @@ public class ImageExporter : EventSubscriber, ILoggable, OnLetterWritten.IHandle
         ExportRenderTextureToImage(obj, objWithRenderTexture.GetComponent<Renderer>().sharedMaterial.mainTexture);
     }
     
-    // TODO: figure out if this breaks anything
     private void ExportRenderTextureToImage(Object obj, Texture whiteboardCanvas)  {
         int imageWidth = whiteboardCanvas.width, imageHeight = whiteboardCanvas.height;
 
@@ -39,7 +38,7 @@ public class ImageExporter : EventSubscriber, ILoggable, OnLetterWritten.IHandle
 
         imgBuffer.Dispose();
 
-        LogEvent($"Error in exporting image? {!readbackRequest.hasError}"); 
+        LogEvent($"No error in image export process? {!readbackRequest.hasError}"); 
         });
     }
 

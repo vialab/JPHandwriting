@@ -60,3 +60,9 @@ crashlytics-build.properties
 
 # JetBrains Rider
 .idea/
+
+# Visual Studio Code
+.vscode/
+
+# SSH folder for Kyra's setup
+.ssh/
