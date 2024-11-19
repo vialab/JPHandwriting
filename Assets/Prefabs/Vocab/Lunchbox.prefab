@@ -308,7 +308,7 @@ MonoBehaviour:
   writeStateObject: {fileID: 7976844917139954337}
   toastObject: {fileID: 5082230608611222565}
   tracingUIObject: {fileID: 7607797124654128199}
-  enableTracing: 1
+  enableTracing: 0
   waitTimeSeconds: 0.15
   _canvas: {fileID: 8302520395262668287}
   _canvasEraserCube: {fileID: 6197246908972334526}

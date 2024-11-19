@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class VocabItemWrite : EventSubscriber, OnLetterCompared.IHandler {
@@ -24,7 +23,6 @@ public class VocabItemWrite : EventSubscriber, OnLetterCompared.IHandler {
     private void Awake() {
         _vocabUI = GetComponent<VocabUI>();
         charPosition = 0;
-        Debug.Log($"Now writing character {charPosition}");
     }
 
     public void Show() {
@@ -45,9 +43,7 @@ public class VocabItemWrite : EventSubscriber, OnLetterCompared.IHandler {
         string lastChar = _writtenText[^1];
         
         RemoveCharacter();
-
-        Hiragana.TryToggleSmall(lastChar);
-        
+        lastChar = Hiragana.TryToggleSmall(lastChar);
         AddCharacter(lastChar);
     }
     
@@ -58,16 +54,14 @@ public class VocabItemWrite : EventSubscriber, OnLetterCompared.IHandler {
     private void AddCharacter(string character) {
         _writtenText.Add(character);
         charPosition++;
-        Debug.Log($"Character added, position is now {charPosition}");
         UpdateUI();
     }
 
-    private void AddCharacter(string character, bool isMatch) {
+    private void CheckAddCharacter(string character, bool isMatch) {
         if (!isMatch) return;
         
         _writtenText.Add(character);
         charPosition++;
-        Debug.Log($"Character added, position is now {charPosition}");
         UpdateUI();
     }
 
@@ -85,7 +79,6 @@ public class VocabItemWrite : EventSubscriber, OnLetterCompared.IHandler {
     public void RemoveCharacter() {
         _writtenText.RemoveAt(_writtenText.Count - 1);
         charPosition--;
-        Debug.Log($"Character added, position is now {charPosition}");
         UpdateUI();
     }
     
@@ -107,6 +100,6 @@ public class VocabItemWrite : EventSubscriber, OnLetterCompared.IHandler {
     // ===============
 
     void OnLetterCompared.IHandler.OnEvent(VocabItem vocabItem, string character, bool isMatch) {
-        AddCharacter(character, isMatch);
+        CheckAddCharacter(character, isMatch);
     }
 }

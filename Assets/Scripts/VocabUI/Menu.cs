@@ -7,11 +7,6 @@ public class Menu : VocabUI {
         _audioSource = GetComponent<AudioSource>();
     }
 
-    public override void Show() {
-        base.Show();
-        LogEvent("Vocabulary entered Menu state");
-    }
-
     public void SetClip(AudioClip clip) {
         _audioSource.clip = clip;
     }

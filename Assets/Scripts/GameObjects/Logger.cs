@@ -48,7 +48,7 @@ public class Logger : EventSubscriber, OnLoggableEvent.IHandler, OnLetterExporte
     private void WriteToFile() {
         if (eventLog.Count == 0) return;
         
-        using var outFile = new StreamWriter(Path.Join(logFolder, logFileName), append: true);
+        using var outFile = new StreamWriter(Path.Join(logFolder, userID, logFileName), append: true);
         outFile.Write(string.Join("\n", eventLog));
         outFile.Write("\n"); // newline isn't added after last element of eventLog array 
         eventLog.Clear();
@@ -65,7 +65,7 @@ public class Logger : EventSubscriber, OnLoggableEvent.IHandler, OnLetterExporte
 
     void OnLetterExported.IHandler.OnEvent(VocabItem vocabItem, byte[] image) {
         // save image
-        File.WriteAllBytes(Path.Join(logFolder, imageFileName), image);
+        File.WriteAllBytes(Path.Join(logFolder, userID, imageFileName), image);
         LogEvent($"Image {imageFileName} written");
     }
 }

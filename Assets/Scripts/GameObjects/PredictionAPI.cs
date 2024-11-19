@@ -67,6 +67,7 @@ public class PredictionAPI : EventSubscriber, ILoggable, OnLetterExported.IHandl
         if (debugMode) {
             string nextChar = vocabItem.LetterAtCurrentPosition;
             
+            LogEvent($"Debug mode, assuming character is {nextChar}");
             InvokeLetterPredicted(vocabItem, nextChar);
             yield break;
         }

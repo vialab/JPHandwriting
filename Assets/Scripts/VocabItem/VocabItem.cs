@@ -77,6 +77,8 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
     [Rename("Toggle Tracing")]
     [SerializeField] protected bool enableTracing = false;
 
+    public bool TracingEnabled => enableTracing;
+
     /// <summary>
     /// How long to wait for the canvas clearing cube to clear the canvas.
     /// </summary>
@@ -154,6 +156,7 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
         // show menu
         EnableSelectedOutline();
         menuStateObject.Show();
+        LogEvent("Vocabulary entered Menu state");
     }
 
     public void ShowWriteState() {
@@ -179,7 +182,7 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
         _canvas.Show();
     }
 
-    private void HideUI() {
+    public void HideUI() {
         _objectUIState = ObjectUIState.Idle;
         EventBus.Instance.OnVocabItemIdleState.Invoke(this);
         
@@ -236,12 +239,23 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
     // ======================
 
     void OnVocabItemFinishGuess.IHandler.OnEvent(VocabItem vocabItem, string guess) {
-        StartCoroutine(ClearAndHideCanvas());
+        // if this item isn't the current item, do nothing
+        if (vocabItem != this) return;
+        
+        StartCoroutine(vocabItem.ClearAndHideCanvas());
         Wordle(guess);
     }
 
-    void OnLetterPredicted.IHandler.OnEvent(VocabItem vocabItem, string character, int position) {
-        StartCoroutine(DelayedUpdateCanvas(character, position));
+    void OnLetterPredicted.IHandler.OnEvent(VocabItem vocabItem, string writtenChar, int position) {
+        // If another item that isn't the current item is active, do nothing
+        if (!(vocabItem == this && Game.Instance.CurrentVocabItem == this)) return;
+        
+        // check if tracing is enabled
+        var tracingEnabled = Game.Instance.currentVocabItemTracing;
+
+        StartCoroutine(!tracingEnabled
+            ? vocabItem.ClearCanvasNoTracing(writtenChar)
+            : vocabItem.ClearCanvasTracing(writtenChar, position));
     }
     
 
@@ -252,9 +266,9 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
     private void SetUpEraserCube() {
         var canvasTransform = _canvas.transform;
         
-        _canvasEraserCube.transform.SetPositionAndRotation(
-            canvasTransform.position + (Vector3.down * 10f), 
-            canvasTransform.rotation
+        _canvasEraserCube.transform.SetLocalPositionAndRotation(
+            canvasTransform.localPosition + (Vector3.down * 10f), 
+            canvasTransform.localRotation
         );
         
         _canvasEraserCube.SetActive(false);
@@ -263,9 +277,9 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
     private void SetUpTracingUI() {
         Transform tracingTransform;
         Transform canvasTransform = _canvas.transform;
-        (tracingTransform = tracingUIObject.transform).SetPositionAndRotation(
-            canvasTransform.position + (Vector3.up * 0.0001f), 
-            canvasTransform.rotation
+        (tracingTransform = tracingUIObject.transform).SetLocalPositionAndRotation(
+            canvasTransform.localPosition + (Vector3.up * 0.0001f), 
+            canvasTransform.localRotation
         );
 
         var angles = tracingTransform.localEulerAngles;
@@ -337,20 +351,17 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
     /// and then despawns and moves the cube out of the way.
     /// </summary>
     private IEnumerator ClearCanvas() {
-        var cubePosition = _canvas.transform.position;
+        var cubePosition = _canvas.transform.localPosition;
         _canvasEraserCube.SetActive(true);
 
         LogEvent("Canvas clearing object appeared");
         
         // Move the cube up a bit
-        _canvasEraserCube.transform.position = new Vector3(
+        _canvasEraserCube.transform.localPosition = new Vector3(
             cubePosition.x,
             cubePosition.y + 0.005f,
-            cubePosition.z - 0.005f
-            ); 
-        
-        Debug.Log($"Eraser is {_canvasEraserCube.transform.position}", _canvasEraserCube);
-        Debug.Log($"Canvas is {cubePosition}", _canvas);
+            cubePosition.z
+        ); 
         
         // wait for it
         yield return new WaitForSecondsRealtime(waitTimeSeconds);
@@ -369,37 +380,52 @@ public class VocabItem : EventSubscriber, ILoggable, OnVocabItemFinishGuess.IHan
         yield return StartCoroutine(ClearCanvas());
         _canvas.Hide();
     }
-    
-    /// <summary>
-    /// Clears the canvas, and optionally gives the user the next character to trace.
-    /// </summary>
-    private IEnumerator DelayedUpdateCanvas(string writtenChar, int position) {
+
+    protected IEnumerator ClearCanvasTracing(string writtenChar, int pos) {
         yield return StartCoroutine(ClearCanvas());
-        
-        // if this works i'll cry
-        
-        if (enableTracing) {
-            Debug.Log("Tracing is enabled");
-            if (writtenChar == JPName[position].ToString()) {
-                EventBus.Instance.OnLetterCompared.Invoke(this, writtenChar, true);
+        yield return StartCoroutine(DelayedCheck(writtenChar, pos));
+    }
 
-                if (writeStateObject.CharPosition < JPName.Length) {
-                    var nextChar = JPName[writeStateObject.CharPosition].ToString();
+    protected IEnumerator ClearCanvasNoTracing(string writtenChar) {
+        yield return StartCoroutine(ClearCanvas());
+        EventBus.Instance.OnLetterCompared.Invoke(this, writtenChar, true);
+    }
 
-                    if (Hiragana.IsSmall(nextChar))
-                        nextChar = Hiragana.TryToggleSmall(nextChar);
-                    
-                    LogEvent($"Setting next character to trace to {nextChar}");
-                    tracingUIObject.SetCharacter(nextChar);
-                } else {
-                    tracingUIObject.SetCharacter("");
-                }
+    protected IEnumerator DelayedCheck(string writtenChar, int position) {
+        yield return new WaitForSecondsRealtime(waitTimeSeconds);
+
+        string currentJPName = Game.Instance.currentVocabItemJPName;
+        
+        // have we written more than enough letters?
+        if (position < currentJPName.Length) {
+            if (writtenChar == currentJPName[position].ToString()) {
+                // is the current letter a match?
+                AddCorrectLetter(writtenChar, currentJPName);
+            } else if (Hiragana.TryToggleSmall(writtenChar) == currentJPName[position].ToString()) {
+                // does the current letter have a smaller version, and is that a match?
+                AddCorrectLetter(Hiragana.TryToggleSmall(writtenChar), currentJPName);
             } else {
                 EventBus.Instance.OnLetterCompared.Invoke(this, writtenChar, false);
             }
-        } else {
-            EventBus.Instance.OnLetterCompared.Invoke(this, writtenChar, true);
+        } 
+    }
+
+    private void AddCorrectLetter(string writtenChar, string currentJPName) {
+        // increment # of characters written by 1
+        EventBus.Instance.OnLetterCompared.Invoke(this, writtenChar, true);
+        var nextChar = "";
+        
+        if (writeStateObject.CharPosition < currentJPName.Length) {
+            // get the next character to trace
+            nextChar = currentJPName[writeStateObject.CharPosition].ToString();
+
+            // API only knows full-size, so just show user full-size
+            if (Hiragana.IsSmall(nextChar))
+                nextChar = Hiragana.TryToggleSmall(nextChar);
         }
+
+        LogEvent($"Setting next character to trace to {nextChar}");
+        tracingUIObject.SetCharacter(nextChar);
     }
 
 
