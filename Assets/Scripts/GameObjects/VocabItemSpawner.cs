@@ -1,6 +1,20 @@
+using System.Collections.Generic;
+using System.Security.Cryptography;
+using UnityEngine;
+
 public class VocabItemSpawner : SerializedScriptSpawner<VocabItem> {
-    // TODO: make list of transform positions that each item can spawn on 
+    [SerializeField] private List<Transform> spawnPositions = new();
+    
     public override VocabItem Spawn(SerializedScript<VocabItem> serializedScript) {
-        return base.Spawn(serializedScript);
+        var vocabItem = base.Spawn(serializedScript);
+
+        var pos = RandomNumberGenerator.GetInt32(0, spawnPositions.Count);
+
+        var position = spawnPositions[pos];
+        spawnPositions.RemoveAt(pos);
+
+        vocabItem.transform.position = position.position;
+        
+        return vocabItem;
     }
 }

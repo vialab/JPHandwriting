@@ -8,7 +8,7 @@ from typing import Any
 # prompt user for User ID, number of items, and number of items with tracing on
 # limitations: only built-in libraries
 
-MAX_ITEMS = 2
+MAX_ITEMS = 3
 
 class VocabItem:
     def __init__(self, name: str, tracing: bool) -> None:
@@ -74,7 +74,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--traced-items",
         type = int,
-        default = 0,
+        default = MAX_ITEMS // 2,
         help = "The number of items to enable tracing for."
     )
 
