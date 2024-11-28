@@ -20,15 +20,16 @@ public class Game : EventSubscriber, ILoggable, IObjectMover, OnVocabItemMenuSta
 
     private VocabItemSpawner vocabItemSpawner;
 
-    // ======================================
-    // Where to place when an item is learned
-    // ======================================
+    // ====================
+    // Where to place items
+    // ====================
 
     [SerializeField] private List<Transform> learnedSpawnRows = new();
     [SerializeField] private List<Transform> unlearnedSpawnRows = new();
     [SerializeField] private float offset = 0.25f;
     [ReadOnly] private List<Vector3> learnedSpawns = new();
     public List<Transform> GetSpawnRows() => learnedSpawnRows;
+    [SerializeField] private Transform itemPlacePosition;
 
     // =============================================
     // Things related to the current vocabulary item
@@ -39,9 +40,11 @@ public class Game : EventSubscriber, ILoggable, IObjectMover, OnVocabItemMenuSta
     public bool currentVocabItemTracing => currentVocabItem.TracingEnabled;
     public string currentVocabItemJPName => currentVocabItem.JPName;
 
-    // =====================
-    // List of learned items
-    // =====================
+    // =====================================
+    // List of learned/unlearned vocab items
+    // =====================================
+
+    private List<VocabItem> _unlearnedVocabItems = new();
 
     private List<VocabItem> _learnedVocabItems = new();
 
@@ -58,8 +61,9 @@ public class Game : EventSubscriber, ILoggable, IObjectMover, OnVocabItemMenuSta
         if (vocabItemSpawner != null) {
             vocabItemSpawner.SetOffset(offset);
             vocabItemSpawner.SetSpawns(unlearnedSpawnRows);
-            vocabItemSpawner.Spawn(userSession.VocabItems);
+            _unlearnedVocabItems = vocabItemSpawner.Spawn(userSession.VocabItems);
             LogEvent("Items spawned");
+            ShowNextItem();
         }
     }
 
@@ -84,9 +88,19 @@ public class Game : EventSubscriber, ILoggable, IObjectMover, OnVocabItemMenuSta
 
     void OnVocabItemLearned.IHandler.OnEvent(VocabItem vocabItem) {
         _learnedVocabItems.Add(vocabItem);
+        _unlearnedVocabItems.Remove(vocabItem);
+
         LogEvent($"{vocabItem.ENName} added to list of learned vocab items");
 
         MoveItemToLearned(vocabItem);
+    }
+
+    private void ShowNextItem() {
+        if (_unlearnedVocabItems.Count == 0) return;
+
+        var newVocabItem = _unlearnedVocabItems[0];
+        newVocabItem.transform.rotation = itemPlacePosition.rotation;
+        ((IObjectMover)this).PlaceItem(newVocabItem, itemPlacePosition.position, 0.0f);
     }
 
     private void MoveItemToLearned(VocabItem vocabItem) {
