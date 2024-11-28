@@ -20,16 +20,16 @@
     - [Emily](https://github.com/EmilyGoose) (for the box itself)
 - Textbook: [Book](https://poly.pizza/m/4S1nr7WmUxm) from [Poly by Google](https://poly.pizza/u/Poly%20by%20Google) [[CC-BY]](https://creativecommons.org/licenses/by/3.0/) via Poly Pizza
 - Movie: [VHS Tape](https://poly.pizza/m/73PcdQ7OFRX) by [Bruno Oliveira](https://poly.pizza/u/Bruno%20Oliveira) [[CC-BY]](https://creativecommons.org/licenses/by/3.0/) via Poly Pizza 
+- Homework: [Small Stack of Paper](https://poly.pizza/m/aiBozYlPe--) by [Jarlan Perez](https://poly.pizza/u/Jarlan%20Perez) [[CC-BY]](https://creativecommons.org/licenses/by/3.0/) via Poly Pizza
+- Ticket: [Ticket](https://sketchfab.com/3d-models/ticket-9ac52ae294364e9c9b78563c3268ebcf) by [ItsTifaLockhart](https://sketchfab.com/KateGirl.SK) [[CC-BY 4.0]](https://creativecommons.org/licenses/by/4.0/) via Sketchfab
+- Cap: [Baseball cap](https://poly.pizza/m/aaC5GgcWEhM) by [Poly by Google](https://poly.pizza/u/Poly%20by%20Google) [[CC-BY]](https://creativecommons.org/licenses/by/3.0/) via Poly Pizza
+- Dictionary: [Dictionary](https://poly.pizza/m/aQwmHJtOVl_) by [jeremy](https://poly.pizza/u/jeremy) [[CC-BY]](https://creativecommons.org/licenses/by/3.0/) via Poly Pizza
+- Magazine: [Magazine](https://poly.pizza/m/OMzty7kxKo) by [J-Toastie](https://poly.pizza/u/J-Toastie) [[CC-BY]](https://creativecommons.org/licenses/by/3.0/) via Poly Pizza
 
 ### To add
-
-- Homework: [Small Stack of Paper](https://poly.pizza/m/aiBozYlPe--) by [Jarlan Perez](https://poly.pizza/u/Jarlan%20Perez) [[CC-BY]](https://creativecommons.org/licenses/by/3.0/) via Poly Pizza 
 - train: https://poly.pizza/m/b9NCKiXV0IZ 
-- cap: https://poly.pizza/m/7V3WmCnNaUo
 - magazine: https://poly.pizza/m/OMzty7kxKo
-- ticket: https://sketchfab.com/3d-models/ticket-9ac52ae294364e9c9b78563c3268ebcf
 - stamp: https://sketchfab.com/3d-models/stamp-collection-d2c4ef080d04490cacf7f4985a857037
-- dictionary: https://poly.pizza/m/aQwmHJtOVl_
 
 ## Audio
 - VOICEVOX [(GitHub)](https://github.com/VOICEVOX/voicevox_engine/tree/master)
