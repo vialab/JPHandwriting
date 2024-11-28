@@ -29,7 +29,7 @@
 - magazine: https://poly.pizza/m/OMzty7kxKo
 - ticket: https://sketchfab.com/3d-models/ticket-9ac52ae294364e9c9b78563c3268ebcf
 - stamp: https://sketchfab.com/3d-models/stamp-collection-d2c4ef080d04490cacf7f4985a857037
-- dictionary: https://sketchfab.com/3d-models/english-dictionaries-91aab501beed47e8946800d5d6c94519
+- dictionary: https://poly.pizza/m/aQwmHJtOVl_
 
 ## Audio
 - VOICEVOX [(GitHub)](https://github.com/VOICEVOX/voicevox_engine/tree/master)
