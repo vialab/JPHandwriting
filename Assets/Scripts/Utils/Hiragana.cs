@@ -3,9 +3,9 @@ using System.Linq;
 
 public struct Hiragana {
     /// <summary>
-    /// A dictionary that contains the three possible small characters: ゃ, ゅ, and ょ.
+    /// A dictionary that contains the four possible small characters: ゃ, ゅ, ょ, and っ.
     /// </summary>
-    public static readonly Dictionary<string, string> CHIISAI = new() { {"や","ゃ"}, {"ゆ","ゅ"}, {"よ","ょ"}, {"つ", "っ"}};
+    public static readonly Dictionary<string, string> CHIISAI = new() { { "や", "ゃ" }, { "ゆ", "ゅ" }, { "よ", "ょ" }, { "つ", "っ" } };
 
     /// <summary>
     /// Whether the Hiragana character is small or not.
@@ -33,9 +33,11 @@ public struct Hiragana {
     public static string TryToggleSmall(string character) {
         if (HasSmall(character)) {
             return CHIISAI[character];
-        } else if (IsSmall(character)) {
+        }
+        else if (IsSmall(character)) {
             return CHIISAI.FirstOrDefault(x => x.Value.Equals(character)).Key;
-        } else {
+        }
+        else {
             return character;
         }
     }

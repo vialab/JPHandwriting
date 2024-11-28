@@ -2,13 +2,11 @@
 using System.Linq;
 using UnityEngine;
 using ExtensionMethods;
-using System;
 
 public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVocabItemFinishGuess.IHandler, OnLetterPredicted.IHandler {
     // =====================
     // Vocab item properties
     // =====================
-    // TODO: set this from JSON
 
     /// <summary>
     /// The vocabulary word as it's known in English.
@@ -102,7 +100,7 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
     private ObjectUIState _objectUIState = ObjectUIState.Idle;
 
     private bool IsActiveVocabItem(VocabItem vocabItem) {
-        return (vocabItem == this && Game.Instance.CurrentVocabItem == this);
+        return vocabItem == this && Game.Instance.CurrentVocabItem == this;
     }
 
 
