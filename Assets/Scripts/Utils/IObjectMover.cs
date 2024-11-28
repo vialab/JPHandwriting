@@ -2,6 +2,10 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
 
+/// <summary>
+/// An interface that provides methods for spawning objects on top of other items.
+/// Implementation from https://stackoverflow.com/q/30209053
+/// </summary>
 public interface IObjectMover {
     List<Transform> GetSpawnRows();
 
@@ -13,15 +17,24 @@ public interface IObjectMover {
 
         foreach (var row in spawnRows) {
             foreach (Transform child in row.transform) {
-                spawns.Add(child.position);
+                var originalPos = child.transform.position;
+                
+                var platformSize = child.gameObject.GetComponent<Renderer>().bounds.size.y;
+                var platformTop = originalPos.y + platformSize / 2;
+                
+                spawns.Add(new Vector3(originalPos.x, platformTop, originalPos.z));
             }
         }
 
         return spawns;
     }
 
-    VocabItem PlaceItem(VocabItem item, Vector3 position, float offset) {
-        item.transform.position = position + Vector3.up * offset;
+    VocabItem PlaceItem(VocabItem item, Vector3 position) {
+        var objectSize = item.gameObject.GetComponentInChildren<Renderer>().bounds.size.y;
+        var objectCentre = new Vector3(position.x, position.y + objectSize / 2, position.z);
+        
+        item.transform.position = objectCentre;
+        item.transform.rotation = Quaternion.identity;
 
         return item;
     }

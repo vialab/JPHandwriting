@@ -12,10 +12,6 @@ public class VocabItemSpawner : SerializedScriptSpawner<VocabItem>, IObjectMover
         base.Awake();
     }
 
-    public void SetOffset(float offset) {
-        this.offset = offset;
-    }
-
     public void SetSpawns(List<Transform> spawnRows) {
         this.spawnRows = spawnRows;
         spawns = ((IObjectMover)this).CreateSpawnPositions();
@@ -29,7 +25,7 @@ public class VocabItemSpawner : SerializedScriptSpawner<VocabItem>, IObjectMover
 
         spawns.RemoveAt(index);
 
-        return ((IObjectMover)this).PlaceItem(vocabItem, pos, offset);
+        return ((IObjectMover)this).PlaceItem(vocabItem, pos);
     }
 
     public List<Transform> GetSpawnRows() => spawnRows;

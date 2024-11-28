@@ -26,7 +26,6 @@ public class Game : EventSubscriber, ILoggable, IObjectMover, OnVocabItemMenuSta
 
     [SerializeField] private List<Transform> learnedSpawnRows = new();
     [SerializeField] private List<Transform> unlearnedSpawnRows = new();
-    [SerializeField] private float offset = 0.25f;
     [ReadOnly] private List<Vector3> learnedSpawns = new();
     public List<Transform> GetSpawnRows() => learnedSpawnRows;
     [SerializeField] private Transform itemPlacePosition;
@@ -59,7 +58,6 @@ public class Game : EventSubscriber, ILoggable, IObjectMover, OnVocabItemMenuSta
         LoadSessionInfo();
 
         if (vocabItemSpawner != null) {
-            vocabItemSpawner.SetOffset(offset);
             vocabItemSpawner.SetSpawns(unlearnedSpawnRows);
             _unlearnedVocabItems = vocabItemSpawner.Spawn(userSession.VocabItems);
             LogEvent("Items spawned");
@@ -100,14 +98,14 @@ public class Game : EventSubscriber, ILoggable, IObjectMover, OnVocabItemMenuSta
 
         var newVocabItem = _unlearnedVocabItems[0];
         newVocabItem.transform.rotation = itemPlacePosition.rotation;
-        ((IObjectMover)this).PlaceItem(newVocabItem, itemPlacePosition.position, 0.0f);
+        ((IObjectMover)this).PlaceItem(newVocabItem, itemPlacePosition.position);
     }
 
     private void MoveItemToLearned(VocabItem vocabItem) {
         var pos = learnedSpawns[^1];
         learnedSpawns.RemoveAt(learnedSpawns.Count - 1);
 
-        ((IObjectMover)this).PlaceItem(vocabItem, pos, offset);
+        ((IObjectMover)this).PlaceItem(vocabItem, pos);
         LogEvent($"{vocabItem.ENName} moved to {pos}");
     }
 
