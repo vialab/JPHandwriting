@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using GameData;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class Game : EventSubscriber, ILoggable, IObjectMover, OnVocabItemMenuState.IHandler, OnVocabItemLearned.IHandler {
@@ -97,8 +98,10 @@ public class Game : EventSubscriber, ILoggable, IObjectMover, OnVocabItemMenuSta
         if (_unlearnedVocabItems.Count == 0) return;
 
         var newVocabItem = _unlearnedVocabItems[0];
-        newVocabItem.transform.rotation = itemPlacePosition.rotation;
+        newVocabItem.transform.eulerAngles = itemPlacePosition.forward;
         ((IObjectMover)this).PlaceItem(newVocabItem, itemPlacePosition.position);
+        
+        LogEvent($"Next vocab item is {newVocabItem.ENName}");
     }
 
     private void MoveItemToLearned(VocabItem vocabItem) {
@@ -106,11 +109,13 @@ public class Game : EventSubscriber, ILoggable, IObjectMover, OnVocabItemMenuSta
         learnedSpawns.RemoveAt(learnedSpawns.Count - 1);
 
         ((IObjectMover)this).PlaceItem(vocabItem, pos);
-        LogEvent($"{vocabItem.ENName} moved to {pos}");
+        LogEvent($"{vocabItem.ENName} moved to {pos}", LogLevel.Debug);
+        
+        ShowNextItem();
     }
 
-    public void LogEvent(string message) {
-        EventBus.Instance.OnLoggableEvent.Invoke(this, message);
+    public void LogEvent(string message, LogLevel level = LogLevel.Info) {
+        EventBus.Instance.OnLoggableEvent.Invoke(this, message, level);
     }
 
     private void EnsureSingleton() {

@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -76,7 +77,7 @@ public class LetterCanvas : EventSubscriber, ILoggable, OnPenWrittenSomething.IH
         somethingOnCanvas = true;
     }
 
-    public void LogEvent(string message) {
-        EventBus.Instance.OnLoggableEvent.Invoke(this, message);
+    public void LogEvent(string message, LogLevel level = LogLevel.Info) {
+        EventBus.Instance.OnLoggableEvent.Invoke(this, message, level);
     }
 }

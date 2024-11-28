@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -101,8 +102,9 @@ public class Pen : EventSubscriber, ILoggable, OnPenEnterCanvas.IHandler, OnPenE
         _wroteSomething = false;
     }
     
-    public void LogEvent(string message) {
-        EventBus.Instance.OnLoggableEvent.Invoke(this, message);
+    public void LogEvent(string message, LogLevel level = LogLevel.Info) {
+        EventBus.Instance.OnLoggableEvent.Invoke(this, message, level);
     }
+
 
 }

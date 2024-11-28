@@ -2,6 +2,7 @@
 using System.Linq;
 using UnityEngine;
 using ExtensionMethods;
+using UnityEditor.PackageManager;
 
 public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVocabItemFinishGuess.IHandler, OnLetterPredicted.IHandler {
     // =====================
@@ -469,7 +470,7 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
     // Log method 
     // ==========
 
-    public void LogEvent(string message) {
-        EventBus.Instance.OnLoggableEvent.Invoke(this, message);
+    public void LogEvent(string message, LogLevel level = LogLevel.Info) {
+        EventBus.Instance.OnLoggableEvent.Invoke(this, message, level);
     }
 }

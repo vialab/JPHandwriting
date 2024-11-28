@@ -83,15 +83,16 @@ def parse_args() -> argparse.Namespace:
 def main():
     args = parse_args()
     contents = generate_json(generate_items(args.items, args.traced_items), args.id)
-
+    
     with open(os.path.join("SessionData", f"{args.id}.json"), "w") as file:
         json_contents = json.dumps(contents)
         file.write(json_contents)
 
     print(f"Session has been generated and saved in the SessionData folder as {args.id}.json")
 
+    pathlib.Path(f"SessionLogs/Debug/{args.id}").mkdir(parents = True, exist_ok = True)
     pathlib.Path(f"SessionLogs/{args.id}").mkdir(parents = True, exist_ok = True)
-    print(f"Created SessionLogs/{args.id} folder")
+    print(f"Created {args.id} folders in SessionLogs")
 
 if __name__ == "__main__":
     main()

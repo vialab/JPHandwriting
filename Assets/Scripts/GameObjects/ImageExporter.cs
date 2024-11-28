@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Collections;
 using Unity.VisualScripting;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -42,7 +43,7 @@ public class ImageExporter : EventSubscriber, ILoggable, OnLetterWritten.IHandle
         });
     }
 
-    public void LogEvent(string message) {
-        EventBus.Instance.OnLoggableEvent.Invoke(this, message);
+    public void LogEvent(string message, LogLevel level = LogLevel.Info) {
+        EventBus.Instance.OnLoggableEvent.Invoke(this, message, level);
     }
 }
