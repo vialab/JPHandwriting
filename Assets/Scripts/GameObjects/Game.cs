@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using GameData;
+using Unity.VisualScripting;
 using UnityEditor.PackageManager;
 using UnityEngine;
 
@@ -61,7 +63,7 @@ public class Game : EventSubscriber, ILoggable, IObjectMover, OnVocabItemMenuSta
         if (vocabItemSpawner != null) {
             vocabItemSpawner.SetSpawns(unlearnedSpawnRows);
             _unlearnedVocabItems = vocabItemSpawner.Spawn(userSession.VocabItems);
-            LogEvent("Items spawned");
+            LogEvent($"Items spawned: {string.Join(", ", _unlearnedVocabItems)}");
             ShowNextItem();
         }
     }

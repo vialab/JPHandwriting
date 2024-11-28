@@ -103,7 +103,15 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
     private bool IsActiveVocabItem(VocabItem vocabItem) {
         return vocabItem == this && Game.Instance.CurrentVocabItem == this;
     }
+    
+    
+    // ===============
+    // Class overrides
+    // ===============
 
+    public override string ToString() {
+        return $"{Type} ({(_vocabularyState == VocabularyState.Learned ? "" : "not ")}learned)";
+    }
 
     // ===========================
     // Unity MonoBehaviour methods
@@ -132,7 +140,7 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
         SetUpTracingUI();
         SetOutline();
 
-        LogEvent($"{Type} instantiated");
+        LogEvent($"{Type} instantiated", LogLevel.Debug);
     }
 
 
