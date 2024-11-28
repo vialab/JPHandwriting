@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using ExtensionMethods;
 using Unity.VisualScripting;
 using UnityEditor.PackageManager;
 using UnityEngine;
@@ -27,6 +28,14 @@ public class Logger : EventSubscriber, OnLoggableEvent.IHandler, OnLetterExporte
     private string logFileName => $"{filenameBase}_{_startTime:yyyy-MM-dd_HH-mm-ss}.txt";
     
     private string imageFileName => $"{filenameBase}_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.png";
+
+    private string formatText(string objName, string text) {
+        return $"[{objName}] ({DateTime.Now:yyyy-MM-dd HH:mm:ss}) {text}";
+    }
+
+    private string formatRichText(string objName, string text) {
+        return $"{($"[{objName.Bold()}]".WithSize(14))} {($"({DateTime.Now:yyyy-MM-dd HH:mm:ss})".Italic().WithSize(9))} {text}";
+    }
 
     private void Awake() {
         _startTime = DateTime.Now;
@@ -62,14 +71,14 @@ public class Logger : EventSubscriber, OnLoggableEvent.IHandler, OnLetterExporte
         eventLog.Clear();
     }
 
-    private void LogEvent(string text, LogLevel level) {
-        var message = new LogMessage(level, text);
-        Debug.Log($"{message.GetLevelName()}: {message.message}");
+    private void LogEvent(string objName, string text, LogLevel level) {
+        var message = new LogMessage(level, formatText(objName, text));
+        Debug.Log($"{message.GetLevelName().WithSize(14)}: {formatRichText(objName, text)}");
         eventLog.Add(message);
     }
 
     private void LogFromLogger(string text, LogLevel level = LogLevel.Info) {
-        LogEvent($"[{name}] ({DateTime.Now:yyyy-MM-dd HH:mm:ss}) {text}", level);
+        LogEvent(name, text, level);
     }
 
     void OnLoggableEvent.IHandler.OnEvent(UnityEngine.Object obj, string text, LogLevel level) {
@@ -80,7 +89,7 @@ public class Logger : EventSubscriber, OnLoggableEvent.IHandler, OnLetterExporte
             objName = obj.GetComponent<VocabItem>().Type;
         }
         
-        LogEvent($"[{objName}] ({DateTime.Now:yyyy-MM-dd HH:mm:ss}) {text}", level);
+        LogEvent(objName, text, level);
     }
 
     void OnLetterExported.IHandler.OnEvent(VocabItem vocabItem, byte[] image) {

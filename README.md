@@ -27,5 +27,9 @@ The resulting file is saved as `SessionData/[userID].json` and a folder named af
 5. Fill the user's ID in by clicking on the Game object and filling in the "User ID" field in the Inspector.
 6. Put on your VR headset and press Play.
 
+# Contributing
+
+As of 2024-11-28, commit messages follow the [Conventional Commits](https://www.conventionalcommits.org/) format. Install [pre-commit](https://pre-commit.com/) with a Python package manager globally in order to commit changes.
+
 # Credits
 See [CREDITS.md](CREDITS.md).
