@@ -1,6 +1,6 @@
 # KikuKaku 
 
-This is the virtual reality component for the KikuKaku undergraduate honors thesis. It has so far only been tested on an Oculus Quest 2, though theoretically it should work on any VR headset that the OpenXR SDK supports.
+This is the virtual reality component for the KikuKaku undergraduate honors thesis. It has so far only been tested on an Oculus Quest 2 and an HTC Vive, though theoretically it should work on any VR headset that the OpenXR SDK supports.
 
 Also see: the [character recognition API](https://github.com/vialab/JPHandwritingModel) and the web-facing component (TBD).
 
