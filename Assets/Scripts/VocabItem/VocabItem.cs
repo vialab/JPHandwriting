@@ -9,47 +9,48 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
     // Vocab item properties
     // =====================
     // TODO: set this from JSON
-    
+
     /// <summary>
     /// The vocabulary word as it's known in English.
+    /// Also known as SerializableEventSubscriber.Type.
     /// </summary>
-    [SerializeField] protected string englishName;
-    
+    protected string englishName = "";
+
     /// <summary>
     /// The vocabulary as it's known in Japanese.
     /// The writing is in Hiragana only.
     /// </summary>
     [SerializeField] protected string japaneseName;
-    
+
     /// <summary>
     /// A clip of how the vocabulary is pronounced in Japanese.
     /// </summary>
     [SerializeField] protected AudioClip pronunciationClip;
-    
+
     // Getters for vocab properties
     public string ENName => englishName;
     public string JPName => japaneseName;
-    
+
 
     // =============
     // State objects
     // =============
-    
+
     /// <summary>
     /// The object that controls the UI in Menu state. 
     /// </summary>
     [SerializeField] protected Menu menuStateObject;
-    
+
     /// <summary>
     /// The object that controls the UI in Writing state.
     /// </summary>
     [SerializeField] protected VocabItemWrite writeStateObject;
-    
+
 
     // ==========
     // UI objects
     // ==========
-    
+
     /// <summary>
     /// The object that controls the "toast" notification.
     /// </summary>
@@ -59,18 +60,18 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
     /// The object that shows the letter to be traced.
     /// </summary>
     [SerializeField] protected Tracing tracingUIObject;
-    
+
     /// <summary>
     /// The coloured outline of the object.
     /// Green if the user has learned it, red otherwise.
     /// </summary>
     private Outline _outline;
-    
+
 
     // ==========================
     // WriteState-specific things
     // ==========================
-    
+
     /// <summary>
     /// Whether to show the character to trace over or not.
     /// </summary>
@@ -84,7 +85,7 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
     /// </summary>
     [Rename("Eraser Cube Wait Time")]
     [SerializeField] protected float waitTimeSeconds = 0.15f;
- 
+
     [SerializeField] protected LetterCanvas _canvas;
     [SerializeField] protected GameObject _canvasEraserCube;
 
@@ -99,7 +100,7 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
 
     private VocabularyState _vocabularyState = VocabularyState.NotLearned;
     private ObjectUIState _objectUIState = ObjectUIState.Idle;
-    
+
     private bool IsActiveVocabItem(VocabItem vocabItem) {
         return (vocabItem == this && Game.Instance.CurrentVocabItem == this);
     }
@@ -111,29 +112,30 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
 
     protected void Awake() {
         _outline = gameObject.AddComponent<Outline>();
+        englishName = Type;
     }
 
     protected override void Start() {
         base.Start();
-        
+
         // Menu state setup
         menuStateObject.SetClip(pronunciationClip);
         menuStateObject.SetUIText(englishName);
         menuStateObject.Hide();
-        
+
         // Hiding everything else
         writeStateObject.Hide();
         _canvas.Hide();
         toastObject.Hide();
-        
+
         // Other setup
         SetUpEraserCube();
         SetUpTracingUI();
         SetOutline();
-        
+
         LogEvent($"{Type} instantiated");
     }
-    
+
 
     // ==================
     // UI display methods
@@ -151,14 +153,14 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
             if (enableTracing) {
                 tracingUIObject.Hide();
             }
-            
+
             StartCoroutine(ClearAndHideCanvas());
         }
-        
+
         // change state
         _objectUIState = ObjectUIState.Menu;
         EventBus.Instance.OnVocabItemMenuState.Invoke(this);
-        
+
         // show menu
         EnableSelectedOutline();
         menuStateObject.Show();
@@ -170,20 +172,20 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
         if (_objectUIState == ObjectUIState.Menu) {
             menuStateObject.Hide(); // probably redundant check
         }
-        
+
         // change state
         _objectUIState = ObjectUIState.Writing;
         EventBus.Instance.OnVocabItemWriteState.Invoke(this);
-        
+
         // show write state UI
         writeStateObject.Show();
-        
+
         // if tracing is on, show the character to trace
         if (enableTracing) {
             tracingUIObject.SetCharacter(JPName[writeStateObject.CharPosition].ToString());
             tracingUIObject.Show();
         }
-        
+
         // show canvas
         _canvas.Show();
     }
@@ -191,7 +193,7 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
     public void HideUI() {
         _objectUIState = ObjectUIState.Idle;
         EventBus.Instance.OnVocabItemIdleState.Invoke(this);
-        
+
         menuStateObject.Hide();
         writeStateObject.Hide(); // In case another VocabItem wants to be focused
     }
@@ -214,8 +216,8 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
         _outline.OutlineWidth = 5f;
         _outline.OutlineMode = Outline.Mode.OutlineVisible;
         _outline.OutlineColor = Color.white;
-    } 
-    
+    }
+
     /// <summary>
     /// Disable any changes to the outline.
     /// </summary>
@@ -224,7 +226,7 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
 
         _outline.OutlineColor = Color.white;
     }
-    
+
     /// <summary>
     /// Change the outline colour when the item is in menu state.
     /// </summary>
@@ -239,7 +241,7 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
         _outline.OutlineColor = Color.yellow;
     }
 
-    
+
     // ======================
     // Event listener methods
     // ======================
@@ -247,7 +249,7 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
     void OnVocabItemFinishGuess.IHandler.OnEvent(VocabItem vocabItem, string guess) {
         // if this item isn't the active item, do nothing
         if (!IsActiveVocabItem(vocabItem)) return;
-        
+
         StartCoroutine(vocabItem.ClearAndHideCanvas());
         Wordle(guess);
     }
@@ -255,7 +257,7 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
     void OnLetterPredicted.IHandler.OnEvent(VocabItem vocabItem, string writtenChar, int position) {
         // if this item isn't the active item, do nothing
         if (!IsActiveVocabItem(vocabItem)) return;
-        
+
         // check if tracing is enabled
         var tracingEnabled = Game.Instance.currentVocabItemTracing;
 
@@ -263,7 +265,7 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
             ? vocabItem.ClearCanvasNoTracing(writtenChar)
             : vocabItem.ClearCanvasTracing(writtenChar, position));
     }
-    
+
 
     // ==================
     // WriteState methods 
@@ -274,12 +276,12 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
     /// </summary>
     private void SetUpEraserCube() {
         var canvasTransform = _canvas.transform;
-        
+
         _canvasEraserCube.transform.SetLocalPositionAndRotation(
-            canvasTransform.localPosition + (Vector3.down * 10f), 
+            canvasTransform.localPosition + (Vector3.down * 10f),
             canvasTransform.localRotation
         );
-        
+
         _canvasEraserCube.SetActive(false);
     }
 
@@ -290,17 +292,17 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
         Transform tracingTransform;
         Transform canvasTransform = _canvas.transform;
         (tracingTransform = tracingUIObject.transform).SetLocalPositionAndRotation(
-            canvasTransform.localPosition + (Vector3.up * 0.0001f), 
+            canvasTransform.localPosition + (Vector3.up * 0.0001f),
             canvasTransform.localRotation
         );
 
         var angles = tracingTransform.localEulerAngles;
         angles.y = 0f;
         tracingTransform.localEulerAngles = angles;
-        
+
         tracingUIObject.Hide();
     }
-    
+
     /// <summary>
     /// Checks if the user's guess matches the japaneseName field.
     /// If not, just like Wordle, shows characters:
@@ -314,49 +316,51 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
         if (guess == japaneseName) {
             LogEvent("Word is correct");
             DisplayToast("Correct!<br>Good job!");
-            
+
             _vocabularyState = VocabularyState.Learned;
             EventBus.Instance.OnVocabItemLearned.Invoke(this);
-            
+
             return;
         }
-        
+
         // Word is incorrect
         var guessUIText = "";
-        
+
         // Check if lengths are the same
         // This works if japaneseName is longer/same length as guess
         string shorterWord = guess, longerWord = japaneseName;
         var isGuessShorter = true;
-        
+
         // In case that isn't, here's a failsafe
         if (guess.Length > japaneseName.Length) {
             shorterWord = japaneseName;
             longerWord = guess;
             isGuessShorter = false;
         }
-        
+
         // Loop through shorter word
         for (var pos = 0; pos < shorterWord.Length; pos++) {
             var currentChar = isGuessShorter ? shorterWord[pos].ToString() : longerWord[pos].ToString();
-            
+
             if (currentChar == japaneseName[pos].ToString()) {
                 // Correct character, correct position
                 guessUIText += currentChar.WithColor("green");
-            } else if (japaneseName.Contains(Hiragana.TryToggleSmall(currentChar))) {
+            }
+            else if (japaneseName.Contains(Hiragana.TryToggleSmall(currentChar))) {
                 // Correct character, wrong position
                 // or user submitted small when they meant large, or vice versa
                 guessUIText += currentChar.WithColor("yellow");
-            } else {
+            }
+            else {
                 // Wrong character, wrong position
                 guessUIText += currentChar;
             }
         }
-        
+
         LogEvent($"User was close, their guess: {guess}");
         DisplayToast($"Try again!<br>Your guess: {guessUIText}");
     }
-    
+
     /// <summary>
     /// "Clears" the canvas.
     /// Actually, spawns a big white cube for waitTimeSeconds to overwrite the contents of the canvas with pure white,
@@ -367,14 +371,14 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
         _canvasEraserCube.SetActive(true);
 
         LogEvent("Canvas clearing object appeared");
-        
+
         // Move the cube up a bit
         _canvasEraserCube.transform.localPosition = new Vector3(
             cubePosition.x,
             cubePosition.y + 0.005f,
             cubePosition.z
-        ); 
-        
+        );
+
         // wait for it
         yield return new WaitForSecondsRealtime(waitTimeSeconds);
 
@@ -392,7 +396,7 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
         yield return StartCoroutine(ClearCanvas());
         _canvas.Hide();
     }
-    
+
     /// <summary>
     /// The coroutine started if tracing is enabled. Clears the canvas and then compares the character written.
     /// </summary>
@@ -402,7 +406,7 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
         yield return StartCoroutine(ClearCanvas());
         yield return StartCoroutine(DelayedCheck(writtenChar, pos));
     }
-    
+
     /// <summary>
     /// The coroutine started if tracing is not enabled. Clears the canvas.
     /// </summary>
@@ -422,21 +426,23 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
         yield return new WaitForSecondsRealtime(waitTimeSeconds);
 
         var currentJapaneseWord = Game.Instance.currentVocabItemJPName;
-        
+
         // have we written more than enough letters?
         if (position >= currentJapaneseWord.Length) yield break;
-        
+
         if (writtenChar == currentJapaneseWord[position].ToString()) {
             // is the current letter a match?
             AddCorrectLetter(writtenChar, currentJapaneseWord);
-        } else if (Hiragana.TryToggleSmall(writtenChar) == currentJapaneseWord[position].ToString()) {
+        }
+        else if (Hiragana.TryToggleSmall(writtenChar) == currentJapaneseWord[position].ToString()) {
             // does the current letter have a smaller version, and is that a match?
             AddCorrectLetter(Hiragana.TryToggleSmall(writtenChar), currentJapaneseWord);
-        } else {
+        }
+        else {
             EventBus.Instance.OnLetterCompared.Invoke(this, writtenChar, false);
         }
     }
-    
+
     /// <summary>
     /// Sets up the next character to be traced over, if the characters are a match.
     /// </summary>
@@ -446,7 +452,7 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
         // increment # of characters written by 1
         EventBus.Instance.OnLetterCompared.Invoke(this, writtenChar, true);
         var nextChar = "";
-        
+
         if (writeStateObject.CharPosition < currentJapaneseWord.Length) {
             // get the next character to trace
             nextChar = currentJapaneseWord[writeStateObject.CharPosition].ToString();
@@ -459,7 +465,7 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
         LogEvent($"Setting next character to trace to {nextChar}");
         tracingUIObject.SetCharacter(nextChar);
     }
-    
+
 
     // ==========
     // Log method 
