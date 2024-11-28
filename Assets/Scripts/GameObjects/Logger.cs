@@ -1,17 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using Unity.VisualScripting;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 public class Logger : EventSubscriber, OnLoggableEvent.IHandler, OnLetterExported.IHandler {
-    /// <summary>
-    /// The ID of the user. 
-    /// Used to organize logs and related files made during a session.
-    /// </summary>
-    [Tooltip("The ID of the user. Used to organize logs and related files made during a session.")]
-    [SerializeField] private string userID = "test";
-
     /// <summary>
     /// The time interval, in seconds, between the last time the logger wrote to the log file and the next.
     /// </summary>
@@ -19,10 +15,14 @@ public class Logger : EventSubscriber, OnLoggableEvent.IHandler, OnLetterExporte
     [Tooltip("The time interval between the last time the logger wrote to the log file and the next.")]
     [SerializeField] private float logIntervalTime = 3f;
 
-    private readonly List<string> eventLog = new(); 
+    private readonly List<LogMessage> eventLog = new(); 
+    
     private DateTime _startTime;
 
     [SerializeField] private string logFolder = "SessionLogs";
+    [SerializeField] private string logFolderDebug = "Debug";
+    private string userID;
+    
     private string filenameBase => $"KikuKaku_{userID}";
     private string logFileName => $"{filenameBase}_{_startTime:yyyy-MM-dd_HH-mm-ss}.txt";
     
@@ -30,17 +30,18 @@ public class Logger : EventSubscriber, OnLoggableEvent.IHandler, OnLetterExporte
 
     private void Awake() {
         _startTime = DateTime.Now;
+        userID = Game.Instance.userID;
     }
 
     protected override void Start() {
         base.Start();
-        LogEvent($"[{name}] ({_startTime:yyyy-MM-dd HH:mm:ss}) Session started, logger initialized");
+        
+        LogFromLogger("Session started, logger initialized");
         
         InvokeRepeating(nameof(WriteToFile), logIntervalTime, logIntervalTime);
     }
     
-    // OnApplicationQuit makes the most sense if you're reading it and have no idea what everything does
-    // but! OnDisable executes after that and OnDestroy does way after so
+    // OnDestroy because it'll be the very last thing that's done before closing
     private void OnDestroy() {
         WriteToFile();
     }
@@ -48,24 +49,43 @@ public class Logger : EventSubscriber, OnLoggableEvent.IHandler, OnLetterExporte
     private void WriteToFile() {
         if (eventLog.Count == 0) return;
         
-        using var outFile = new StreamWriter(Path.Join(logFolder, userID, logFileName), append: true);
-        outFile.Write(string.Join("\n", eventLog));
-        outFile.Write("\n"); // newline isn't added after last element of eventLog array 
+        using var outFile = new StreamWriter(Path.Combine(logFolder, userID, logFileName), append: true);
+        using var debugOutFile = new StreamWriter(Path.Combine(logFolder, logFolderDebug, userID, logFileName), append: true);
+        
+        debugOutFile.Write(string.Join("\n", eventLog)); // Write debug stuff like coordinates
+        outFile.Write(string.Join("\n", eventLog.Where(x => x.level == LogLevel.Info).ToList())); // Write everything needed for researchers to see
+        
+        // End of lists for both, \n not added after last element of array
+        debugOutFile.Write("\n"); 
+        outFile.Write("\n"); 
+        
         eventLog.Clear();
     }
 
-    private void LogEvent(string text) {
-        Debug.Log(text);
-        eventLog.Add(text);
+    private void LogEvent(string text, LogLevel level) {
+        var message = new LogMessage(level, text);
+        Debug.Log($"{message.GetLevelName()}: {message.message}");
+        eventLog.Add(message);
     }
 
-    void OnLoggableEvent.IHandler.OnEvent(UnityEngine.Object obj, string text) {
-        LogEvent($"[{obj.name}] ({DateTime.Now:yyyy-MM-dd HH:mm:ss}) {text}");
+    private void LogFromLogger(string text, LogLevel level = LogLevel.Info) {
+        LogEvent($"[{name}] ({DateTime.Now:yyyy-MM-dd HH:mm:ss}) {text}", level);
+    }
+
+    void OnLoggableEvent.IHandler.OnEvent(UnityEngine.Object obj, string text, LogLevel level) {
+        var objName = obj.name;
+        
+        // So you don't see (Clone) in logs
+        if (obj.GetComponent<VocabItem>() != null) {
+            objName = obj.GetComponent<VocabItem>().Type;
+        }
+        
+        LogEvent($"[{objName}] ({DateTime.Now:yyyy-MM-dd HH:mm:ss}) {text}", level);
     }
 
     void OnLetterExported.IHandler.OnEvent(VocabItem vocabItem, byte[] image) {
         // save image
         File.WriteAllBytes(Path.Join(logFolder, userID, imageFileName), image);
-        LogEvent($"Image {imageFileName} written");
+        LogFromLogger($"Image {imageFileName} written");
     }
 }

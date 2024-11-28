@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -108,7 +109,7 @@ public class PredictionAPI : EventSubscriber, ILoggable, OnLetterExported.IHandl
         _predictionLock = false;
     }
 
-    public void LogEvent(string message) {
-       EventBus.Instance.OnLoggableEvent.Invoke(this, message); 
+    public void LogEvent(string message, LogLevel level = LogLevel.Info) {
+       EventBus.Instance.OnLoggableEvent.Invoke(this, message, level); 
     }
 }

@@ -1,4 +1,5 @@
 ﻿using TMPro;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -18,7 +19,7 @@ public abstract class VocabUI : MonoBehaviour, ILoggable {
         UIText.SetText(text);
     }
 
-    public void LogEvent(string message) {
-        EventBus.Instance.OnLoggableEvent.Invoke(transform.parent, message);
+    public void LogEvent(string message, LogLevel level = LogLevel.Info) {
+        EventBus.Instance.OnLoggableEvent.Invoke(transform.parent, message, level);
     }
 }
