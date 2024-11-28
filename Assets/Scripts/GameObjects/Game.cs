@@ -101,6 +101,7 @@ public class Game : EventSubscriber, ILoggable, IObjectMover, OnVocabItemMenuSta
         newVocabItem.transform.eulerAngles = itemPlacePosition.forward;
         ((IObjectMover)this).PlaceItem(newVocabItem, itemPlacePosition.position);
         
+        LogEvent($"{newVocabItem.ENName} moved to {itemPlacePosition.position}", LogLevel.Debug);
         LogEvent($"Next vocab item is {newVocabItem.ENName}");
     }
 

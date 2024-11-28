@@ -1079,6 +1079,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Right Teleport Interactor
       objectReference: {fileID: 0}
+    - target: {fileID: 2761784063978902507, guid: c1800acf6366418a9b5f610249000331,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6842,6 +6847,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   logIntervalTime: 3
   logFolder: SessionLogs
+  logFolderDebug: Debug
 --- !u!4 &1973944586
 Transform:
   m_ObjectHideFlags: 0
