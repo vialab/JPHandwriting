@@ -29,7 +29,7 @@
 ### To add
 - train: https://poly.pizza/m/b9NCKiXV0IZ 
 - magazine: https://poly.pizza/m/OMzty7kxKo
-- stamp: https://sketchfab.com/3d-models/stamp-collection-d2c4ef080d04490cacf7f4985a857037
+- stamp: https://commons.wikimedia.org/wiki/File:Yokoyama_Taikan_Art_stamp_50Yen.jpg
 
 ## Audio
 - VOICEVOX [(GitHub)](https://github.com/VOICEVOX/voicevox_engine/tree/master)

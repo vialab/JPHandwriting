@@ -17,7 +17,7 @@ public class HiraganaBoard : MonoBehaviour, ILoggable {
         visionCollider = GetComponentInChildren<Collider>();
     }
 
-    // TODO: hopefully I don't need to do anything more
+    // TODO: this is not actually working and it'll always be in user's view
     private void Update() {
         isInView = GeometryUtility.TestPlanesAABB(frustumPlanes, visionCollider.bounds);
         if (wasInView != isInView) {
