@@ -303,7 +303,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: Photograph
   japaneseName: "\u3057\u3083\u3057\u3093"
-  pronunciationClip: {fileID: 0}
+  pronunciationClip: {fileID: 8300000, guid: a06a275edba898b41a498e5366c42ccf, type: 3}
   menuStateObject: {fileID: 3345862211324897392}
   writeStateObject: {fileID: 7940003688447096547}
   toastObject: {fileID: 1225906130355646853}
@@ -786,7 +786,7 @@ PrefabInstance:
     - target: {fileID: 7777734310866366388, guid: 6299aadc551f2e24f8dfa48a2800fa54,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.005
       objectReference: {fileID: 0}
     - target: {fileID: 7777734310866366388, guid: 6299aadc551f2e24f8dfa48a2800fa54,
         type: 3}

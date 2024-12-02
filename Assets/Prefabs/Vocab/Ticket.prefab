@@ -303,7 +303,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: Ticket
   japaneseName: "\u304D\u3063\u3077"
-  pronunciationClip: {fileID: 0}
+  pronunciationClip: {fileID: 8300000, guid: c11770214af42534db050b6b07e46e32, type: 3}
   menuStateObject: {fileID: 4761917992992199086}
   writeStateObject: {fileID: 227608481093108594}
   toastObject: {fileID: 6157502454534922525}

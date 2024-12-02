@@ -303,7 +303,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: Clock
   japaneseName: "\u3068\u3051\u3044"
-  pronunciationClip: {fileID: 0}
+  pronunciationClip: {fileID: 8300000, guid: cd2c1af0b590f0b499d1b92d8f09ef56, type: 3}
   menuStateObject: {fileID: 834965947169738681}
   writeStateObject: {fileID: 3520857820292074650}
   toastObject: {fileID: 8796359695885508740}

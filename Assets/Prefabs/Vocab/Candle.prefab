@@ -272,7 +272,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: Candle
   japaneseName: "\u308D\u3046\u305D\u304F"
-  pronunciationClip: {fileID: 0}
+  pronunciationClip: {fileID: 8300000, guid: dc47397e5918ac74fb19209960e56bc1, type: 3}
   menuStateObject: {fileID: 2612696960312159740}
   writeStateObject: {fileID: 2961586674736179947}
   toastObject: {fileID: 6003135001979057603}

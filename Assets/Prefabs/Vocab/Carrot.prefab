@@ -272,7 +272,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: Carrot
   japaneseName: "\u306B\u3093\u3058\u3093"
-  pronunciationClip: {fileID: 0}
+  pronunciationClip: {fileID: 8300000, guid: e7f2195b07aa1cd4eb8cdddb7ff1a6ba, type: 3}
   menuStateObject: {fileID: 9048884640689899389}
   writeStateObject: {fileID: 584162807589902695}
   toastObject: {fileID: 2967478254706925034}

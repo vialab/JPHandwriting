@@ -272,7 +272,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: Movie
   japaneseName: "\u3048\u3044\u304C"
-  pronunciationClip: {fileID: 0}
+  pronunciationClip: {fileID: 8300000, guid: fa7e844f7b0f90948b91365e6f5a00cf, type: 3}
   menuStateObject: {fileID: 6184374676591789333}
   writeStateObject: {fileID: 4513761145617672892}
   toastObject: {fileID: 6095568098860471310}

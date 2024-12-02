@@ -303,7 +303,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: Egg
   japaneseName: "\u305F\u307E\u3054"
-  pronunciationClip: {fileID: 0}
+  pronunciationClip: {fileID: 8300000, guid: 03d8b9328a7d7a446abe94de71eb08d8, type: 3}
   menuStateObject: {fileID: 6376265879756107762}
   writeStateObject: {fileID: 7580212845213983585}
   toastObject: {fileID: 6472649485555075408}

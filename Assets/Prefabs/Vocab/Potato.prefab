@@ -303,7 +303,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: Potato
   japaneseName: "\u3058\u3083\u304C\u3044\u3082"
-  pronunciationClip: {fileID: 0}
+  pronunciationClip: {fileID: 8300000, guid: 9a1b639b3c3d2ff4bb78bedefcf5f134, type: 3}
   menuStateObject: {fileID: 1013123242111607782}
   writeStateObject: {fileID: 3516789001458838679}
   toastObject: {fileID: 623438546241596432}

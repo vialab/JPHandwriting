@@ -303,7 +303,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: Glasses
   japaneseName: "\u3081\u304C\u306D"
-  pronunciationClip: {fileID: 0}
+  pronunciationClip: {fileID: 8300000, guid: a323b1cd9f7f1a14ca4639cc7f77cbda, type: 3}
   menuStateObject: {fileID: 4988950000667031518}
   writeStateObject: {fileID: 639672761408466835}
   toastObject: {fileID: 415952794288793737}

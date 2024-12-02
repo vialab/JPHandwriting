@@ -335,7 +335,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: Dictionary
   japaneseName: "\u3058\u3057\u3087"
-  pronunciationClip: {fileID: 0}
+  pronunciationClip: {fileID: 8300000, guid: 2c578662138a5b349a810227de0e3111, type: 3}
   menuStateObject: {fileID: 2423436080000002407}
   writeStateObject: {fileID: 8112448642942190341}
   toastObject: {fileID: 4857198028600698005}

@@ -303,7 +303,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: Tea
   japaneseName: "\u304A\u3061\u3083"
-  pronunciationClip: {fileID: 0}
+  pronunciationClip: {fileID: 8300000, guid: f596b71692d294943826bbfbc84721d6, type: 3}
   menuStateObject: {fileID: 1329993088613513427}
   writeStateObject: {fileID: 6972245746443247754}
   toastObject: {fileID: 6184233680059761805}

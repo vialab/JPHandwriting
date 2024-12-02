@@ -272,7 +272,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: Train
   japaneseName: "\u3067\u3093\u3057\u3083"
-  pronunciationClip: {fileID: 0}
+  pronunciationClip: {fileID: 8300000, guid: 1cbefe7c62ea30041b4763473ed544e1, type: 3}
   menuStateObject: {fileID: 3651654499715702233}
   writeStateObject: {fileID: 4284955328575541062}
   toastObject: {fileID: 6231205762062146015}

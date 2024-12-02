@@ -272,7 +272,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: Magazine
   japaneseName: "\u3056\u3063\u3057"
-  pronunciationClip: {fileID: 0}
+  pronunciationClip: {fileID: 8300000, guid: 873aed9a85bf5e64cb1a3934b4bff091, type: 3}
   menuStateObject: {fileID: 7579266917422250386}
   writeStateObject: {fileID: 3234261186495344412}
   toastObject: {fileID: 4034098801461191257}

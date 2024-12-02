@@ -272,7 +272,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: Diary
   japaneseName: "\u306B\u3063\u304D"
-  pronunciationClip: {fileID: 0}
+  pronunciationClip: {fileID: 8300000, guid: 74ff8de79d72eee4bad6c29bf5debbf8, type: 3}
   menuStateObject: {fileID: 8050115902640765778}
   writeStateObject: {fileID: 7172223965573629491}
   toastObject: {fileID: 8835939242855264026}

@@ -271,8 +271,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Type: Hospital
-  japaneseName: 
-  pronunciationClip: {fileID: 0}
+  japaneseName: "\u3073\u3087\u3046\u3044\u3093"
+  pronunciationClip: {fileID: 8300000, guid: 2a3799e3c07f6594bbee1943d6d7f32a, type: 3}
   menuStateObject: {fileID: 8752271086717260421}
   writeStateObject: {fileID: 3307622338960451946}
   toastObject: {fileID: 6795564908169442964}

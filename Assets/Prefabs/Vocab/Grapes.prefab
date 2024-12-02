@@ -272,7 +272,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: Grapes
   japaneseName: "\u3076\u3069\u3046"
-  pronunciationClip: {fileID: 0}
+  pronunciationClip: {fileID: 8300000, guid: c0b3fd09574861141a1bcace85b24bdf, type: 3}
   menuStateObject: {fileID: 2740654621411368205}
   writeStateObject: {fileID: 2120262325448180419}
   toastObject: {fileID: 4026240510212434565}
