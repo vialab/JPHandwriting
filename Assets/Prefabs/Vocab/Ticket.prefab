@@ -303,7 +303,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: Ticket
   japaneseName: "\u304D\u3063\u3077"
-  pronunciationClip: {fileID: 0}
+  pronunciationClip: {fileID: 8300000, guid: c11770214af42534db050b6b07e46e32, type: 3}
   menuStateObject: {fileID: 4761917992992199086}
   writeStateObject: {fileID: 227608481093108594}
   toastObject: {fileID: 6157502454534922525}
@@ -691,7 +691,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -2432090755550338912, guid: 435d1653f93f05641afeb295ccc731ae, type: 3}
 --- !u!4 &5340539311701175056 stripped
@@ -716,12 +716,12 @@ PrefabInstance:
     - target: {fileID: 2743740602458515761, guid: 068069fc98e336247b83f9e5af1cee91,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.111
+      value: 0.156
       objectReference: {fileID: 0}
     - target: {fileID: 2743740602458515761, guid: 068069fc98e336247b83f9e5af1cee91,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.228
+      value: -0.25300008
       objectReference: {fileID: 0}
     - target: {fileID: 2743740602458515761, guid: 068069fc98e336247b83f9e5af1cee91,
         type: 3}
@@ -802,12 +802,12 @@ PrefabInstance:
     - target: {fileID: 598525988208496325, guid: bcf98b2548be8644a89b2af63eaad1ea,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.15799999
+      value: 0.203
       objectReference: {fileID: 0}
     - target: {fileID: 598525988208496325, guid: bcf98b2548be8644a89b2af63eaad1ea,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.22799993
+      value: -0.25300002
       objectReference: {fileID: 0}
     - target: {fileID: 598525988208496325, guid: bcf98b2548be8644a89b2af63eaad1ea,
         type: 3}
@@ -903,12 +903,12 @@ PrefabInstance:
     - target: {fileID: 2377205209717334305, guid: fb704c6a1346dca4cad2cf3a172d85be,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.15799999
+      value: 0.203
       objectReference: {fileID: 0}
     - target: {fileID: 2377205209717334305, guid: fb704c6a1346dca4cad2cf3a172d85be,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.22799993
+      value: -0.253
       objectReference: {fileID: 0}
     - target: {fileID: 2377205209717334305, guid: fb704c6a1346dca4cad2cf3a172d85be,
         type: 3}

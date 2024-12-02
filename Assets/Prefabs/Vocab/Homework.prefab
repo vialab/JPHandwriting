@@ -272,7 +272,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: Homework
   japaneseName: "\u3057\u3085\u304F\u3060\u3044"
-  pronunciationClip: {fileID: 0}
+  pronunciationClip: {fileID: 8300000, guid: 27064ff74750c2645aa3fc0890a63ab3, type: 3}
   menuStateObject: {fileID: 5549672827930447078}
   writeStateObject: {fileID: 6474501404068562255}
   toastObject: {fileID: 6311599047596214573}
@@ -328,12 +328,12 @@ PrefabInstance:
     - target: {fileID: 2743740602458515761, guid: 068069fc98e336247b83f9e5af1cee91,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.111
+      value: 0.14000002
       objectReference: {fileID: 0}
     - target: {fileID: 2743740602458515761, guid: 068069fc98e336247b83f9e5af1cee91,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.228
+      value: -0.23300005
       objectReference: {fileID: 0}
     - target: {fileID: 2743740602458515761, guid: 068069fc98e336247b83f9e5af1cee91,
         type: 3}
@@ -992,12 +992,12 @@ PrefabInstance:
     - target: {fileID: 2377205209717334305, guid: fb704c6a1346dca4cad2cf3a172d85be,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.15799999
+      value: 0.187
       objectReference: {fileID: 0}
     - target: {fileID: 2377205209717334305, guid: fb704c6a1346dca4cad2cf3a172d85be,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.22799993
+      value: -0.233
       objectReference: {fileID: 0}
     - target: {fileID: 2377205209717334305, guid: fb704c6a1346dca4cad2cf3a172d85be,
         type: 3}
@@ -1182,12 +1182,12 @@ PrefabInstance:
     - target: {fileID: 598525988208496325, guid: bcf98b2548be8644a89b2af63eaad1ea,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.15799999
+      value: 0.187
       objectReference: {fileID: 0}
     - target: {fileID: 598525988208496325, guid: bcf98b2548be8644a89b2af63eaad1ea,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.22799993
+      value: -0.23299998
       objectReference: {fileID: 0}
     - target: {fileID: 598525988208496325, guid: bcf98b2548be8644a89b2af63eaad1ea,
         type: 3}

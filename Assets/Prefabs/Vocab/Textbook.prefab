@@ -302,7 +302,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Type: Textbook
-  englishName: Textbook
   japaneseName: "\u304D\u3087\u3046\u304B\u3057\u3087"
   pronunciationClip: {fileID: 8300000, guid: 2db12e6b9c6699d45bf25b8e0f3e7cc2, type: 3}
   menuStateObject: {fileID: 8610795943279380212}
@@ -876,12 +875,12 @@ PrefabInstance:
     - target: {fileID: 2743740602458515761, guid: 068069fc98e336247b83f9e5af1cee91,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.111
+      value: 0.18800001
       objectReference: {fileID: 0}
     - target: {fileID: 2743740602458515761, guid: 068069fc98e336247b83f9e5af1cee91,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.228
+      value: -0.22899993
       objectReference: {fileID: 0}
     - target: {fileID: 2743740602458515761, guid: 068069fc98e336247b83f9e5af1cee91,
         type: 3}
@@ -1063,12 +1062,12 @@ PrefabInstance:
     - target: {fileID: 2377205209717334305, guid: fb704c6a1346dca4cad2cf3a172d85be,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.054
+      value: 0.023
       objectReference: {fileID: 0}
     - target: {fileID: 2377205209717334305, guid: fb704c6a1346dca4cad2cf3a172d85be,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.049
+      value: -0.05
       objectReference: {fileID: 0}
     - target: {fileID: 2377205209717334305, guid: fb704c6a1346dca4cad2cf3a172d85be,
         type: 3}
@@ -1143,12 +1142,12 @@ PrefabInstance:
     - target: {fileID: 598525988208496325, guid: bcf98b2548be8644a89b2af63eaad1ea,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.112
+      value: 0.18900001
       objectReference: {fileID: 0}
     - target: {fileID: 598525988208496325, guid: bcf98b2548be8644a89b2af63eaad1ea,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.228
+      value: -0.22899993
       objectReference: {fileID: 0}
     - target: {fileID: 598525988208496325, guid: bcf98b2548be8644a89b2af63eaad1ea,
         type: 3}

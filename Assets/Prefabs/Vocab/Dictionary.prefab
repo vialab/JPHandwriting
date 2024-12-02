@@ -335,7 +335,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: Dictionary
   japaneseName: "\u3058\u3057\u3087"
-  pronunciationClip: {fileID: 0}
+  pronunciationClip: {fileID: 8300000, guid: 2c578662138a5b349a810227de0e3111, type: 3}
   menuStateObject: {fileID: 2423436080000002407}
   writeStateObject: {fileID: 8112448642942190341}
   toastObject: {fileID: 4857198028600698005}
@@ -641,12 +641,12 @@ PrefabInstance:
     - target: {fileID: 598525988208496325, guid: bcf98b2548be8644a89b2af63eaad1ea,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.15799999
+      value: 0.203
       objectReference: {fileID: 0}
     - target: {fileID: 598525988208496325, guid: bcf98b2548be8644a89b2af63eaad1ea,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.22799993
+      value: -0.229
       objectReference: {fileID: 0}
     - target: {fileID: 598525988208496325, guid: bcf98b2548be8644a89b2af63eaad1ea,
         type: 3}
@@ -828,12 +828,12 @@ PrefabInstance:
     - target: {fileID: 2377205209717334305, guid: fb704c6a1346dca4cad2cf3a172d85be,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.15799999
+      value: 0.203
       objectReference: {fileID: 0}
     - target: {fileID: 2377205209717334305, guid: fb704c6a1346dca4cad2cf3a172d85be,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.22799993
+      value: -0.229
       objectReference: {fileID: 0}
     - target: {fileID: 2377205209717334305, guid: fb704c6a1346dca4cad2cf3a172d85be,
         type: 3}
@@ -1214,12 +1214,12 @@ PrefabInstance:
     - target: {fileID: 2743740602458515761, guid: 068069fc98e336247b83f9e5af1cee91,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.111
+      value: 0.156
       objectReference: {fileID: 0}
     - target: {fileID: 2743740602458515761, guid: 068069fc98e336247b83f9e5af1cee91,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.228
+      value: -0.22900008
       objectReference: {fileID: 0}
     - target: {fileID: 2743740602458515761, guid: 068069fc98e336247b83f9e5af1cee91,
         type: 3}

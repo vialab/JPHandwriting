@@ -303,7 +303,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: School
   japaneseName: "\u304C\u3063\u3053\u3046"
-  pronunciationClip: {fileID: 0}
+  pronunciationClip: {fileID: 8300000, guid: f06c65bb28bb7b5409443a3041c2e24e, type: 3}
   menuStateObject: {fileID: 5911637278853824087}
   writeStateObject: {fileID: 7852641889033816805}
   toastObject: {fileID: 6052980068758706115}
