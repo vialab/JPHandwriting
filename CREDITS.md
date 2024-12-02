@@ -30,6 +30,15 @@
 - train: https://poly.pizza/m/b9NCKiXV0IZ 
 - magazine: https://poly.pizza/m/OMzty7kxKo
 - stamp: https://commons.wikimedia.org/wiki/File:Yokoyama_Taikan_Art_stamp_50Yen.jpg
+- diary: https://skfb.ly/oNXnX
+- bicycle: https://poly.pizza/m/19VoUuA2pcN
+- candle: https://poly.pizza/m/HFpLq6iqKu
+- carrot: https://poly.pizza/m/3oFkNid6ofx
+- clock: https://poly.pizza/m/dwZRvbXlAus
+- glasses: https://poly.pizza/m/9i5mmOwt7cu
+- grapes: https://poly.pizza/m/csU4Smr2_aV
+- photograph: https://sketchfab.com/3d-models/polaroid-photo-sample-fe1d05e189dc4da197f6ba2717abe182
+- potato: https://poly.pizza/m/acwBoZQNdm
 
 ## Audio
 - VOICEVOX [(GitHub)](https://github.com/VOICEVOX/voicevox_engine/tree/master)

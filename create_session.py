@@ -8,7 +8,7 @@ from typing import Any
 # prompt user for User ID, number of items, and number of items with tracing on
 # limitations: only built-in libraries
 
-MAX_ITEMS = 3
+MAX_ITEMS = 10
 
 class VocabItem:
     def __init__(self, name: str, tracing: bool) -> None:

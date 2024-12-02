@@ -6,7 +6,7 @@ using UnityEditor.PackageManager;
 
 public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVocabItemFinishGuess.IHandler, OnLetterPredicted.IHandler {
     // =====================
-    // Vocab item properties
+    // MARK: Vocab item properties
     // =====================
 
     /// <summary>
@@ -32,7 +32,7 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
 
 
     // =============
-    // State objects
+    // MARK: State objects
     // =============
 
     /// <summary>
@@ -47,7 +47,7 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
 
 
     // ==========
-    // UI objects
+    // MARK: UI objects
     // ==========
 
     /// <summary>
@@ -68,7 +68,7 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
 
 
     // ==========================
-    // WriteState-specific things
+    // MARK: WriteState-specific things
     // ==========================
 
     /// <summary>
@@ -93,7 +93,7 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
 
 
     // =====================
-    // Other item properties
+    // MARK: Other item properties
     // =====================
     // TODO: load from user config
 
@@ -103,10 +103,10 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
     private bool IsActiveVocabItem(VocabItem vocabItem) {
         return vocabItem == this && Game.Instance.CurrentVocabItem == this;
     }
-    
-    
+
+
     // ===============
-    // Class overrides
+    // MARK: Class overrides
     // ===============
 
     public override string ToString() {
@@ -114,7 +114,7 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
     }
 
     // ===========================
-    // Unity MonoBehaviour methods
+    // MARK: Unity MonoBehaviour methods
     // ===========================
 
     protected void Awake() {
@@ -145,7 +145,7 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
 
 
     // ==================
-    // UI display methods
+    // MARK: UI display methods
     // ==================
 
     private void DisplayToast(string message) {
@@ -212,7 +212,7 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
 
 
     // =======================
-    // Outline display methods 
+    // MARK: Outline display methods 
     // =======================
 
     /// <summary>
@@ -250,7 +250,7 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
 
 
     // ======================
-    // Event listener methods
+    // MARK: Event listener methods
     // ======================
 
     void OnVocabItemFinishGuess.IHandler.OnEvent(VocabItem vocabItem, string guess) {
@@ -275,7 +275,7 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
 
 
     // ==================
-    // WriteState methods 
+    // MARK: WriteState methods 
     // ==================
 
     /// <summary>
@@ -475,7 +475,7 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable, OnVo
 
 
     // ==========
-    // Log method 
+    // MARK: Log method 
     // ==========
 
     public void LogEvent(string message, LogLevel level = LogLevel.Info) {

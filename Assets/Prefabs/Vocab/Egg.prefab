@@ -114,7 +114,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_InteractionManager: {fileID: 0}
   m_Colliders:
-  - {fileID: 0}
+  - {fileID: 6162901851071343508}
   m_InteractionLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -828,6 +828,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Egg
       objectReference: {fileID: 0}
+    - target: {fileID: 8383456090697767986, guid: b47c02c67d312a741a7ed9b9e9be0d54,
+        type: 3}
+      propertyPath: m_Convex
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -836,6 +841,12 @@ PrefabInstance:
 --- !u!4 &3924752277996127234 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1704760989528437668, guid: b47c02c67d312a741a7ed9b9e9be0d54,
+    type: 3}
+  m_PrefabInstance: {fileID: 2440672209133664166}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &6162901851071343508 stripped
+MeshCollider:
+  m_CorrespondingSourceObject: {fileID: 8383456090697767986, guid: b47c02c67d312a741a7ed9b9e9be0d54,
     type: 3}
   m_PrefabInstance: {fileID: 2440672209133664166}
   m_PrefabAsset: {fileID: 0}
