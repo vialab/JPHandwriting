@@ -43,6 +43,8 @@ public class LetterCanvas : EventSubscriber, ILoggable, OnPenWrittenSomething.IH
         
         // TODO: implement pushback 
         // https://www.youtube.com/watch?v=FVPnp3fTGnw
+        
+        // TODO: moving while holding object https://discussions.unity.com/t/moving-while-holding-an-object-xr-grab-interactable/880802
     }
 
     private void OnTriggerEnter(Collider other) {
