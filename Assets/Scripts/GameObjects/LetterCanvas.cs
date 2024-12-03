@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEditor.PackageManager;
 using UnityEngine;
@@ -33,6 +34,15 @@ public class LetterCanvas : EventSubscriber, ILoggable, OnPenWrittenSomething.IH
 
     public void Hide() {
         gameObject.SetActive(false);
+    }
+
+    private void Update() {
+        // TODO: have it always face the player, regardless of how the item is rotated
+        // notes: https://gist.github.com/ezirmusitua/67bc0bc12073451b56e5ce51225b8e60
+        // https://www.youtube.com/watch?v=yhB921bDLYA
+        
+        // TODO: implement pushback 
+        // https://www.youtube.com/watch?v=FVPnp3fTGnw
     }
 
     private void OnTriggerEnter(Collider other) {

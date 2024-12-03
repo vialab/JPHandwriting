@@ -560,7 +560,7 @@ MonoBehaviour:
   m_EnableTurnAround: 1
   m_DelayTime: 0
   m_LeftHandSnapTurnAction:
-    m_UseReference: 0
+    m_UseReference: 1
     m_Action:
       m_Name: Left Hand Snap Turn
       m_Type: 0
@@ -570,7 +570,8 @@ MonoBehaviour:
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
-    m_Reference: {fileID: 0}
+    m_Reference: {fileID: -7374733323251553461, guid: c348712bda248c246b8c49b3db54643f,
+      type: 3}
   m_RightHandSnapTurnAction:
     m_UseReference: 1
     m_Action:
@@ -599,7 +600,7 @@ MonoBehaviour:
   m_System: {fileID: 168039318}
   m_TurnSpeed: 60
   m_LeftHandTurnAction:
-    m_UseReference: 0
+    m_UseReference: 1
     m_Action:
       m_Name: Left Hand Turn
       m_Type: 0
@@ -609,7 +610,8 @@ MonoBehaviour:
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
-    m_Reference: {fileID: 0}
+    m_Reference: {fileID: 1010738217276881514, guid: c348712bda248c246b8c49b3db54643f,
+      type: 3}
   m_RightHandTurnAction:
     m_UseReference: 1
     m_Action:
@@ -3744,7 +3746,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02632217290b0304eac1bf0581126044, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  userID: test
+  userID: pilot1
   learnedSpawnRows:
   - {fileID: 2104600702}
   - {fileID: 2145521458}
@@ -4015,7 +4017,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   url: https://exeter.turkey-sun.ts.net
-  endpoint: predict
+  endpoint: predict/
   healthEndpoint: ping
 --- !u!4 &1324182654
 Transform:
@@ -4188,10 +4190,10 @@ MonoBehaviour:
   m_ActivateAction:
     m_UseReference: 1
     m_Action:
-      m_Name: 
+      m_Name: Activate
       m_Type: 1
       m_ExpectedControlType: Button
-      m_Id: 
+      m_Id: db0de588-ea3a-421e-ba67-a700a62d9353
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -5800,10 +5802,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e988983f96fe1dd48800bcdfc82f23e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_LineWidth: 0.005
+  m_LineWidth: 0.009
   m_OverrideInteractorLineLength: 1
   m_LineLength: 10
-  m_AutoAdjustLineLength: 0
+  m_AutoAdjustLineLength: 1
   m_MinLineLength: 0.5
   m_UseDistanceToHitAsMaxLineLength: 1
   m_LineRetractionDelay: 0.5
@@ -5865,7 +5867,7 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   m_InvalidColorGradient:
     serializedVersion: 2
-    key0: {r: 1, g: 0, b: 0, a: 1}
+    key0: {r: 0.23529413, g: 0.23529413, b: 0.23529413, a: 1}
     key1: {r: 1, g: 0, b: 0, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
@@ -5890,7 +5892,7 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_ColorSpace: -1
+    m_ColorSpace: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   m_BlockedColorGradient:
@@ -5929,8 +5931,8 @@ MonoBehaviour:
   m_SnapThresholdDistance: 10
   m_Reticle: {fileID: 0}
   m_BlockedReticle: {fileID: 0}
-  m_StopLineAtFirstRaycastHit: 1
-  m_StopLineAtSelection: 0
+  m_StopLineAtFirstRaycastHit: 0
+  m_StopLineAtSelection: 1
   m_SnapEndpointIfAvailable: 1
   m_LineBendRatio: 0.5
   m_OverrideInteractorLineOrigin: 1
@@ -5956,7 +5958,8 @@ LineRenderer:
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
-  m_Materials: []
+  m_Materials:
+  - {fileID: 2100000, guid: e9c77df4c50ae7b418a110834beed5e8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6001,7 +6004,7 @@ LineRenderer:
     colorGradient:
       serializedVersion: 2
       key0: {r: 1, g: 0, b: 0, a: 1}
-      key1: {r: 1, g: 1, b: 1, a: 1}
+      key1: {r: 1, g: 0, b: 0, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -6051,7 +6054,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6803edce0201f574f923fd9d10e5b30a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_InteractionManager: {fileID: 0}
+  m_InteractionManager: {fileID: 1067028707}
   m_InteractionLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -6577,31 +6580,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1746768261}
     m_Modifications:
-    - target: {fileID: 664489801923019586, guid: 2fd3e07afe5b461490fb8e314976b1b0,
-        type: 3}
-      propertyPath: m_HideControllerOnSelect
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 664489801923019586, guid: 2fd3e07afe5b461490fb8e314976b1b0,
-        type: 3}
-      propertyPath: m_KeepSelectedTargetValid
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 664489801923019586, guid: 2fd3e07afe5b461490fb8e314976b1b0,
-        type: 3}
-      propertyPath: m_PhysicsLayerMask.m_Bits
-      value: 65
-      objectReference: {fileID: 0}
-    - target: {fileID: 6059725000919627127, guid: 2fd3e07afe5b461490fb8e314976b1b0,
-        type: 3}
-      propertyPath: m_Radius
-      value: 0.07
-      objectReference: {fileID: 0}
-    - target: {fileID: 6059725000919627127, guid: 2fd3e07afe5b461490fb8e314976b1b0,
-        type: 3}
-      propertyPath: m_IncludeLayers.m_Bits
-      value: 192
-      objectReference: {fileID: 0}
     - target: {fileID: 6189354538098044173, guid: 2fd3e07afe5b461490fb8e314976b1b0,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6656,11 +6634,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Left Direct Interactor
-      objectReference: {fileID: 0}
-    - target: {fileID: 8841706926471734270, guid: 2fd3e07afe5b461490fb8e314976b1b0,
-        type: 3}
-      propertyPath: m_TagString
-      value: Left Hand
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7513,7 +7486,7 @@ PrefabInstance:
     - target: {fileID: 6171393528991807716, guid: c61a5aea3f3f9d346ad59920bbbc7628,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.432
+      value: 0.355
       objectReference: {fileID: 0}
     - target: {fileID: 6171393528991807716, guid: c61a5aea3f3f9d346ad59920bbbc7628,
         type: 3}
@@ -7523,7 +7496,7 @@ PrefabInstance:
     - target: {fileID: 6171393528991807716, guid: c61a5aea3f3f9d346ad59920bbbc7628,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.143
+      value: -1.423
       objectReference: {fileID: 0}
     - target: {fileID: 6171393528991807716, guid: c61a5aea3f3f9d346ad59920bbbc7628,
         type: 3}
