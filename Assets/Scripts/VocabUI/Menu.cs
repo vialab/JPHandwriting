@@ -1,18 +1,12 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Menu : VocabUI {
-    private AudioSource _audioSource;
-
-    private void Awake() {
-        _audioSource = GetComponent<AudioSource>();
+// Not inheriting VocabUI because no text
+public class Menu : MonoBehaviour {
+    public virtual void Show() {
+        gameObject.SetActive(true);
     }
 
-    public void SetClip(AudioClip clip) {
-        _audioSource.clip = clip;
-    }
-
-    public void PlayPronunciationClip() {
-        _audioSource.Play();
-        LogEvent("Pronunciation clip played");
+    public virtual void Hide() {
+        gameObject.SetActive(false);
     }
 }

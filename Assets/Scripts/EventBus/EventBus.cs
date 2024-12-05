@@ -22,11 +22,14 @@ public class EventBus : MonoBehaviour
     public OnPenExitCanvas.Event OnPenExitCanvas = new();
     
     // Vocab item *character* stuff
-    public OnLetterCompared.Event OnLetterCompared = new();
+    public OnNextTracedLetter.Event OnNextTracedLetter = new();
     public OnLetterPredicted.Event OnLetterPredicted = new();
     public OnLetterExported.Event OnLetterExported = new();
     public OnLetterWritten.Event OnLetterWritten = new();
 
+    // Toast notification
+    public ToastNotification.Event ToastNotification = new();
+    
     private List<IEventWrapper> events;
 
     private void Awake() {
@@ -44,10 +47,12 @@ public class EventBus : MonoBehaviour
             OnPenWrittenSomething.Wrap(),
             OnPenExitCanvas.Wrap(),
 
-            OnLetterCompared.Wrap(),
+            OnNextTracedLetter.Wrap(),
             OnLetterPredicted.Wrap(),
             OnLetterExported.Wrap(),
             OnLetterWritten.Wrap(),
+            
+            ToastNotification.Wrap(),
         };
     }
 

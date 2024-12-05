@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VocabItemWrite : EventSubscriber, OnLetterCompared.IHandler {
+public class VocabItemWrite : EventSubscriber, 
+    OnVocabItemWriteState.IHandler, OnLetterPredicted.IHandler {
 
     /// <summary>
     /// Assume VocabItemWrite and VocabUI are attached to the same object.
@@ -20,9 +21,21 @@ public class VocabItemWrite : EventSubscriber, OnLetterCompared.IHandler {
     private int charPosition = 0;
     public int CharPosition => charPosition;
 
+    private VocabItem _parentVocabItem;
+    private string _japaneseText;
+
     private void Awake() {
         _vocabUI = GetComponent<VocabUI>();
+        _parentVocabItem = transform.parent.GetComponent<VocabItem>();
         charPosition = 0;
+    }
+    
+    // ==============
+    // Actual methods
+    // ==============
+     
+    private bool IsActiveVocabItem(VocabItem vocabItem) {
+        return (vocabItem == _parentVocabItem && Game.Instance.CurrentVocabItem == _parentVocabItem);
     }
 
     public void Show() {
@@ -65,9 +78,36 @@ public class VocabItemWrite : EventSubscriber, OnLetterCompared.IHandler {
         UpdateUI();
     }
 
-    public void ResetPosition() {
-        charPosition--;
+    private void CompareCharacter(string writtenChar, int position) {
+        if (position >= _japaneseText.Length) return;
+
+        var charInCurrentPosition = _japaneseText[position].ToString();
+
+        if (writtenChar == charInCurrentPosition) {
+            AddCharacter(writtenChar);
+            SetNextCharacterTracing();
+        }
+        else if (Hiragana.TryToggleSmall(writtenChar) == charInCurrentPosition) {
+            AddCharacter(charInCurrentPosition);
+            SetNextCharacterTracing();
+        } 
+        
+        // else do nothing
     }
+
+    private void SetNextCharacterTracing() {
+        var nextChar = "";
+
+        if (charPosition < _japaneseText.Length) {
+            nextChar = _japaneseText[charPosition].ToString();
+
+            if (Hiragana.IsSmall(nextChar))
+                nextChar = Hiragana.TryToggleSmall(nextChar);
+        }
+        
+        EventBus.Instance.OnNextTracedLetter.Invoke(_parentVocabItem, nextChar);
+    }
+    
     
     // ================
     // Button functions
@@ -88,18 +128,36 @@ public class VocabItemWrite : EventSubscriber, OnLetterCompared.IHandler {
     /// </summary>
     public void SubmitGuess() {
         EventBus.Instance.OnVocabItemFinishGuess.Invoke(
-            transform.parent.GetComponent<VocabItem>(),
+            _parentVocabItem,
             string.Join("", _writtenText.ToArray())
         );
         
         Hide();
     }
+
     
     // ===============
     // Event listeners
     // ===============
 
-    void OnLetterCompared.IHandler.OnEvent(VocabItem vocabItem, string character, bool isMatch) {
-        CheckAddCharacter(character, isMatch);
+    void OnVocabItemWriteState.IHandler.OnEvent(VocabItem vocabItem) {
+        if (!IsActiveVocabItem(vocabItem)) return;
+        
+        _japaneseText = _parentVocabItem.JPName;
+    }
+
+    void OnLetterPredicted.IHandler.OnEvent(VocabItem vocabItem, string writtenChar, int position) {
+        // if this item isn't the active item, do nothing
+        if (!IsActiveVocabItem(vocabItem)) return;
+
+        // check if tracing is enabled
+        var tracingEnabled = _parentVocabItem.TracingEnabled;
+        
+        // if so, compare letters then add; if not, add
+        if (!tracingEnabled) {
+            AddCharacter(writtenChar);
+        } else {
+            CompareCharacter(writtenChar, position);
+        }
     }
 }

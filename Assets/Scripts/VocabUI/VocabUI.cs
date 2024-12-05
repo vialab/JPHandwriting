@@ -8,6 +8,8 @@ public abstract class VocabUI : MonoBehaviour, ILoggable {
     [FormerlySerializedAs("textUI")] 
     [SerializeField] protected TextMeshProUGUI UIText;
     
+    private Camera mainCam;
+    
     public virtual void Show() {
         gameObject.SetActive(true);
     }
@@ -16,10 +18,21 @@ public abstract class VocabUI : MonoBehaviour, ILoggable {
         gameObject.SetActive(false);
     }
 
+    private void Awake() {
+        mainCam = Camera.main;
+    }
+
     private void Update() {
         // TODO: have it always face the player, regardless of how the item is rotated
-        // notes: https://gist.github.com/ezirmusitua/67bc0bc12073451b56e5ce51225b8e60
-        // https://www.youtube.com/watch?v=yhB921bDLYA
+        
+        LookAtPlayer();
+    }
+
+    protected virtual void LookAtPlayer() {
+        var mainCamPosition = mainCam.transform.position;
+        
+        transform.LookAt(new Vector3(mainCamPosition.x, transform.position.y, mainCamPosition.z));
+        transform.forward *= -1f;
     }
 
     public void SetUIText(string text) {
