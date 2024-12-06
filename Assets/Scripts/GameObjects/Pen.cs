@@ -1,9 +1,14 @@
+using System;
 using System.Collections;
 using UnityEditor.PackageManager;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public class Pen : EventSubscriber, ILoggable, OnPenEnterCanvas.IHandler, OnPenExitCanvas.IHandler, OnLetterPredicted.IHandler {
+public class Pen : EventSubscriber, ILoggable, 
+    OnPenEnterCanvas.IHandler, OnPenExitCanvas.IHandler, 
+    OnVocabItemWriteState.IHandler, OnVocabItemMenuState.IHandler,
+    OnVocabItemIdleState.IHandler, OnLetterPredicted.IHandler {
     /// <summary>
     /// The "ink" particle system.
     /// </summary>
@@ -22,31 +27,32 @@ public class Pen : EventSubscriber, ILoggable, OnPenEnterCanvas.IHandler, OnPenE
     /// </summary>
     [Tooltip("How far away from the last recorded position can the pen be until it's counted as being in a new position?")]
     [SerializeField] private float errorBounds = 0.002f;
+
     
     private bool _onCanvas = false;
     private bool _wroteSomething = false;
-    private XRGrabInteractable _grabInteractable;
 
+    private bool _canLog;
     private Coroutine logCoroutine;
     private Vector3 penLastPosition;
     private Quaternion penLastRotation;
 
-    private void Awake() {
-        _grabInteractable = GetComponent<XRGrabInteractable>();
-    }
-
     protected override void Start() {
         base.Start();
         penInkParticle.Stop();
-        
-        _grabInteractable.activated.AddListener(x => StartInk());
-        _grabInteractable.deactivated.AddListener(x => StopInk());
+    }
+
+    public void AddTriggerListener(InputActionReference trigger) {
+        trigger.action.started += x => StartInk();
+        trigger.action.canceled += x => StopInk();
     }
 
     private void StartInk() {
+        LogEvent("StartInk called", LogLevel.Debug);
         if (!_onCanvas) return;
         penInkParticle.Play();
-
+        LogEvent("Ink activated", LogLevel.Debug);
+        
         if (!_wroteSomething) {
             _wroteSomething = true;
             EventBus.Instance.OnPenWrittenSomething.Invoke(this);
@@ -57,6 +63,8 @@ public class Pen : EventSubscriber, ILoggable, OnPenEnterCanvas.IHandler, OnPenE
     }
 
     private void StopInk() {
+        LogEvent("StopInk called", LogLevel.Debug);
+        if (!_onCanvas) return;
         penInkParticle.Stop();
         if (logCoroutine != null) StopCoroutine(logCoroutine);
         
@@ -96,15 +104,27 @@ public class Pen : EventSubscriber, ILoggable, OnPenEnterCanvas.IHandler, OnPenE
 
     void OnPenExitCanvas.IHandler.OnEvent(LetterCanvas canvas) {
         _onCanvas = false;
+        StopInk();
     }
 
     void OnLetterPredicted.IHandler.OnEvent(VocabItem vocabItem, string character, int position) {
         _wroteSomething = false;
     }
     
-    public void LogEvent(string message, LogLevel level = LogLevel.Info) {
-        EventBus.Instance.OnLoggableEvent.Invoke(this, message, level);
+    void OnVocabItemWriteState.IHandler.OnEvent(VocabItem vocabItem) {
+        _canLog = true;
     }
 
-
+    void OnVocabItemMenuState.IHandler.OnEvent(VocabItem vocabItem) {
+        _canLog = false;
+    }
+    
+    void OnVocabItemIdleState.IHandler.OnEvent(VocabItem vocabItem) {
+        _canLog = false;
+    }
+    
+    public void LogEvent(string message, LogLevel level = LogLevel.Info) {
+        if (_canLog)
+            EventBus.Instance.OnLoggableEvent.Invoke(this, message, level);
+    }
 }

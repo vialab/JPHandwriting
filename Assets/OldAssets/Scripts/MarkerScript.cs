@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
 
 public class MarkerScript : MonoBehaviour {
@@ -31,6 +32,7 @@ public class MarkerScript : MonoBehaviour {
     // Update is called once per frame
     void Update() {
     }
+
 
     private void StartInk() {
         if (_isOnWhiteboard) {

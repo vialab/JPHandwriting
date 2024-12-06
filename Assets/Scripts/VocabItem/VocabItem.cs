@@ -112,6 +112,7 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable,
         // Vocab info stuff
         vocabInfoUIObject.SetClip(pronunciationClip);
         vocabInfoUIObject.SetUIText(englishName);
+        vocabInfoUIObject.SetTracingIndicator(enableTracing);
         vocabInfoUIObject.Hide();
         
         // Menu state setup
@@ -144,6 +145,7 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable,
         // show menu
         EnableSelectedOutline();
         menuStateObject.Show();
+        vocabInfoUIObject.Show();
         LogEvent("Vocabulary entered Menu state");
     }
 
@@ -159,23 +161,17 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable,
 
         // show write state UI
         writeStateObject.Show();
+        vocabInfoUIObject.Show();
+        LogEvent("Vocabulary entered Write state");
     }
 
-    public void HideUI() {
+    public void ShowIdleState() {
         _objectUIState = ObjectUIState.Idle;
         EventBus.Instance.OnVocabItemIdleState.Invoke(this);
 
         menuStateObject.Hide();
-        writeStateObject.Hide(); // In case another VocabItem wants to be focused
+        writeStateObject.Hide(); 
         vocabInfoUIObject.Hide();
-    }
-
-    public void ToggleUI() {
-        if (_objectUIState == ObjectUIState.Idle) {
-            vocabInfoUIObject.Show();
-            ShowMenuState();
-        }
-        else HideUI();
     }
 
 
@@ -214,6 +210,9 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable,
     /// </summary>
     public void EnableHoverOutline() {
         _outline.OutlineColor = Color.yellow;
+    }
+    public void EnableGrabHoverOutline() {
+        _outline.OutlineColor = Color.blue;
     }
 
 

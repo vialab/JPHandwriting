@@ -5,11 +5,11 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 public abstract class VocabUI : MonoBehaviour, ILoggable {
-    [FormerlySerializedAs("textUI")] 
+    [FormerlySerializedAs("textUI")]
     [SerializeField] protected TextMeshProUGUI UIText;
-    
+
     private Camera mainCam;
-    
+
     public virtual void Show() {
         gameObject.SetActive(true);
     }
@@ -18,19 +18,17 @@ public abstract class VocabUI : MonoBehaviour, ILoggable {
         gameObject.SetActive(false);
     }
 
-    private void Awake() {
-        mainCam = Camera.main;
+    protected virtual void Start() {
+        mainCam = Game.Instance.MainCam;
     }
 
     private void Update() {
-        // TODO: have it always face the player, regardless of how the item is rotated
-        
-        LookAtPlayer();
+        if (gameObject.activeInHierarchy) LookAtPlayer();
     }
 
     protected virtual void LookAtPlayer() {
         var mainCamPosition = mainCam.transform.position;
-        
+
         transform.LookAt(new Vector3(mainCamPosition.x, transform.position.y, mainCamPosition.z));
         transform.forward *= -1f;
     }

@@ -1,12 +1,9 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 
-// Not inheriting VocabUI because no text
-public class Menu : MonoBehaviour {
-    public virtual void Show() {
-        gameObject.SetActive(true);
-    }
-
-    public virtual void Hide() {
-        gameObject.SetActive(false);
+public class Menu : VocabUI {
+    protected override void Start() {
+        base.Start();
+        UIText = null;
     }
 }

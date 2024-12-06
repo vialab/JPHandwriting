@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class VocabItemWrite : EventSubscriber, 
-    OnVocabItemWriteState.IHandler, OnLetterPredicted.IHandler {
+    OnLetterPredicted.IHandler {
 
     /// <summary>
     /// Assume VocabItemWrite and VocabUI are attached to the same object.
@@ -27,6 +27,7 @@ public class VocabItemWrite : EventSubscriber,
     private void Awake() {
         _vocabUI = GetComponent<VocabUI>();
         _parentVocabItem = transform.parent.GetComponent<VocabItem>();
+        _japaneseText = _parentVocabItem.JPName;
         charPosition = 0;
     }
     
@@ -139,12 +140,6 @@ public class VocabItemWrite : EventSubscriber,
     // ===============
     // Event listeners
     // ===============
-
-    void OnVocabItemWriteState.IHandler.OnEvent(VocabItem vocabItem) {
-        if (!IsActiveVocabItem(vocabItem)) return;
-        
-        _japaneseText = _parentVocabItem.JPName;
-    }
 
     void OnLetterPredicted.IHandler.OnEvent(VocabItem vocabItem, string writtenChar, int position) {
         // if this item isn't the active item, do nothing

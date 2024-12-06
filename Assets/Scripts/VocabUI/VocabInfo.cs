@@ -1,6 +1,7 @@
 using UnityEngine;
 
 public class VocabInfo : VocabUI {
+    [SerializeField] private GameObject transformEnabledMarker;
     private AudioSource _audioSource;
 
     private void Awake() {
@@ -9,6 +10,10 @@ public class VocabInfo : VocabUI {
 
     public void SetClip(AudioClip clip) {
         _audioSource.clip = clip;
+    }
+
+    public void SetTracingIndicator(bool tracingEnabled) {
+        transformEnabledMarker.SetActive(tracingEnabled);
     }
 
     public void PlayPronunciationClip() {
