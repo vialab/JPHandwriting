@@ -7,9 +7,4 @@ public class Hint : VocabUI {
         Show();
         LogEvent($"Hint accessed for {kanaName}");
     }
-
-    protected override void LookAtPlayer() {
-        base.LookAtPlayer();
-        transform.forward *= -1f;
-    }
 }

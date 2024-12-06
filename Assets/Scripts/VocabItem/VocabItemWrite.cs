@@ -26,7 +26,7 @@ public class VocabItemWrite : EventSubscriber,
 
     private void Awake() {
         _vocabUI = GetComponent<VocabUI>();
-        _parentVocabItem = transform.parent.GetComponent<VocabItem>();
+        _parentVocabItem = transform.parent.parent.GetComponent<VocabItem>();
         _japaneseText = _parentVocabItem.JPName;
         charPosition = 0;
     }

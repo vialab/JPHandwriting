@@ -1,15 +1,6 @@
 using System;
 
 public class Tracing : VocabUI, OnNextTracedLetter.IHandler {
-    protected override void Start() {
-        base.Start();
-        Hide();
-    }
-
-    protected override void LookAtPlayer() {
-        // don't do anything
-    }
-
     private void SetCharacter(string character) {
         SetUIText(character);
 

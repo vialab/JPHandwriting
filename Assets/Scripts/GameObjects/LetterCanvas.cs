@@ -28,7 +28,8 @@ public class LetterCanvas : EventSubscriber, ILoggable,
 
 
     private void Hide() {
-        gameObject.transform.position = Vector3.down * 10f;
+        // TODO: this but better
+        transform.parent.transform.localPosition = Vector3.down * 10f;
     }
 
     private void OnTriggerEnter(Collider other) {

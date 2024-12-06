@@ -2,8 +2,7 @@
 using UnityEngine;
 
 public class Menu : VocabUI {
-    protected override void Start() {
-        base.Start();
+    private void Start() {
         UIText = null;
     }
 }

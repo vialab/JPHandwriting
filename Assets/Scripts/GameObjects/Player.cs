@@ -96,7 +96,7 @@ public class Player : EventSubscriber, ILoggable,
     /// and then despawns and moves the cube out of the way.
     /// </summary>
     private IEnumerator ClearCanvas() {
-        var cubePosition = transform.localPosition;
+        var cubePosition = _fullCanvas.transform.localPosition;
         canvasCube.SetActive(true);
 
         LogEvent("Canvas clearing object appeared");
@@ -120,6 +120,7 @@ public class Player : EventSubscriber, ILoggable,
 
     void OnVocabItemMenuState.IHandler.OnEvent(VocabItem vocabItem) {
         _currentItem = vocabItem;
+        // TODO: move eraser in same position as canvas here to clear it
     }
 
     void OnVocabItemWriteState.IHandler.OnEvent(VocabItem vocabItem) {
