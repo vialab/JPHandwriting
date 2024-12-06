@@ -347,7 +347,6 @@ GameObject:
   - component: {fileID: 8636174537348824485}
   - component: {fileID: 6872037786892329298}
   - component: {fileID: 8267534140172182920}
-  - component: {fileID: 7032603879953776591}
   m_Layer: 8
   m_Name: Canvas Bounds
   m_TagString: Untagged
@@ -468,16 +467,3 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 1
---- !u!114 &7032603879953776591
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8966275713786002672}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9c6cbe9d65516742b2552dc806f632b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _pushForce: 1

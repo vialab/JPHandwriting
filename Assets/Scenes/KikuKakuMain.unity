@@ -606,8 +606,9 @@ GameObject:
   - component: {fileID: 168039316}
   - component: {fileID: 168039315}
   - component: {fileID: 168039317}
-  - component: {fileID: 168039314}
   - component: {fileID: 168039313}
+  - component: {fileID: 168039314}
+  - component: {fileID: 168039322}
   m_Layer: 0
   m_Name: XR Origin (XR Rig)
   m_TagString: Untagged
@@ -849,6 +850,20 @@ Transform:
   - {fileID: 1816149985}
   m_Father: {fileID: 1794192974}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &168039322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 168039311}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01f69dc1cb084aa42b2f2f8cd87bc770, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_System: {fileID: 168039318}
+  m_DelayTime: 0
 --- !u!4 &203231651 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6189354538098044173, guid: 2fd3e07afe5b461490fb8e314976b1b0,
@@ -7357,6 +7372,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hand: 1
   _fullCanvas: {fileID: 574489029}
+  canvasCube: {fileID: 1132554030}
   _pen: {fileID: 1496587815}
   leftHandInfo:
     handTrigger: {fileID: -6131295136447488360, guid: c348712bda248c246b8c49b3db54643f,
@@ -7368,6 +7384,7 @@ MonoBehaviour:
       type: 3}
     directInteractor: {fileID: 246215540}
     rayInteractor: {fileID: 482221896}
+  waitTimeSeconds: 0.15
 --- !u!1 &1816149984
 GameObject:
   m_ObjectHideFlags: 0
@@ -8236,7 +8253,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7032603879953776591, guid: c895c39395c0368468df983e864ef79c, type: 3}
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 8966275713786002672, guid: c895c39395c0368468df983e864ef79c, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c895c39395c0368468df983e864ef79c, type: 3}
