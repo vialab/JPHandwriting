@@ -80,6 +80,9 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable,
     // MARK: Other item properties
     // =====================
 
+    [SerializeField] private GameObject _object;
+    public GameObject Object => _object;
+    
     private VocabularyState _vocabularyState = VocabularyState.NotLearned;
     private ObjectUIState _objectUIState = ObjectUIState.Idle;
 
@@ -132,6 +135,7 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable,
     // MARK: UI display methods
     // ==================
 
+    [ContextMenu("UI States/Show Menu")]
     public void ShowMenuState() {
         // disable everything from write state
         if (_objectUIState == ObjectUIState.Writing) {
@@ -141,7 +145,10 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable,
         // change state
         _objectUIState = ObjectUIState.Menu;
         EventBus.Instance.OnVocabItemMenuState.Invoke(this);
-
+        
+        // move UI with item
+        MoveParentWithChild();
+        
         // show menu
         EnableSelectedOutline();
         menuStateObject.Show();
@@ -149,6 +156,7 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable,
         LogEvent("Vocabulary entered Menu state");
     }
 
+    [ContextMenu("UI States/Show Write")]
     public void ShowWriteState() {
         // disable everything from menu state
         if (_objectUIState == ObjectUIState.Menu) {
@@ -165,6 +173,7 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable,
         LogEvent("Vocabulary entered Write state");
     }
 
+    [ContextMenu("UI States/Show Idle")]
     public void ShowIdleState() {
         _objectUIState = ObjectUIState.Idle;
         EventBus.Instance.OnVocabItemIdleState.Invoke(this);
@@ -172,6 +181,30 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable,
         menuStateObject.Hide();
         writeStateObject.Hide(); 
         vocabInfoUIObject.Hide();
+    }
+    
+    [ContextMenu("UI States/Toggle Menu State")]
+    public void ToggleMenuState() {
+        if (IsActiveVocabItem(this)) {
+            switch (_objectUIState) {
+                case ObjectUIState.Menu:
+                    ShowIdleState();
+                    break;
+                case ObjectUIState.Idle:
+                    ShowMenuState();
+                    break;
+                case ObjectUIState.Writing:
+                default:
+                    break;
+            }
+        } else {
+            ShowMenuState();
+        }
+    }
+
+    private void MoveParentWithChild() {
+        transform.position = _object.transform.position;
+        _object.transform.localPosition = Vector3.zero;
     }
 
 
@@ -210,9 +243,6 @@ public class VocabItem : SerializableEventSubscriber<VocabItem>, ILoggable,
     /// </summary>
     public void EnableHoverOutline() {
         _outline.OutlineColor = Color.yellow;
-    }
-    public void EnableGrabHoverOutline() {
-        _outline.OutlineColor = Color.blue;
     }
 
 
