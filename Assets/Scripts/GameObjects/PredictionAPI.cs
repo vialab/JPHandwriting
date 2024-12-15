@@ -46,27 +46,27 @@ public class PredictionAPI : EventSubscriber, ILoggable, OnLetterExported.IHandl
     }
 
     private IEnumerator MakeHealthCheckRequest() {
-        using UnityWebRequest webRequest = UnityWebRequest.Get(healthCheckURL);
+        using UnityWebRequest healthCheckRequest = UnityWebRequest.Get(healthCheckURL);
 
-        yield return webRequest.SendWebRequest();
+        yield return healthCheckRequest.SendWebRequest();
 
-        if (webRequest.result == UnityWebRequest.Result.Success) {
-            HealthCheckResult result = JsonUtility.FromJson<HealthCheckResult>(webRequest.downloadHandler.text);
+        if (healthCheckRequest.result == UnityWebRequest.Result.Success) {
+            HealthCheckResult result = JsonUtility.FromJson<HealthCheckResult>(healthCheckRequest.downloadHandler.text);
 
             if (result.status.Equals("OK")) {
                 LogEvent("API up, client can send requests");
-                yield break;
             } 
-        } 
-        
-        // Theoretically should only be reachable if not successful
-        debugMode = true;
-        LogEvent("API offline, entering debug mode");
+        }
+        else {
+            // Theoretically should only be reachable if not successful
+            debugMode = true;
+            LogEvent("API offline, entering debug mode");
+        }
     }
 
     private IEnumerator MakeAPIRequest(VocabItem vocabItem, byte[] image) {
         if (debugMode) {
-            string nextChar = vocabItem.LetterAtCurrentPosition;
+            string nextChar = vocabItem.CharAtCurrentPosition;
             
             LogEvent($"Debug mode, assuming character is {nextChar}");
             InvokeLetterPredicted(vocabItem, nextChar);
@@ -92,11 +92,11 @@ public class PredictionAPI : EventSubscriber, ILoggable, OnLetterExported.IHandl
                 
                 break;
             }
-            case UnityWebRequest.Result.ConnectionError:
             case UnityWebRequest.Result.ProtocolError:
+            case UnityWebRequest.Result.ConnectionError:
             case UnityWebRequest.Result.DataProcessingError: {
                 Debug.LogError($"{webRequest.result}: {webRequest.error}");
-            break;
+                break;
             }
         }
     }

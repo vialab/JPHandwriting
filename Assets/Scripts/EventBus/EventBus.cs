@@ -5,7 +5,6 @@ public class EventBus : MonoBehaviour
 {
     public static EventBus Instance { get; private set; }
     
-    // TODO: add events here
     // Logging stuff
     public OnLoggableEvent.Event OnLoggableEvent = new();
     
@@ -22,11 +21,16 @@ public class EventBus : MonoBehaviour
     public OnPenExitCanvas.Event OnPenExitCanvas = new();
     
     // Vocab item *character* stuff
-    public OnLetterCompared.Event OnLetterCompared = new();
+    public OnNextTracedLetter.Event OnNextTracedLetter = new();
     public OnLetterPredicted.Event OnLetterPredicted = new();
     public OnLetterExported.Event OnLetterExported = new();
     public OnLetterWritten.Event OnLetterWritten = new();
 
+    // Toast notification
+    public ToastNotification.Event ToastNotification = new();
+    
+    // TODO: add more events here
+    
     private List<IEventWrapper> events;
 
     private void Awake() {
@@ -44,10 +48,14 @@ public class EventBus : MonoBehaviour
             OnPenWrittenSomething.Wrap(),
             OnPenExitCanvas.Wrap(),
 
-            OnLetterCompared.Wrap(),
+            OnNextTracedLetter.Wrap(),
             OnLetterPredicted.Wrap(),
             OnLetterExported.Wrap(),
             OnLetterWritten.Wrap(),
+            
+            ToastNotification.Wrap(),
+            
+            // TODO: add more event wrappers here
         };
     }
 

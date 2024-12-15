@@ -22,6 +22,9 @@ public class Game : EventSubscriber, ILoggable, IObjectMover, OnVocabItemMenuSta
     public string userID;
 
     private VocabItemSpawner vocabItemSpawner;
+    
+    [SerializeField] private Camera mainCam;
+    public Camera MainCam => mainCam;
 
     // ====================
     // Where to place items
@@ -47,7 +50,6 @@ public class Game : EventSubscriber, ILoggable, IObjectMover, OnVocabItemMenuSta
     // =====================================
 
     private List<VocabItem> _unlearnedVocabItems = new();
-
     private List<VocabItem> _learnedVocabItems = new();
 
     private void Awake() {
@@ -77,7 +79,7 @@ public class Game : EventSubscriber, ILoggable, IObjectMover, OnVocabItemMenuSta
 
     void OnVocabItemMenuState.IHandler.OnEvent(VocabItem vocabItem) {
         if (currentVocabItem != null) {
-            currentVocabItem.HideUI();
+            currentVocabItem.ShowIdleState();
             currentVocabItem = null;
         }
 

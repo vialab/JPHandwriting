@@ -4,6 +4,8 @@
 - All icons from TNP are under the [CC-BY license](https://help.thenounproject.com/hc/en-us/articles/200509798-What-licenses-do-you-offer)
     - https://thenounproject.com/icon/sound-1939979/
     - https://thenounproject.com/icon/pencil-6534759/
+    - https://thenounproject.com/icon/pencil-4624252/
+    - https://thenounproject.com/icon/dashed-line-2958048/
     - https://thenounproject.com/icon/undo-3557666/
     - https://thenounproject.com/icon/back-1245545/
     - https://thenounproject.com/icon/check-1788422/
