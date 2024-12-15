@@ -1,9 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
+using ToastNotification;
 using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 
 public enum WritingHand {
@@ -15,6 +14,7 @@ public class HandInformation {
     public InputActionReference handTrigger;
     public GameObject directInteractor;
     public GameObject rayInteractor;
+    public XRBaseController controller;
 
     public void DisableInteractors() {
         directInteractor.SetActive(false);
@@ -24,13 +24,14 @@ public class HandInformation {
 
 public class Player : EventSubscriber, ILoggable, 
     OnVocabItemWriteState.IHandler, OnVocabItemMenuState.IHandler, 
-    OnLetterPredicted.IHandler {
+    OnLetterPredicted.IHandler, ToastNotification.IHandler {
     [Rename("User's Dominant Hand")]
     [SerializeField] private WritingHand hand = WritingHand.Right;
 
-    [SerializeField] private GameObject _fullCanvas;
+    [SerializeField] private static GameObject _fullCanvas;
     [SerializeField] private GameObject canvasCube;
     [SerializeField] private Pen _pen;
+    [SerializeField] private Toast _toastUI;
 
     [SerializeField] private HandInformation leftHandInfo;
     [SerializeField] private HandInformation rightHandInfo;
@@ -41,7 +42,7 @@ public class Player : EventSubscriber, ILoggable,
     [Rename("Eraser Cube Wait Time")]
     [SerializeField] protected float waitTimeSeconds = 0.15f;
     
-    private Camera mainCam;
+    [SerializeField] private Camera _mainCam;
     private VocabItem _currentItem;
 
     private void Awake() {
@@ -50,7 +51,6 @@ public class Player : EventSubscriber, ILoggable,
 
     protected override void Start() {
         base.Start();
-        mainCam = Game.Instance.MainCam;
         
         SetUpFingerWriting();
 
@@ -70,24 +70,31 @@ public class Player : EventSubscriber, ILoggable,
         _pen.AddTriggerListener(handInfo.handTrigger);
         LogEvent($"Pen ink position is {_pen.transform.position} ({hand})", LogLevel.Debug);
         
+        // give pen reference to controller for haptics
+        _pen.SetUpHaptics(handInfo.controller);
+        
         // disable other hand
         otherHand.DisableInteractors();
+    }
+    
+    private void MoveObjectFacingPlayer(GameObject obj) {
+        var mainCamTransform = _mainCam.transform;
+        var mainCamForward = mainCamTransform.forward;
+        var mainCamPos = mainCamTransform.position;
+
+        obj.transform.position = mainCamPos +
+                                     new Vector3(mainCamForward.x, mainCamForward.y - 0.5f, mainCamForward.z).normalized *
+                                     0.5f;
+
+        obj.transform.LookAt(new Vector3(mainCamPos.x, _fullCanvas.transform.position.y, mainCamPos.z));
+        obj.transform.forward *= -1;
     }
 
     /// <summary>
     /// Moves canvas to be in front of the player when the vocab item reaches menu state.
     /// </summary>
     private void MoveCanvas() {
-        var mainCamTransform = mainCam.transform;
-        var mainCamForward = mainCamTransform.forward;
-        var mainCamPos = mainCamTransform.position;
-
-        _fullCanvas.transform.position = mainCamPos +
-                                     new Vector3(mainCamForward.x, mainCamForward.y - 0.5f, mainCamForward.z).normalized *
-                                     0.5f;
-
-        _fullCanvas.transform.LookAt(new Vector3(mainCamPos.x, _fullCanvas.transform.position.y, mainCamPos.z));
-        _fullCanvas.transform.forward *= -1;
+        MoveObjectFacingPlayer(_fullCanvas);
     }
     
     /// <summary>
@@ -131,6 +138,12 @@ public class Player : EventSubscriber, ILoggable,
     }
     void OnLetterPredicted.IHandler.OnEvent(VocabItem vocabItem, string writtenChar, int position) {
         StartCoroutine(ClearCanvas());
+    }
+
+    void ToastNotification.IHandler.OnEvent(Object obj, string message) {
+        _toastUI.SetUIText(message);
+        MoveObjectFacingPlayer(_toastUI.gameObject);
+        _toastUI.Show();
     }
 
     public void LogEvent(string message, LogLevel level = LogLevel.Info) {

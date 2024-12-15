@@ -27,13 +27,20 @@ public class Pen : EventSubscriber, ILoggable,
     /// </summary>
     [Tooltip("How far away from the last recorded position can the pen be until it's counted as being in a new position?")]
     [SerializeField] private float errorBounds = 0.002f;
-
+    
+    /// <summary>
+    /// Controller haptics intensity.
+    /// </summary>
+    [SerializeField] private float _amplitude = 0.25f;
+    
+    private XRBaseController _controller;
     
     private bool _onCanvas = false;
     private bool _wroteSomething = false;
 
     private bool _canLog;
     private Coroutine logCoroutine;
+    private Coroutine hapticsCoroutine;
     private Vector3 penLastPosition;
     private Quaternion penLastRotation;
 
@@ -50,6 +57,7 @@ public class Pen : EventSubscriber, ILoggable,
     private void StartInk() {
         LogEvent("StartInk called", LogLevel.Debug);
         if (!_onCanvas) return;
+        
         penInkParticle.Play();
         LogEvent("Ink activated", LogLevel.Debug);
         
@@ -88,7 +96,7 @@ public class Pen : EventSubscriber, ILoggable,
             || penLastRotation == penRotation) 
             return;
 
-        LogEvent($"Pen: {penPosition}; {penRotation}");
+        LogEvent($"{penPosition}; {penRotation}");
 
         penLastPosition = penPosition;
         penLastRotation = penRotation;
@@ -98,13 +106,31 @@ public class Pen : EventSubscriber, ILoggable,
         return Vector3.Distance(posA, posB) < errorBounds;
     }
 
+    public void SetUpHaptics(XRBaseController controller) {
+        _controller = controller;
+    }
+
+    private IEnumerator StartHaptics(float amplitude) {
+        while (true) {
+            _controller.SendHapticImpulse(amplitude, 10f);
+            yield return new WaitForSecondsRealtime(0.1f);
+        };
+    }
+
+    private void StopHaptics() {
+        _controller.SendHapticImpulse(0f, 1f);
+    }
+
     void OnPenEnterCanvas.IHandler.OnEvent(LetterCanvas canvas) {
         _onCanvas = true;
+        hapticsCoroutine = StartCoroutine(StartHaptics(_amplitude));
     }
 
     void OnPenExitCanvas.IHandler.OnEvent(LetterCanvas canvas) {
-        _onCanvas = false;
         StopInk();
+        if (hapticsCoroutine != null) StopCoroutine(hapticsCoroutine);
+        StopHaptics();
+        _onCanvas = false;
     }
 
     void OnLetterPredicted.IHandler.OnEvent(VocabItem vocabItem, string character, int position) {
